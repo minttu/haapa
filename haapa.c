@@ -238,7 +238,46 @@ void status_text(char* str, char* in) {
 	strncpy(str, in, SEGMENT_LENGTH);
 }
 
+/* i3 helpers */
+
+void status_i3_start(char* str) {
+	if(I3_ENABLED){
+		strcpy(str, "[{\"full_text\":\" \"}\n");
+	}
+}
+
+void status_i3_block(char* str) {
+	if(I3_ENABLED) {
+		strncpy(str, ",{\"full_text\": \"", 24);
+	}
+}
+
+void status_i3_color(char* str, char* color) {
+	if(I3_ENABLED) {
+		snprintf(str, 32, "\", \"color\": \"%s\"}\n", color);
+	}
+}
+
+void status_i3_end(char* str) {
+	if(I3_ENABLED) {
+		strcpy(str, "],");
+	}
+}
+
 void flush(char* buffer, char* str) {
+	strncat(buffer, str, SEGMENT_LENGTH);
+	if(I3_ENABLED==0) {
+		strncat(buffer, SEGMENT_SEPERATOR, SEGMENT_LENGTH);
+	}
+	str[0] = 0;
+}
+
+void flush2(char* buffer, char* str) {
+	strncat(buffer, str, SEGMENT_LENGTH);
+	str[0] = 0;
+}
+
+void flush3(char* buffer, char* str) {
 	strncat(buffer, str, SEGMENT_LENGTH);
 	strncat(buffer, SEGMENT_SEPERATOR, SEGMENT_LENGTH);
 	str[0] = 0;
@@ -268,6 +307,11 @@ int main(int argc, const char* argv[]) {
  
 	tv.tv_sec = INTERVAL;
 	tv.tv_usec = 0;
+
+	if(I3_ENABLED) {
+		printf("{\"version\":1}\n[[{\"full_text\":\"hello!\"}],");
+		fflush(stdout);
+	}
  
 	event_init();
 	event_set(&ev, 0, EV_PERSIST, tick, NULL);
