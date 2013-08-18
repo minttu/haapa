@@ -107,13 +107,13 @@ void status_cpu(char* str) {
 		diff_idle = idle - cpu_prev_idle;
 		diff_total = total - cpu_prev_total;
 		usage = 100 * (diff_total - diff_idle) / diff_total;
-		if(CPU_USAGE_BAR) {
+		if(CPU_USAGE_DISPLAY==1) {
 			status_bar(str, usage);
 		}else{
 			snprintf(str, SEGMENT_LENGTH, "%.0f%%", usage);
 		}
 	}else{
-		if(CPU_USAGE_BAR) {
+		if(CPU_USAGE_DISPLAY==1) {
 			status_bar(str, 0);
 		}else{
 			strncpy(str, "", SEGMENT_LENGTH);
@@ -155,6 +155,31 @@ void status_mem(char* str) {
 		snprintf(str, SEGMENT_LENGTH, "%.0f%%", ((float)mem_used/(float)mem_total)*100);
 	}
 
+}
+
+void status_bat(char* str) {
+	FILE* f;
+	int capacity;
+	char capacity_file[128];
+	capacity_file[0] = 0;
+	strncat(capacity_file, BAT_LOCATION, 64);
+	strncat(capacity_file, "capacity", 64);
+
+	f = fopen(capacity_file, "r");
+
+	if(f == NULL) {
+		return;
+	}
+
+	fscanf(f, "%i", &capacity);
+
+	fclose(f);
+
+	if(BAT_DISPLAY==1) {
+		status_bar(str, capacity);
+	}else{
+		snprintf(str, SEGMENT_LENGTH, "%i%%", capacity);
+	}
 }
 
 /* Status helpers */
