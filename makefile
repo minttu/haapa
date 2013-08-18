@@ -1,7 +1,7 @@
 TARGET = haapa
 LIBS = -lm -levent
 CC = gcc
-CFLAGS = -Wall -O2 --std=c99
+CFLAGS = -Wall -O2 --std=gnu99
 
 .PHONY: default all clean
 

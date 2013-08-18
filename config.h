@@ -2,7 +2,8 @@
 #define CONFIG_H
 
 #define OUTPUT \
-t("\u2665") CPU \
+t("\u21CB") IP \
+t("\u2764") CPU \
 t("\u2263") MEM \
 t("\u2607") BAT \
 t("|") TIME	
@@ -12,8 +13,8 @@ t("|") TIME
  * TIME, LOAD, UPTIME, CPU, MEM, t(text)
  */
 
+#define FORMAT 1					/* 0: \n 1: ontop*/
 #define INTERVAL 1 					/* 1 - N */
-#define INPLACE 0					/* Should it be printed ontop of itself */
 #define SEGMENT_LENGTH 64
 #define SEGMENT_SEPERATOR " " 		/* seperator of segments */
 #define BAR_FORMAT "[%s]" 			/* %s where the bar goes */
@@ -26,5 +27,6 @@ t("|") TIME
 #define BAT_DISPLAY 1				/* 0: percentage 1: bar */
 #define BAT_LOCATION \
 "/sys/class/power_supply/BAT0/"		/* where the battery is located */
+#define IP_INTERFACE "wlan0"
 
 #endif

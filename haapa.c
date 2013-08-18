@@ -6,6 +6,14 @@
 #include <time.h>
 #include <string.h>
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <netinet/in.h>
+#include <net/if.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
 #include "haapa.h"
 #include "config.h"
 
@@ -182,6 +190,28 @@ void status_bat(char* str) {
 	}
 }
 
+void status_ip(char* str) {
+	int fd;
+	struct ifreq ifr;
+
+	fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+	/* I want to get an IPv4 IP address */
+	ifr.ifr_addr.sa_family = AF_INET;
+
+	/* I want IP address attached to "eth0" */
+	strncpy(ifr.ifr_name, IP_INTERFACE, IFNAMSIZ-1);
+
+	ioctl(fd, SIOCGIFADDR, &ifr);
+
+	close(fd);
+
+	/* display result */
+	snprintf(str, SEGMENT_LENGTH,
+		"%s", inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
+
+}
+
 /* Status helpers */
 
 void status_bar(char* str, float value) {
@@ -222,11 +252,13 @@ void tick(int fd, short event, void* arg) {
 	buffer[0] = 0;
 	OUTPUT
 
-	if(INPLACE) {
+	if(FORMAT==1) {
 		printf("\r%s", buffer);
 		fflush( stdout );
-	}else{
+	}
+	else{
 		printf("%s\n", buffer);
+		fflush( stdout );
 	}
 }
  
