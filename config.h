@@ -11,16 +11,16 @@ t("|") TIME
  * TIME, LOAD, UPTIME, CPU, MEM, t(text)
  */
 
-#define INTERVAL 1 						// 1 - N
-#define INPLACE 1						// Should it be printed ontop of itself
+#define INTERVAL 1 					/* 1 - N */
+#define INPLACE 1					/* Should it be printed ontop of itself */
 #define SEGMENT_LENGTH 64
-#define SEGMENT_SEPERATOR " " 			// seperator of segments
-#define BAR_FORMAT "[%s]" 				// %s where the bar goes
+#define SEGMENT_SEPERATOR " " 		/* seperator of segments */
+#define BAR_FORMAT "[%s]" 			/* %s where the bar goes */
 
-#define TIME_FORMAT "%H:%M:%S" 			// strftime format
-#define UPTIME_FORMAT "%T" 				// strftime format
-#define LOAD_TIME 0 					// 0: 5min 1: 10min 2: 15min 3: all
-#define CPU_USAGE_BAR 1 				// 0: percentage 1: bar
-#define MEM_USAGE_DISPLAY 1 			// 0: percentage 1: bar 2: used/all MB
+#define TIME_FORMAT "%H:%M:%S" 		/* strftime format */
+#define UPTIME_FORMAT "%T" 			/* strftime format */
+#define LOAD_TIME 0 				/* 0: 5min 1: 10min 2: 15min 3: all */
+#define CPU_USAGE_BAR 1 			/* 0: percentage 1: bar */
+#define MEM_USAGE_DISPLAY 1 		/* 0: percentage 1: bar 2: used/all MB */
 
 #endif
