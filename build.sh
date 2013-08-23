@@ -1,7 +1,6 @@
 #!/bin/bash
 
-function init {
-	echo "asd"
+function init { 
 	i=0
 	x=0
 	status=0
@@ -20,7 +19,7 @@ function require_event () {
 	i=`expr $i + 1`
 }
 
-function require_mpd () {
+function require_mpd () {/
 	VARS[$i]=false
 	OPTIONAL[$i]=true
 	NAME[$i]="Optional | libmpdclient"
