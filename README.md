@@ -3,15 +3,18 @@ haapa
 
 A simple status program.
 
-requires
---------
+dependencies
+------------
 
-libevent 1
+	required:
+	- libevent
+	optional:
+	- libmpdclient
 
 usage
 -----
 
-	make
+	./build.sh
 	./haapa
 
 configuration
