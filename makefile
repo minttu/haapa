@@ -1,7 +1,7 @@
 TARGET = haapa
-LIBS = -lm -levent
+LIBS = -lm -levent -lmpdclient
 CC = gcc
-CFLAGS = -Wall -O2 --std=gnu99
+CFLAGS = -Wall -O2 --std=gnu99 -g
 
 .PHONY: default all clean
 
@@ -22,3 +22,4 @@ $(TARGET): $(OBJECTS)
 clean:
 	-rm -f *.o
 	-rm -f $(TARGET)
+
