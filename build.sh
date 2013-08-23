@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 i=0
 x=0
@@ -21,8 +21,8 @@ i=`expr $i + 1`
 
 while [ $x -le `expr $i - 1` ]
 do
-	echo ${NAME[$x]}: ${VARS[$x]}
-	if [ ${VARS[$x]} ]; then
+	echo ${NAME[$x]}": "${VARS[$x]}
+	if [ ${VARS[$x]} = true ]; then
 		ADD_LIB=$FINALLIBS" "${LIBS[$x]}
 		ADD_FILE=$FINALFILES" "${FILES[$x]}
 	fi
