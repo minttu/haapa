@@ -14,8 +14,13 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+
 #include "haapa.h"
 #include "config.h"
+
+#ifdef INCLUDE_MPD
+#include "mpd.h"
+#endif
 
 /* Status generation */
 
@@ -310,6 +315,7 @@ void tick(int fd, short event, void* arg) {
 	char result[SEGMENT_LENGTH];
 
 	buffer[0] = 0;
+	result[0] = 0;
 	OUTPUT
 
 	if(FORMAT==1) {
@@ -321,11 +327,11 @@ void tick(int fd, short event, void* arg) {
 		fflush( stdout );
 	}
 }
- 
+
 int main(int argc, const char* argv[]) {
 	struct event ev;
 	struct timeval tv;
- 
+
 	tv.tv_sec = INTERVAL;
 	tv.tv_usec = 0;
 
@@ -333,11 +339,11 @@ int main(int argc, const char* argv[]) {
 		printf("{\"version\":1}\n[[{\"full_text\":\"hello!\"}],");
 		fflush(stdout);
 	}
- 
+
 	event_init();
 	event_set(&ev, 0, EV_PERSIST, tick, NULL);
 	evtimer_add(&ev, &tv);
 	event_dispatch();
- 
+
 	return 0;
 }
