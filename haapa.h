@@ -7,6 +7,7 @@ void status_uptime(char* str);
 void status_cpu(char* str);
 void status_mem(char* str);
 void status_bat(char* str);
+void status_bat_status(char* str);
 void status_ip(char* str);
 
 void status_bar(char* str, float value);
@@ -28,6 +29,7 @@ void tick(int fd, short event, void* arg);
 #define CPU 	status_cpu(result); F
 #define MEM 	status_mem(result); F
 #define BAT 	status_bat(result); F
+#define BAT_STATUS status_bat_status(result); F
 #define IP 		status_ip(result); F
 #define t(in) 	status_text(result, in); F3
 

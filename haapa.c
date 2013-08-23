@@ -190,6 +190,27 @@ void status_bat(char* str) {
 	}
 }
 
+void status_bat_status(char* str) {
+	FILE* f;
+	char status[64];
+	char status_file[128];
+	status_file[0] = 0;
+	strncat(status_file, BAT_LOCATION, 64);
+	strncat(status_file, "status", 64);
+
+	f = fopen(status_file, "r");
+
+	if(f == NULL) {
+		return;
+	}
+
+	fscanf(f, "%s", status);
+
+	fclose(f);
+
+	snprintf(str, SEGMENT_LENGTH, "%s", status);
+}
+
 void status_ip(char* str) {
 	int fd;
 	struct ifreq ifr;

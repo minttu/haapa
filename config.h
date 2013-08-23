@@ -15,7 +15,7 @@ I3S \
 I3B t("\u21CB") IP I3C("#5F9F74") \
 I3B t("\u2764") CPU I3C("#B94557") \
 I3B t("\u2263") MEM I3C("#B28D4C") \
-I3B t("\u2607") BAT I3C("#9933CC") \
+I3B t("\u2607") BAT_STATUS t(":") BAT I3C("#9933CC") \
 I3B t("|") TIME I3C("#FFFFFF") \
 I3E
 
