@@ -12,14 +12,7 @@ t("|") TIME
 
 #ifdef INCLUDE_MPD
 #define OUTPUT \
-I3S \
-I3B t("\u21CB") MPD_VOL I3C("#FFFFFF") \
-I3B t("\u21CB") IP I3C("#5F9F74") \
-I3B t("\u2764") CPU I3C("#B94557") \
-I3B t("\u2263") MEM I3C("#B28D4C") \
-I3B t("\u2607") BAT I3C("#9933CC") \
-I3B t("|") TIME I3C("#FFFFFF") \
-I3E
+t("\u266A") MPD_VOL MPD_ARTIST
 #else
 #define OUTPUT \
 I3S \

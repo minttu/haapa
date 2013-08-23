@@ -318,9 +318,6 @@ int main(int argc, const char* argv[]) {
 		fflush(stdout);
 	}
 
-#ifdef INCLUDE_MPD
-    status_mpd_init();
-#endif
 	event_init();
 	event_set(&ev, 0, EV_PERSIST, tick, NULL);
 	evtimer_add(&ev, &tv);
