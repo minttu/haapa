@@ -17,10 +17,7 @@
 
 #include "haapa.h"
 #include "config.h"
-
-#ifdef INCLUDE_MPD
 #include "mpd.h"
-#endif
 
 /* Status generation */
 

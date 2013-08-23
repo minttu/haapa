@@ -1,25 +1,21 @@
-TARGET = haapa
-LIBS = -lm -levent -lmpdclient
+LIBS = -lm -levent
 CC = gcc
 CFLAGS = -Wall -O2 --std=gnu99 -g
+LIBS = -lm -levent
+FILES = haapa.c
 
 .PHONY: default all clean
 
-default: $(TARGET)
+default: args haapa
 all: default
 
-OBJECTS = $(patsubst %.c, %.o, $(wildcard *.c))
-HEADERS = $(wildcard *.h)
-
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-.PRECIOUS: $(TARGET) $(OBJECTS)
-
-$(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -Wall $(LIBS) -o $@
+haapa: $(FILES)
+	$(CC) $(CFLAGS) $(LIBS) $(FILES) -o haapa
 
 clean:
 	-rm -f *.o
-	-rm -f $(TARGET)
+	-rm -f haapa
 
+args:
+	$(eval FILES += $(ADD_FILE))
+	$(eval LIBS += $(ADD_LIB))
