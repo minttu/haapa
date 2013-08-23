@@ -37,9 +37,9 @@ do
 		ADD_LIB=$FINALLIBS" "${LIBS[$x]}
 		ADD_FILE=$FINALFILES" "${FILES[$x]}
 	else
-		if [ ${OPTIONAL[$x]} = true ]; then
+		if [ ${OPTIONAL[$x]} = false ]; then
 			echo "Error: Missing required library!"
-			return
+			return 1
 		fi
 	fi
 	x=`expr $x + 1`
