@@ -10,19 +10,16 @@ t("\u2607") BAT \
 t("|") TIME
 */
 
-#ifdef INCLUDE_MPD
-#define OUTPUT \
-t("\u266A") MPD_VOL MPD_ARTIST
-#else
 #define OUTPUT \
 I3S \
+I3B t("\u266A") MPD_URI I3C("#FFFFFF") \
 I3B t("\u21CB") IP I3C("#5F9F74") \
 I3B t("\u2764") CPU I3C("#B94557") \
 I3B t("\u2263") MEM I3C("#B28D4C") \
 I3B t("\u2607") BAT I3C("#9933CC") \
 I3B t("|") TIME I3C("#FFFFFF") \
 I3E
-#endif
+
 /* Order of segments from ltr
  * Possible values:
  * TIME, LOAD, UPTIME, CPU, MEM, t(text)
@@ -44,5 +41,14 @@ I3E
 #define BAT_LOCATION \
 "/sys/class/power_supply/BAT0/"		/* where the battery is located */
 #define IP_INTERFACE "wlan0"
+#define INCLUDE_MPD
+
+#ifdef INCLUDE_MPD
+#define MPD_HOSTNAME NULL
+#define MPD_PORT 0
+#define MPD_TIMEOUT 30000
+#define MPD_PASS NULL
+#endif
+
 
 #endif

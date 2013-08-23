@@ -14,23 +14,25 @@ struct mpd_audio_format *audio_format;
 /* do not call */
 int _mpd_status_init() {
     if(!conn)
-        conn = mpd_connection_new(NULL, 0, 30000);
+        conn = mpd_connection_new(MPD_HOSTNAME, MPD_PORT, MPD_TIMEOUT);
+    if(MPD_PASS) {
+        mpd_send_password(conn, MPD_PASS);
+    }
     if(mpd_connection_get_error(conn) != MPD_ERROR_SUCCESS) {
         fprintf(stderr, "connection: %s\n", mpd_connection_get_error_message(conn));
-        if(conn)
-            mpd_connection_free(conn);
+        mpd_connection_free(conn);
         return -1;
     }
     mpd_command_list_begin(conn, 1);
     mpd_send_status(conn);
     mpd_send_current_song(conn);
     mpd_command_list_end(conn);
+
     status = mpd_recv_status(conn);
     if(status == NULL) {
-        printf("asd\n");
         fprintf(stderr, "status: %s\n", mpd_connection_get_error_message(conn));
-        if(conn)
-            mpd_connection_free(conn);
+        printf("%p %p\n", conn, status);
+        mpd_connection_free(conn);
         return -1;
     }
     return 0;
@@ -40,6 +42,8 @@ int _mpd_status_init() {
 int _mpd_status_audio_format_init() {
     struct mpd_audio_format const *format;
     format = mpd_status_get_audio_format(status);
+    if(!audio_format)
+        audio_format = malloc(sizeof(struct mpd_audio_format));
     if(!format) return -1;
     memcpy(audio_format, format, sizeof(struct mpd_audio_format));
     return 0;
@@ -47,8 +51,12 @@ int _mpd_status_audio_format_init() {
 
 /* do not call */
 int _mpd_status_song_init() {
+    mpd_response_next(conn);
     song = mpd_recv_song(conn);
-    if(!song) return -1;
+    if(!song) {
+        fprintf(stderr, "song: %s\n", mpd_connection_get_error_message(conn));
+        return -1;
+    }
     return 0;
 }
 
@@ -190,7 +198,6 @@ void status_mpd_song_channels(char *str) {
 
 /* current song uri */
 void status_mpd_song_uri(char *str) {
-    printf("moi");
     char const *val;
     val = mpd_song_get_uri(song);
     if(!val) return;
@@ -248,17 +255,21 @@ void status_mpd_song_date(char *str) {
 /* call a "normal" mpd function */
 void status_mpd_normal_wrap(char *str, void (*fp)(char *)) {
     if(_mpd_status_init()) return;
+    mpd_command_list_end(conn);
     str[0] = 0;
     fp(str);
     mpd_response_finish(conn);
+    mpd_status_free(status);
 }
 
 /* call an audio format related mpd function */
 void status_mpd_audio_format_wrap(char *str, void (*fp)(char *)) {
     if(_mpd_status_init() || _mpd_status_audio_format_init()) return;
+    mpd_command_list_end(conn);
     str[0] = 0;
     fp(str);
     mpd_response_finish(conn);
+    mpd_status_free(status);
 }
 
 /* call an song related mpd function */
@@ -267,5 +278,6 @@ void status_mpd_song_wrap(char *str, void (*fp)(char *)) {
     if(_mpd_status_init() || _mpd_status_song_init()) return;
     fp(str);
     mpd_response_finish(conn);
-    song = NULL;
+    mpd_song_free(song);
+    mpd_status_free(status);
 }

@@ -14,13 +14,13 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#define INCLUDE_MPD
-#ifdef INCLUDE_MPD
-#include "mpd.h"
-#endif
 
 #include "haapa.h"
 #include "config.h"
+
+#ifdef INCLUDE_MPD
+#include "mpd.h"
+#endif
 
 /* Status generation */
 
@@ -294,6 +294,7 @@ void tick(int fd, short event, void* arg) {
 	char result[SEGMENT_LENGTH];
 
 	buffer[0] = 0;
+	result[0] = 0;
 	OUTPUT
 
 	if(FORMAT==1) {
