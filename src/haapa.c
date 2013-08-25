@@ -39,6 +39,11 @@ void end_segment(char* color) {
 
 void string(Result* (*function)()) {
 	Result *res = function();
+	if(res->error) {
+		free(res);
+		strcat(buffer, "error");
+		return;
+	}
 	strcat(buffer, res->string);
 	free(res);
 }
@@ -48,8 +53,16 @@ void bar(Result *(*function)()) {
 	char bar[11];
 	char buffbar[13];
 	int i;
-	float value = (res->value / res->max)*10;
-	float tmp_val = round(value);
+	float value;
+	float tmp_val;
+	if(res->error) {
+		free(res);
+		strcat(buffer, "error");
+		return;
+	}
+
+	value = (res->value / res->max)*10;
+	tmp_val = round(value);
 
 	bar[0] = 0;
 
@@ -70,8 +83,14 @@ void percent(Result *(*function)()) {
 	Result *res = function();
 	char per[5];
 	per[0] = 0;
+	if(res->error) {
+		free(res);
+		strcat(buffer, "error");
+		return;
+	}
 	sprintf(per, "%i%%", (int)round((res->value/res->max)*100));
 	strcat(buffer, per);
+	free(res);
 }
 
 void t(char* str) {
@@ -112,7 +131,7 @@ int main(int argc, const char* argv[]) {
 	tv.tv_usec = 0;
 
 #if I3_ENABLED == 1
-		printf("{\"version\":1}\n[[{\"full_text\":\"hello!\"}],");
+		printf("{\"version\":1}\n[[{\"full_text\":\"Haapa says hello!\"}],");
 		fflush(stdout);
 #endif
 
