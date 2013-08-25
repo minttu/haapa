@@ -2,7 +2,8 @@
 #define CONFIG_H
 
 #define OUTPUT \
-s( t("\u21CB "); string(network_ip); ,"#5F9F74", true) \
+s( t("wlan0 down");, "#ff0000", network_interface_down) \
+s( t("\u21CB "); string(network_ip); ,"#5F9F74", network_interface_up) \
 s( t("\u2764 "); bar(proc_cpu); ,"#B94557", true) \
 s( t("\u2263 "); bar(proc_memory); ,"#B28D4C", true) \
 s( t("\u2607 "); string(battery_status); t(": "); bar(battery_capacity); ,"#9933CC", true) \
