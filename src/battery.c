@@ -23,6 +23,8 @@ Result* _battery_status() {
 
 	fscanf(f, "%s", res->string);
 
+	fclose(f);
+
 	return res;
 }
 

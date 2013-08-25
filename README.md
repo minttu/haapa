@@ -96,3 +96,11 @@ compiling:
 	mpd
 	> building
 	gcc -Wall -O2 --std=gnu99 -g -lm -levent haapa.c cpu.c battery.c -o haapa
+
+config file:
+
+	1) do we need one
+	2) what format
+
+	1) No, but it would be still usefull.
+	2) Must be different from other status scripts. json? yaml? custom?

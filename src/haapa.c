@@ -6,12 +6,11 @@
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <getopt.h>
 #include <sys/types.h>
 
 #include "haapa.h"
 #include "config.h"
-
 #include "result.h"
 #include "proc.h"
 #include "time.h"
@@ -19,6 +18,19 @@
 #include "network.h"
 
 char buffer[1024];
+
+static const char *optString = "hov?";
+
+struct arguments_t {
+	int once;
+} arguments;
+
+static const struct option longOpts[] = {
+	{ "once", no_argument, NULL, 'o' },
+	{ "version", no_argument, NULL, 'v' },
+	{ "help", no_argument, NULL, 'h' },
+	{ NULL, no_argument, NULL, 0 }
+};
 
 void start_segment() {
 #if I3_ENABLED == 1
@@ -121,14 +133,59 @@ void tick(int fd, short event, void* arg) {
 	printf("%s\n", buffer);
 	fflush( stdout );
 #endif
+
+	if(arguments.once) {
+		exit(0);
+	}
 }
 
-int main(int argc, const char* argv[]) {
+void display_usage() {
+	printf("usage: haapa [OPTION]\n");
+	printf("  -h, --help      display this help and exit\n");
+	printf("  -o, --once      runs output only once\n");
+	printf("  -v, --version   display version information and exit\n");
+	exit(0);
+}
+
+void display_version() {
+	printf("haapa git\n");
+	printf("Copyright (C) 2013 Haapa contributors\n");
+	printf("License MIT\n");
+	exit(0);
+}
+
+int main(int argc, char* const argv[]) {
 	struct event ev;
 	struct timeval tv;
+	int opt;
+	int longIndex = 0;
+
+	arguments.once = 0;
 
 	tv.tv_sec = INTERVAL;
 	tv.tv_usec = 0;
+
+	opt = getopt_long( argc, argv, optString, longOpts, &longIndex );
+	while( opt != -1 ) {
+		switch( opt ) {
+			case 'o':
+				arguments.once++;
+				break;
+				
+			case 'v':
+				display_version();
+				break;
+				
+			case 'h':   /* fall-through is intentional */
+			case '?':
+				display_usage();
+				break;
+				
+			default: break;
+		}
+		
+		opt = getopt_long( argc, argv, optString, longOpts, &longIndex );
+	}
 
 #if I3_ENABLED == 1
 		printf("{\"version\":1}\n[[{\"full_text\":\"Haapa says hello!\"}],");
