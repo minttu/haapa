@@ -22,12 +22,6 @@ configuration
 
 see config.h
 
-bugs
-----
-
-github detects proc.h, battery.h and time.h as c++
-
-
 daydreaming (ignore this)
 =========================
 
