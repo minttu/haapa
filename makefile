@@ -2,20 +2,24 @@ LIBS = -lm -levent
 CC = gcc
 CFLAGS = -Wall -O2 --std=gnu99 -g
 LIBS = -lm -levent
-FILES = haapa.c
+FILES =
 
 .PHONY: default all clean
 
-default: args haapa
+default: warn
 all: default
 
-haapa: $(FILES)
+haapa:
 	$(CC) $(CFLAGS) $(LIBS) $(FILES) -o haapa
 
 clean:
-	-rm -f *.o
 	-rm -f haapa
 
 args:
 	$(eval FILES += $(ADD_FILE))
 	$(eval LIBS += $(ADD_LIB))
+
+build_haapa: args haapa
+
+warn:
+	@echo "run ./build.sh instead"

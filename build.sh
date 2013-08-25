@@ -13,7 +13,7 @@ function require_event () {
 	VARS[$i]=false
 	OPTIONAL[$i]=false
 	NAME[$i]="Required | libevent"
-	FILES[$i]=""
+	FILES[$i]="src/haapa.c src/proc.c src/result.c src/time.c src/battery.c src/network.c"
 	LIBS[$i]=""
 	REQUIRE[$i]="/usr/include/event.h"
 	i=`expr $i + 1`
@@ -32,7 +32,7 @@ function require_mpd () {
 function check_deps () {
 	echo "> Checking for dependencies"
 	require_event
-	require_mpd
+	#require_mpd
 
 	while [ $x -le `expr $i - 1` ]
 	do
@@ -60,7 +60,7 @@ function compile () {
 	echo "> Compiling"
 
 	make clean
-	make
+	make build_haapa
 }
 
 init
