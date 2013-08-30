@@ -11,8 +11,8 @@ struct mpd_connection *conn;
 struct mpd_status *status;
 struct mpd_audio_format *format;
 mpd_response *response;
-/* do not call */
-int _mpd_status_update() {
+/* call from tick() */
+int _mpd_update() {
     int val;
     unsigned int const *val_arr;
     struct mpd_audio_format const *format;
@@ -69,17 +69,26 @@ int _mpd_status_update() {
     response->afbits = format->bits;
     response->afchan = format->channels;
 
+    mpd_response_next(conn);
     song = mpd_recv_song(conn);
-    response->uri = mpd_song_get_uri(song);
-    response->artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
-    response->album = mpd_song_get_tag(song, MPD_TAG_ALBUM, 0);
-    response->title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
-    response->track = mpd_song_get_tag(song, MPD_TAG_TRACK, 0);
-    response->name = mpd_song_get_tag(song, MPD_TAG_NAME, 0);
-    response->date = mpd_song_get_tag(song, MPD_TAG_DATE, 0);
-    response->max_arr[7] = response->ql;
-    response->max_arr[8] = response->slen;
-    response->max_arr[9] = response->slen;
+    if(!song) {
+        fprintf(stderr, "Failed to get song data: %s\n",
+                        mpd_connection_get_error_message(conn));
+    }
+    else {
+        response->uri = mpd_song_get_uri(song);
+        response->artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
+        response->album = mpd_song_get_tag(song, MPD_TAG_ALBUM, 0);
+        response->title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
+        response->track = mpd_song_get_tag(song, MPD_TAG_TRACK, 0);
+        response->name = mpd_song_get_tag(song, MPD_TAG_NAME, 0);
+        response->date = mpd_song_get_tag(song, MPD_TAG_DATE, 0);
+        response->max_arr[7] = response->ql;
+        response->max_arr[8] = response->slen;
+        response->max_arr[9] = response->slen;
+    }
+    mpd_response_finish(conn);
+    mpd_status_free(status);
     return 0;
 }
 
@@ -112,16 +121,17 @@ M(playing,0)
 M(vera,1)
 M(verb,2)
 M(verc,3)
-M(qv,4)
-M(ql,5)
-M(spos,6)
-M(sels,7)
-M(selms,8)
-M(slen,9)
-M(sbrate,10)
-M(afsr,11)
-M(afbits,12)
-M(afchan,13)
+M(repeat,4)
+M(qv,5)
+M(ql,6)
+M(spos,7)
+M(sels,8)
+M(selms,9)
+M(slen,10)
+M(sbrate,11)
+M(afsr,12)
+M(afbits,13)
+M(afchan,14)
 #undef M
 #define M(a,b) Result *mpd_ ##a() { \
     return _mpd_swrap(b);\
