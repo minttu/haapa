@@ -23,7 +23,7 @@ function require_mpd () {
 	VARS[$i]=false
 	OPTIONAL[$i]=true
 	NAME[$i]="Optional | libmpdclient"
-	FILES[$i]="mpd.c"
+	FILES[$i]="src/mpd.c"
 	LIBS[$i]="-lmpdclient"
 	REQUIRE[$i]="/usr/include/mpd/client.h"
 	i=`expr $i + 1`
@@ -32,7 +32,7 @@ function require_mpd () {
 function check_deps () {
 	echo "> Checking for dependencies"
 	require_event
-	#require_mpd
+	require_mpd
 
 	while [ $x -le `expr $i - 1` ]
 	do
@@ -41,8 +41,8 @@ function check_deps () {
 		fi
 		echo ${NAME[$x]}": "${VARS[$x]}
 		if [ ${VARS[$x]} = true ]; then
-			ADD_LIB=$FINALLIBS" "${LIBS[$x]}
-			ADD_FILE=$FINALFILES" "${FILES[$x]}
+			ADD_LIB=$ADD_LIB" "${LIBS[$x]}
+			ADD_FILE=$ADD_FILE" "${FILES[$x]}
 		else
 			if [ ${OPTIONAL[$x]} = false ]; then
 				echo "Error: Missing required library!"

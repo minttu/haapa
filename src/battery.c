@@ -10,6 +10,8 @@ Result* _battery_status() {
 	res = init_res();
 	FILE* f;
 	char file_location[128];
+	int val;
+
 	file_location[0] = 0;
 	strcat(file_location, BATTERY_LOCATION);
 	strcat(file_location, "status");
@@ -21,9 +23,13 @@ Result* _battery_status() {
 		return res;
 	}
 
-	fscanf(f, "%s", res->string);
-
+	val = fscanf(f, "%s", res->string);
 	fclose(f);
+
+	if(val == EOF) {
+		res->error=1;
+		return res;
+	}
 
 	return res;
 }
@@ -34,6 +40,7 @@ Result* _battery_capacity() {
 	FILE* f;
 	int capacity = 0;
 	char file_location[128];
+	int val;
 	file_location[0] = 0;
 	strcat(file_location, BATTERY_LOCATION);
 	strcat(file_location, "capacity");
@@ -45,11 +52,17 @@ Result* _battery_capacity() {
 		return res;
 	}
 
-	fscanf(f, "%i", &capacity);
+	val = fscanf(f, "%i", &capacity);
+	fclose(f);
+
+
+	if(val == EOF) {
+		res->error=1;
+		return res;
+	}
+
 	res->max=100;
 	res->value=(int)capacity;
-
-	fclose(f);
 
 	sprintf(res->string, "%i%%", capacity);
 
