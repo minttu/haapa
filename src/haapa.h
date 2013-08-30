@@ -6,6 +6,7 @@ void start_segment();
 void end_segment(char* color);
 void string(Result* (*function)());
 void bar(Result *(*function)());
+void timeconv(Result *(*function)());
 void t(char* str);
 
 int always_true();

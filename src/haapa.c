@@ -17,6 +17,10 @@
 #include "battery.h"
 #include "network.h"
 
+#ifdef INCLUDE_MPD
+#include "mpd.h"
+#endif
+
 char buffer[1024];
 
 static const char *optString = "hov?";
@@ -105,6 +109,32 @@ void percent(Result *(*function)()) {
 	free(res);
 }
 
+void timeconv(Result *(*function)()) {
+    Result *res = function();
+    char buf[128];
+    buf[0] = 0;
+    int w, d, h, m, s;
+    if(res->error) {
+        free(res);
+        strcat(buffer, "error");
+        return;
+    }
+    w = ((int)res->value/(60*60*24*7));
+    d = ((int)res->value/(60*60*24))%24;
+    h = ((int)res->value/(60*60))%60;
+    m = ((int)res->value/60)%60;
+    s = ((int)res->value)%60;
+    if(w)
+        snprintf(buf, sizeof(buf), "%d weeks %d days %02dh %02dm %02ds", w, d, h, m, s);
+    else if(d)
+        snprintf(buf, sizeof(buf), "%d days %02dh %02dm %02ds", d, h, m, s);
+    else if(h)
+        snprintf(buf, sizeof(buf), "%02d:%02d:%02d", h, m, s);
+    else
+        snprintf(buf, sizeof(buf), "%02d:%02d", m, s);
+    strcat(buffer, buf);
+}
+
 void t(char* str) {
 	strcat(buffer, str);
 }
@@ -117,6 +147,9 @@ int (*false)() = always_false;
 
 void tick(int fd, short event, void* arg) {
 
+#ifdef INCLUDE_MPD
+	_mpd_update();
+#endif
 	buffer[0] = 0;
 #if I3_ENABLED == 1
 	strcat(buffer, "[{\"full_text\":\" \"}\n");
