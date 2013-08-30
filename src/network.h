@@ -5,6 +5,7 @@
 
 Result* _network_ip();
 Result* (*network_ip)();
+Result *network_essid();
 
 int _network_interface_up();
 int (*network_interface_up)();
