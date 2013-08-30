@@ -1,62 +1,71 @@
 #ifndef __MPD_H_INCLUDED__
 #define __MPD_H_INCLUDED__
 
-int _mpd_status_init();
-int _mpd_status_audio_format_init();
-int _mpd_status_song_init();
+#include "result.h"
 
-/* normal functions */
-void status_mpd_version(char *str);
-void status_mpd_volume(char *str);
-void status_mpd_repeat(char *str);
-void status_mpd_queue_version(char *str);
-void status_mpd_queue_length(char *str);
-int status_mpd_is_playing();
-void status_mpd_song_position_int(char *str);
-void status_mpd_song_elapsed_second(char *str);
-void status_mpd_song_elapsed_ms(char *str);
-void status_mpd_song_length(char *str);
-void status_mpd_song_bit_rate(char *str);
+typedef struct mpd_response {
+    int err;
+    union {
+        struct {
+            int playing; /* -1 stopped, 1 paused, 0 playing */
 
-/* audio format functions */
-void status_mpd_song_sample_rate(char *str);
-void status_mpd_song_bits(char *str);
-void status_mpd_song_channels(char *str);
+            int vera, verb, verc; /* version numbers */
+            int repeat; /* 0 repeat off, 1 repeat on */
+            int qv; /* queue version */
+            int ql; /* queue length */
+            int spos; /* song position in playlist */
+            int sels; /* song position in seconds */
+            int selms; /* song position in ms */
+            int slen; /* song length */
+            int sbrate; /* song bit rate */
 
-/* song related functions */
-void status_mpd_song_uri(char *str);
-void status_mpd_song_artist(char *str);
-void status_mpd_song_album(char *str);
-void status_mpd_song_title(char *str);
-void status_mpd_song_track(char *str);
-void status_mpd_song_name(char *str);
-void status_mpd_song_date(char *str);
+            int afsr; /* song sample rate */
+            int afbits; /* song bit amount */
+            int afchan; /* song channel amount */
+        }
+        int int_arr[15]; /* 7: spos, 8: sels, 9: selms */
+    }
+    int max_arr[15];
+    union {
+        struct {
+            char *uri; /* song URI */
+            char *artist; /* song artist */
+            char *album; /* song album */
+            char *title; /* song title */
+            char *track; /* song track */
+            char *name; /* song name */
+            char *date; /* song date */
+        }
+        char *char_arr[7];
+    }
+} mpd_response;
 
-void status_mpd_normal_wrap(char *str, void (*fp)(char *));
-void status_mpd_audio_format_wrap(char *str, void (*fp)(char *));
-void status_mpd_song_wrap(char *str, void (*fp)(char *));
+int _mpd_update();
+Result *_mpd_wrap(int i);
+Result *_mpd_swrap(int i);
 
-#define MPD_VERS	status_mpd_normal_wrap(result, status_mpd_version); F
-#define MPD_VOL		status_mpd_normal_wrap(result, status_mpd_volume); F
-#define MPD_REP		status_mpd_normal_wrap(result, status_mpd_repeat); F
-#define MPD_QV		status_mpd_normal_wrap(result, status_mpd_queue_version); F
-#define MPD_QL		status_mpd_normal_wrap(result, status_mpd_queue_length); F
-#define MPD_SPL		status_mpd_normal_wrap(result, status_mpd_song_position_int); F
-#define MPD_SELSEC	status_mpd_normal_wrap(result, status_mpd_song_elapsed_second); F
-#define MPD_SELMS	status_mpd_normal_wrap(result, status_mpd_song_elapsed_ms); F
-#define MPD_SLEN	status_mpd_normal_wrap(result, status_mpd_song_length); F
-#define MPD_SBR		status_mpd_normal_wrap(result, status_mpd_song_bit_rate); F
-
-#define MPD_AFSR	status_mpd_audio_format_wrap(result, status_mpd_song_sample_rate); F
-#define MPD_AFBITS	status_mpd_audio_format_wrap(result, status_mpd_song_bits); F
-#define MPD_AFCHAN	status_mpd_audio_format_wrap(result, status_mpd_song_channels); F
-
-#define MPD_URI		status_mpd_song_wrap(result, status_mpd_song_uri); F
-#define MPD_ARTIST	status_mpd_song_wrap(result, status_mpd_song_artist); F
-#define MPD_ALBUM	status_mpd_song_wrap(result, status_mpd_song_album); F
-#define MPD_TITLE	status_mpd_song_wrap(result, status_mpd_song_title); F
-#define MPD_TRACK	status_mpd_song_wrap(result, status_mpd_song_track); F
-#define MPD_NAME	status_mpd_song_wrap(result, status_mpd_song_name); F
-#define MPD_DATE	status_mpd_song_wrap(result, status_mpd_song_date); F
-
-#endif /* __MPD_H_INCLUDED__ */
+/* use mpd_playing for example */
+#define M(a) Result *mpd_##a##();
+M(playing)
+M(vera)
+M(verb)
+M(verc)
+M(qv)
+M(ql)
+M(spos)
+M(sels)
+M(selms)
+M(slen)
+M(sbrate)
+M(afsr)
+M(afbits)
+M(afchan)
+M(uri)
+M(artist)
+M(album)
+M(title)
+M(track)
+M(name)
+M(date)
+#undef M
+#endif
