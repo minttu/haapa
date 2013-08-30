@@ -7,7 +7,6 @@
 #include <net/if.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include <iwlib.h>
 
 #include "config.h"
 #include "result.h"
