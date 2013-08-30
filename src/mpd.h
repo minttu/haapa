@@ -22,22 +22,22 @@ typedef struct mpd_response {
             int afsr; /* song sample rate */
             int afbits; /* song bit amount */
             int afchan; /* song channel amount */
-        }
+        };
         int int_arr[15]; /* 7: spos, 8: sels, 9: selms */
-    }
+    };
     int max_arr[15];
     union {
         struct {
-            char *uri; /* song URI */
-            char *artist; /* song artist */
-            char *album; /* song album */
-            char *title; /* song title */
-            char *track; /* song track */
-            char *name; /* song name */
-            char *date; /* song date */
-        }
+            char const *uri; /* song URI */
+            char const *artist; /* song artist */
+            char const *album; /* song album */
+            char const *title; /* song title */
+            char const *track; /* song track */
+            char const *name; /* song name */
+            char const *date; /* song date */
+        };
         char *char_arr[7];
-    }
+    };
 } mpd_response;
 
 int _mpd_update();
@@ -45,7 +45,7 @@ Result *_mpd_wrap(int i);
 Result *_mpd_swrap(int i);
 
 /* use mpd_playing for example */
-#define M(a) Result *mpd_##a##();
+#define M(a) Result *mpd_ ##a();
 M(playing)
 M(vera)
 M(verb)

@@ -49,8 +49,8 @@ int _mpd_status_update() {
             response->max_arr[val] = 1;
         }
     }
-    val[0] = mpd_status_get_state(status);
-    response->playing = val[0]==MPD_STATE_PLAY?0:val[0]==MPD_STATE_PAUSE?1:-1;
+    val = mpd_status_get_state(status);
+    response->playing = val==MPD_STATE_PLAY?0:val==MPD_STATE_PAUSE?1:-1;
     val_arr = mpd_connection_get_server_version(conn);
     response->vera = val_arr[0];
     response->verb = val_arr[1];
@@ -83,36 +83,6 @@ int _mpd_status_update() {
     return 0;
 }
 
-/* call a  mpd function */
-Result *_status_mpd_normal_wrap(void (*fp)(char *)) {
-    fp(res->string);
-}
-
-/* call an audio format related mpd function */
-Result *_status_mpd_audio_format_wrap(void (*fp)(char *)) {
-    if(_mpd_status_init() || _mpd_status_audio_format_init()) return;
-    mpd_command_list_end(conn);
-    Result *res;
-    res = init_res();
-    fp(res->string);
-    mpd_response_finish(conn);
-    mpd_status_free(status);
-    return res;
-}
-
-/* call an song related mpd function */
-Result *_status_mpd_song_wrap(void (*fp)(char *)) {
-    str[0] = 0;
-    if(_mpd_status_init() || _mpd_status_song_init()) return;
-    Result *res;
-    res = init_res();
-    fp(res->string);
-    mpd_response_finish(conn);
-    mpd_song_free(song);
-    mpd_status_free(status);
-    return res;
-}
-
 Result *_mpd_wrap(int i) {
     Result *res = init_res();
     if(response->err) {
@@ -131,9 +101,10 @@ Result *_mpd_swrap(int i) {
         return res;
     }
     strcat(res->string, response->char_arr[i]);
+    return res;
 }
 
-#define M(a,b) Result *mpd_##a##() { \
+#define M(a,b) Result *mpd_ ##a() { \
     return _mpd_wrap(b);\
 }
 
@@ -152,7 +123,7 @@ M(afsr,11)
 M(afbits,12)
 M(afchan,13)
 #undef M
-#define M(a,b) Result *mpd_##a##() { \
+#define M(a,b) Result *mpd_ ##a() { \
     return _mpd_swrap(b);\
 }
 M(uri,0)

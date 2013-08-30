@@ -17,6 +17,10 @@
 #include "battery.h"
 #include "network.h"
 
+#ifdef INCLUDE_MPD
+#include "mpd.h"
+#endif
+
 char buffer[1024];
 
 static const char *optString = "hov?";
