@@ -17,6 +17,9 @@
 #include "battery.h"
 #include "network.h"
 
+#ifdef INCLUDE_IWLIB
+#include "wireless.h"
+#endif
 #ifdef INCLUDE_MPD
 #include "mpd.h"
 #endif
@@ -139,11 +142,12 @@ void t(char* str) {
 	strcat(buffer, str);
 }
 
-int always_true() { return 1; }
-int (*true)() = always_true;
-
-int always_false() { return 0; }
-int (*false)() = always_false;
+#ifndef true
+int true() { return 1; }
+#endif
+#ifndef false
+int false() { return 0; }
+#endif
 
 void tick(int fd, short event, void* arg) {
 

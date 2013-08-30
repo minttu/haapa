@@ -6,7 +6,7 @@
 #include "config.h"
 #include "result.h"
 
-Result* _time_date() {
+Result* time_date() {
 	Result* res;
 	res = init_res();
 	time_t timer;
@@ -19,5 +19,3 @@ Result* _time_date() {
 
 	return res;
 }
-
-Result* (*time_date)() = _time_date;

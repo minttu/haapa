@@ -6,7 +6,7 @@
 #include "config.h"
 #include "result.h"
 
-Result* _proc_load() {
+Result* proc_load() {
 	FILE* f;
 	Result* res;
 	res = init_res();
@@ -35,7 +35,7 @@ Result* _proc_load() {
 	return res;
 }
 
-Result* _proc_memory() {
+Result* proc_memory() {
 	FILE* f;
 	Result* res;
 	res = init_res();
@@ -73,7 +73,7 @@ Result* _proc_memory() {
 float cpu_prev_total = 0;
 float cpu_prev_idle = 0;
 
-Result* _proc_cpu() {
+Result* proc_cpu() {
 	FILE* f;
 	Result* res;
 	res = init_res();
@@ -130,7 +130,7 @@ Result* _proc_cpu() {
 	return res;
 }
 
-Result* _proc_uptime() {
+Result* proc_uptime() {
 	FILE* f;
 	Result* res;
 	res = init_res();
@@ -169,8 +169,3 @@ Result* _proc_uptime() {
 
 	return res;
 }
-
-Result* (*proc_load)() = _proc_load;
-Result* (*proc_memory)() = _proc_memory;
-Result* (*proc_cpu)() = _proc_cpu;
-Result* (*proc_uptime)() = _proc_uptime;
