@@ -19,7 +19,6 @@ s( t("| "); string(time_date); ,"#FFFFFF", true) \
 #define PROC_LOAD_TIME 0
 #define TIME_FORMAT "%H:%M:%S"
 
-#define INCLUDE_MPD
 #define MPD_HOSTNAME NULL
 #define MPD_PORT 0
 #define MPD_TIMEOUT 30000

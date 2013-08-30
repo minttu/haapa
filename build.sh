@@ -6,6 +6,7 @@ function init () {
 	status=0
 	export ADD_FILE=""
 	export ADD_LIB=""
+	export ADD_CFLAG=""
 	return 0
 }
 
@@ -14,6 +15,7 @@ function require_event () {
 	OPTIONAL[$i]=false
 	NAME[$i]="Required | libevent"
 	FILES[$i]="src/haapa.c src/proc.c src/result.c src/time.c src/battery.c src/network.c"
+	CFLAGS[$i]=""
 	LIBS[$i]=""
 	REQUIRE[$i]="/usr/include/event.h"
 	i=`expr $i + 1`
@@ -24,6 +26,7 @@ function require_mpd () {
 	OPTIONAL[$i]=true
 	NAME[$i]="Optional | libmpdclient"
 	FILES[$i]="src/mpd.c"
+	CFLAGS[$i]="-DINCLUDE_MPD"
 	LIBS[$i]="-lmpdclient"
 	REQUIRE[$i]="/usr/include/mpd/client.h"
 	i=`expr $i + 1`
@@ -34,6 +37,7 @@ function require_iwlib () {
 	OPTIONAL[$i]=true
 	NAME[$i]="Optional | iwlib"
 	FILES[$i]="src/wireless.c"
+	CFLAGS[$i]="-DINCLUDE_IWLIB"
 	LIBS[$i]="-liw"
 	REQUIRE[$i]="/usr/include/iwlib.h"
 	i=`expr $i + 1`
@@ -54,6 +58,7 @@ function check_deps () {
 		if [ ${VARS[$x]} = true ]; then
 			ADD_LIB=$ADD_LIB" "${LIBS[$x]}
 			ADD_FILE=$ADD_FILE" "${FILES[$x]}
+			ADD_CFLAG=$ADD_CFLAG" "${CFLAGS[$x]}
 		else
 			if [ ${OPTIONAL[$x]} = false ]; then
 				echo "Error: Missing required library!"
