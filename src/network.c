@@ -12,7 +12,7 @@
 #include "result.h"
 #include "network.h"
 
-Result* _network_ip() {
+Result* network_ip() {
 	Result* res;
 	res = init_res();
 
@@ -34,7 +34,7 @@ Result* _network_ip() {
 	return res;
 }
 
-int _network_interface_up() {
+int network_interface_up() {
 	int fd;
 	struct ifreq ifr;
 
@@ -53,8 +53,4 @@ int _network_interface_up() {
     return !!(ifr.ifr_flags & IFF_UP);
 }
 
-int _network_interface_down() { return !(_network_interface_up()); }
-
-Result* (*network_ip)() = _network_ip;
-int (*network_interface_up)() = _network_interface_up;
-int (*network_interface_down)() = _network_interface_down;
+int network_interface_down() { return !(network_interface_up()); }

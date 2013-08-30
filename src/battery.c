@@ -5,7 +5,7 @@
 #include "config.h"
 #include "result.h"
 
-Result* _battery_status() {
+Result* battery_status() {
 	Result* res;
 	res = init_res();
 	FILE* f;
@@ -34,7 +34,7 @@ Result* _battery_status() {
 	return res;
 }
 
-Result* _battery_capacity() {
+Result* battery_capacity() {
 	Result* res;
 	res = init_res();
 	FILE* f;
@@ -68,6 +68,3 @@ Result* _battery_capacity() {
 
 	return res;
 }
-
-Result* (*battery_status)() = _battery_status;
-Result* (*battery_capacity)() = _battery_capacity;

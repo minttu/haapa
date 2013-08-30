@@ -9,11 +9,12 @@ void bar(Result *(*function)());
 void timeconv(Result *(*function)());
 void t(char* str);
 
-int always_true();
-int (*true)();
-
-int always_false();
-int (*false)();
+#ifndef true
+int true();
+#endif
+#ifndef false
+int false();
+#endif
 
 void tick(int fd, short event, void* arg);
 
