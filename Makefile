@@ -13,6 +13,7 @@ haapa:
 	$(CC) $(CFLAGS) $(LIBS) $(FILES) -o haapa
 
 clean:
+	-rm -f src/*.o
 	-rm -f haapa
 
 args:

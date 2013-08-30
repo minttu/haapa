@@ -11,6 +11,7 @@ Result* _proc_load() {
 	Result* res;
 	res = init_res();
 	float loads[3];
+	int val;
 
 	f = fopen("/proc/loadavg", "r");
 
@@ -19,9 +20,12 @@ Result* _proc_load() {
 		return res;
 	}
 
-	fscanf(f, "%f %f %f", &loads[0], &loads[1], &loads[2]);
-
+	val = fscanf(f, "%f %f %f", &loads[0], &loads[1], &loads[2]);
 	fclose(f);
+	if(val == EOF) {
+		res->error=1;
+		return res;
+	}
 
 #if PROC_LOAD_TIME != 3
 	sprintf(res->string, "%.2f", loads[PROC_LOAD_TIME]);
@@ -36,7 +40,7 @@ Result* _proc_memory() {
 	Result* res;
 	res = init_res();
 	char u[9][16];
-	int mem_total, mem_free, mem_buffers, mem_cached, mem_used;
+	int mem_total, mem_free, mem_buffers, mem_cached, mem_used, val;
 
 	f = fopen("/proc/meminfo", "r");
 
@@ -45,13 +49,17 @@ Result* _proc_memory() {
 		return res;
 	}
 
-	fscanf(f, "%s %i %s %s %i %s %s %i %s %s %i %s", 
+	val = fscanf(f, "%s %i %s %s %i %s %s %i %s %s %i %s", 
 		u[0], &mem_total, u[1],
 		u[2], &mem_free, u[3],
 		u[4], &mem_buffers, u[5],
 		u[6], &mem_cached, u[7]);
-
 	fclose(f);
+
+	if(val == EOF) {
+		res->error=1;
+		return res;
+	}
 
 	mem_used = mem_total - mem_free - mem_buffers - mem_cached;
 
@@ -72,6 +80,7 @@ Result* _proc_cpu() {
 	float total = 0;
 	float idle = 0;
 	int i;
+	int val;
 	float usage;
 	float diff_idle;
 	float diff_total;
@@ -87,10 +96,14 @@ Result* _proc_cpu() {
 		return res;
 	}
 
-	fscanf(f, "%s %i %i %i %i %i %i %i", 
+	val = fscanf(f, "%s %i %i %i %i %i %i %i", 
 		ident, &a[0], &a[1], &a[2], &a[3], &a[4], &a[5], &a[6]);
-
 	fclose(f);
+
+	if(val == EOF) {
+		res->error=1;
+		return res;
+	}
 
 	idle = a[3];
 
@@ -127,6 +140,8 @@ Result* _proc_uptime() {
 	int hours = 0;
 	int minutes = 0;
 	int seconds = 0;
+	int val;
+
 	f = fopen("/proc/uptime", "r");
 
 	if(f == NULL) {
@@ -134,9 +149,14 @@ Result* _proc_uptime() {
 		return res;
 	}
 
-	fscanf(f, "%f", &uptime);
-
+	val = fscanf(f, "%f", &uptime);
 	fclose(f);
+
+	if(val == EOF) {
+		res->error=1;
+		return res;
+	}
+
 
 	upint = (int) (uptime);
 
@@ -144,7 +164,7 @@ Result* _proc_uptime() {
 	hours = upint/3600 - days*24;
 	minutes = upint/60 - hours*60 - days*1440;
 	seconds = (upint)%60;
-	
+
 	sprintf(res->string, "%i days, %02i:%02i:%02i", days, hours, minutes, seconds);
 
 	return res;
