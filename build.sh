@@ -29,10 +29,21 @@ function require_mpd () {
 	i=`expr $i + 1`
 }
 
+function require_iwlib () {
+	VARS[$i]=false
+	OPTIONAL[$i]=true
+	NAME[$i]="Optional | iwlib"
+	FILES[$i]="src/wireless.c"
+	LIBS[$i]="-liw"
+	REQUIRE[$i]="/usr/include/iwlib.h"
+	i=`expr $i + 1`
+}
+
 function check_deps () {
 	echo "> Checking for dependencies"
 	require_event
 	require_mpd
+	require_iwlib
 
 	while [ $x -le `expr $i - 1` ]
 	do
