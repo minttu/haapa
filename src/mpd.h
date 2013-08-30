@@ -1,5 +1,5 @@
-#ifndef __MPD_H_INCLUDED__
-#define __MPD_H_INCLUDED__
+#ifndef HAAPA_MPD_H
+#define HAAPA_MPD_H
 
 #include "result.h"
 
