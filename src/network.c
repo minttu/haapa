@@ -12,8 +12,8 @@
 #include "result.h"
 #include "network.h"
 
-Result* network_ip(char* str) {
-	Result* res;
+Result *network_ip(char *str) {
+	Result *res;
 	res = init_res();
 
 	int fd;
@@ -34,7 +34,7 @@ Result* network_ip(char* str) {
 	return res;
 }
 
-int net_ifup(char* str) {
+int net_ifup(char *str) {
 	int fd;
 	struct ifreq ifr;
 
@@ -53,4 +53,4 @@ int net_ifup(char* str) {
 	return !!(ifr.ifr_flags & IFF_UP);
 }
 
-int net_ifdown(char* str) { return !(net_ifup(str)); }
+int net_ifdown(char *str) { return !(net_ifup(str)); }

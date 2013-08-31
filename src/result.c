@@ -2,8 +2,8 @@
 #include "result.h"
 #include <stdlib.h>
 
-Result* init_res() {
-	Result* res = malloc(sizeof(Result));
+Result *init_res() {
+	Result *res = malloc(sizeof(Result));
 	res->string[0] = 0;
 	res->value = 0.0f;
 	res->max = 0.0f;
