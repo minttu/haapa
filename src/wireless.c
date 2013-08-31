@@ -8,7 +8,7 @@
 #include <iwlib.h>
 
 /* todo: general _wireless_init() */
-Result *wireless_essid(char* str) {
+Result *wireless_essid(char *str) {
     struct iwreq *val;
     int sock;
     Result *res;

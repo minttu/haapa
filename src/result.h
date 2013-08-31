@@ -12,6 +12,6 @@ typedef struct {
   int error;
 } Result;
 
-Result* init_res();
+Result *init_res();
 
 #endif

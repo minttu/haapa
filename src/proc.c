@@ -6,9 +6,9 @@
 #include "config.h"
 #include "result.h"
 
-Result* proc_load(char* str) {
-	FILE* f;
-	Result* res;
+Result *proc_load(char *str) {
+	FILE *f;
+	Result *res;
 	res = init_res();
 	float loads[3];
 	int val;
@@ -36,9 +36,9 @@ Result* proc_load(char* str) {
 	return res;
 }
 
-Result* proc_memory() {
-	FILE* f;
-	Result* res;
+Result *proc_memory() {
+	FILE *f;
+	Result *res;
 	res = init_res();
 	char u[9][16];
 	int mem_total, mem_free, mem_buffers, mem_cached, mem_used, val;
@@ -74,9 +74,9 @@ Result* proc_memory() {
 float cpu_prev_total = 0;
 float cpu_prev_idle = 0;
 
-Result* proc_cpu() {
-	FILE* f;
-	Result* res;
+Result *proc_cpu() {
+	FILE *f;
+	Result *res;
 	res = init_res();
 	float total = 0;
 	float idle = 0;
@@ -131,9 +131,9 @@ Result* proc_cpu() {
 	return res;
 }
 
-Result* proc_uptime() {
-	FILE* f;
-	Result* res;
+Result *proc_uptime() {
+	FILE *f;
+	Result *res;
 	res = init_res();
 	float uptime = 0;
 	int upint = 0;

@@ -5,10 +5,10 @@
 #include "config.h"
 #include "result.h"
 
-Result* battery_status(char* str) {
-	Result* res;
+Result *battery_status(char *str) {
+	Result *res;
 	res = init_res();
-	FILE* f;
+	FILE *f;
 	char file_location[128];
 	int val;
 
@@ -36,10 +36,10 @@ Result* battery_status(char* str) {
 	return res;
 }
 
-Result* battery_capacity(char* str) {
-	Result* res;
+Result *battery_capacity(char *str) {
+	Result *res;
 	res = init_res();
-	FILE* f;
+	FILE *f;
 	int capacity = 0;
 	char file_location[128];
 	int val;

@@ -45,7 +45,7 @@ void start_segment() {
 		strcat(buffer, ",{\"full_text\": \"");
 }
 
-void end_segment(char* color) {
+void end_segment(char *color) {
 	if(output_format == FORMAT_I3){
 		char colorbuffer[64];
 		colorbuffer[0] = 0;
@@ -56,7 +56,7 @@ void end_segment(char* color) {
 	}
 }
 
-void string(Result* (*function)(char* str), char* str) {
+void string(Result *(*function)(char *str), char *str) {
 	Result *res = function(str);
 	if(res->error) {
 		free(res);
@@ -67,13 +67,13 @@ void string(Result* (*function)(char* str), char* str) {
 	free(res);
 }
 
-Result* text(char* str) {
+Result *text(char *str) {
 	Result *res = init_res();
 	strcpy(res->string, str);
 	return res;
 }
 
-void bar(Result* (*function)(char* str), char* str) {
+void bar(Result *(*function)(char *str), char *str) {
 	Result *res = function(str);
 	char bar[11];
 	char buffbar[13];
@@ -104,7 +104,7 @@ void bar(Result* (*function)(char* str), char* str) {
 	free(res);
 }
 
-void percent(Result* (*function)(char* str), char* str) {
+void percent(Result *(*function)(char *str), char *str) {
 	Result *res = function(str);
 	char per[5];
 	per[0] = 0;
@@ -118,7 +118,7 @@ void percent(Result* (*function)(char* str), char* str) {
 	free(res);
 }
 
-void timeconv(Result* (*function)(char* str), char* str) {
+void timeconv(Result *(*function)(char *str), char *str) {
     Result *res = function(str);
     char buf[128];
     buf[0] = 0;
@@ -144,15 +144,15 @@ void timeconv(Result* (*function)(char* str), char* str) {
     strcat(buffer, buf);
 }
 
-int always(char* str) {
+int always(char *str) {
 	return 1;
 }
 
-int never(char* str) {
+int never(char *str) {
 	return 0;
 }
 
-void tick(int fd, short event, void* arg) {
+void tick(int fd, short event, void *arg) {
 
 	int i;
 
@@ -207,7 +207,7 @@ void display_version() {
 	exit(0);
 }
 
-int main(int argc, char* const argv[]) {
+int main(int argc, char *const argv[]) {
 	struct event ev;
 	struct timeval tv;
 	int opt;
