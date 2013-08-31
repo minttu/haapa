@@ -1,33 +1,29 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <stdbool.h>
+#include "modules.h"
 
-#include "haapa.h"
-#include "config.h"
-#include "result.h"
-#include "proc.h"
-#include "time.h"
-#include "battery.h"
-#include "network.h"
+static const format_type output_format = FORMAT_PLAIN;  /* FORMAT_PLAIN or FORMAT_I3 */
+static const bool output_ontop = false;					/* is printed ontop of self */
+static const int interval = 1;							/* time in seconds between ticks */
+static const char *const batpath = "/sys/class/power_supply/";
+static const char *const segment_seperator = " ";
 
-#ifdef INCLUDE_IWLIB
-#include "wireless.h"
-#endif
-#ifdef INCLUDE_MPD
-#include "mpd.h"
-#endif
-#ifdef INCLUDE_ALSA
-#include "alsa.h"
-#endif
+static const char *const mpd_hostname = NULL;
+static const char *const mpd_pass = NULL;
+static const int  mpd_port = 0;
+static const int  mpd_timeout = 30000;
 
-static const format_type output_format = FORMAT_I3;     /* FORMAT_PLAIN or FORMAT_I3 */
-static const bool output_ontop = false;                 /* is printed ontop of self */
-static const int interval = 1;                          /* time in seconds between ticks */
-static const char batpath[] = "/sys/class/power_supply/";
-static const char segment_seperator[] = " ";
+static const char *const alsa_channel = "Master";
 
 static const Segment segments[] = {
+#ifdef INCLUDE_MPD
+    {string,    text,               "\u266A",   "#5F9F74", mpd_playing, ""},
+    {string,    mpd_uri,            "",         "#FFFFFF", mpd_playing, ""},
+    {string,    mpd_sels,           "",         "#FFFFFF", mpd_playing, ""},
+    {string,    text,               "/",        "#5F9F74", mpd_playing, ""},
+    {string,    mpd_slen,           "",         "#FFFFFF", mpd_playing, ""},
+#endif
 #ifdef INCLUDE_IWLIB
     {string,    text,               "\u21CB",   "#5F9F74", always,      ""},
     {string,    wireless_essid,     "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
@@ -43,17 +39,11 @@ static const Segment segments[] = {
     {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
 #ifdef INCLUDE_ALSA
     {string,    text,               "\u266B",   "#BBDD64", always,      ""},
-    {percent,   alsa_volume,        "Master",   "#BBDD64", alsa_nmuted, "Master"},
-    {string,    text,               "muted",    "#BBDD64", alsa_muted,  "Master"},
+    {percent,   alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
+    {string,    text,               "muted",    "#BBDD64", alsa_muted,  ""},
 #endif
     {string,    text,               "|",        "#FFFFFF", always,      ""},
     {string,    time_date,          "%T",       "#FFFFFF", always,      ""},
 };
-
-static const char mpd_hostname[] = "localhost";
-static const int  mpd_port = 0;
-static const int  mpd_timeout = 30000;
-static const bool mpd_use_password = false;
-static const char mpd_pass[] = "";
 
 #endif

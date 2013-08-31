@@ -1,13 +1,14 @@
+#include "config.h"
+#include "result.h"
+
+#ifdef INCLUDE_IWLIB
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <iwlib.h>
 
-#include "config.h"
-#include "result.h"
-#include "iwlib.h"
-
 /* todo: general _wireless_init() */
-Result *wireless_essid(char* str) {
+Result *wireless_essid(char *str) {
     struct iwreq *val;
     int sock;
     Result *res;
@@ -20,7 +21,7 @@ Result *wireless_essid(char* str) {
         res->error = -1;
         return res;
     }
-    val->u.essid.pointer = malloc(sizeof(char) * IW_ESSID_MAX_SIZE + 1);
+    val->u.essid.pointer = calloc(sizeof(char) * IW_ESSID_MAX_SIZE + 1, 1);
     val->u.essid.length = IW_ESSID_MAX_SIZE;
 
     if(ioctl(sock, SIOCGIWESSID, val) < 0) {
@@ -38,3 +39,10 @@ Result *wireless_essid(char* str) {
     return res;
 }
 
+#else
+Result *wireless_essid() {
+    Result *res = init_res();
+    res->error = -1;
+    return res;
+}
+#endif

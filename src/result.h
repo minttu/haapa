@@ -1,6 +1,8 @@
 #ifndef HAAPA_RETURN_H
 #define HAAPA_RETURN_H
 
+#include <time.h>
+
 typedef struct {
   char string[128];
   float value;
@@ -10,6 +12,6 @@ typedef struct {
   int error;
 } Result;
 
-Result* init_res();
+Result *init_res();
 
 #endif

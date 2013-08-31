@@ -3,10 +3,10 @@
 
 #include "result.h"
 
-Result* proc_load(char* str);
-Result* proc_memory();
-Result* proc_cpu();
-Result* proc_uptime();
+Result *proc_load(char *str);
+Result *proc_memory();
+Result *proc_cpu();
+Result *proc_uptime();
 
 #define proc_github_stop_detecting_cpp_please
 #define proc_github_stop_detecting_cpp_please2

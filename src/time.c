@@ -6,11 +6,11 @@
 #include "config.h"
 #include "result.h"
 
-Result* time_date(char* str) {
-	Result* res;
+Result *time_date(char *str) {
+	Result *res;
 	res = init_res();
 	time_t timer;
-	struct tm* tm_info;
+	struct tm *tm_info;
 
 	time(&timer);
 	tm_info = localtime(&timer);
