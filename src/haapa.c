@@ -24,6 +24,9 @@
 #ifdef INCLUDE_MPD
 #include "mpd.h"
 #endif
+#ifdef INCLUDE_ALSA
+#include "alsa.h"
+#endif
 
 char buffer[1024];
 

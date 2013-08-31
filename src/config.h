@@ -17,6 +17,9 @@
 #ifdef INCLUDE_MPD
 #include "mpd.h"
 #endif
+#ifdef INCLUDE_ALSA
+#include "alsa.h"
+#endif
 
 static const format_type output_format = FORMAT_I3;     /* FORMAT_PLAIN or FORMAT_I3 */
 static const bool output_ontop = false;                 /* is printed ontop of self */
@@ -38,8 +41,13 @@ static const Segment segments[] = {
     {string,    text,               "\u2607",   "#9933CC", bat_exists,  "BAT0"},
     {string,    battery_status,     "BAT0",     "#9933CC", bat_exists,  "BAT0"},
     {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
+#ifdef INCLUDE_ALSA
+    {string,    text,               "\u266B",   "#BBDD64", always,      ""},
+    {percent,   alsa_volume,        "Master",   "#BBDD64", alsa_nmuted, "Master"},
+    {string,    text,               "muted",    "#BBDD64", alsa_muted,  "Master"},
+#endif
     {string,    text,               "|",        "#FFFFFF", always,      ""},
-    {string,    time_date,          "%T",       "#FFFFFF", always,      ""}
+    {string,    time_date,          "%T",       "#FFFFFF", always,      ""},
 };
 
 static const char mpd_hostname[] = "localhost";

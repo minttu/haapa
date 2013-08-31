@@ -42,6 +42,7 @@ function check_deps () {
 	adddep false "libevent" "src/haapa.c src/proc.c src/result.c src/time.c src/battery.c src/network.c" "" "" "/usr/include/event.h"
 	adddep true "libmpdclient" "src/mpd.c" "-DINCLUDE_MPD" "-lmpdclient" "/usr/include/mpd/client.h"
 	adddep true "iwlib" "src/wireless.c" "-DINCLUDE_IWLIB" "-liw" "/usr/include/iwlib.h"
+	adddep true "alsa" "src/alsa.c" "-DINCLUDE_ALSA" "-lasound" "/usr/include/alsa/asoundlib.h"
 
 	echo "+-----------+---------------------+-----------+"
 	echo "| Needed    | Name                | Found     |"
