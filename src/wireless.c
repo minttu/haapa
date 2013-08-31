@@ -4,27 +4,29 @@
 
 #include "config.h"
 #include "result.h"
+#include "iwlib.h"
 
-Result *network_essid() {
-    Result *res;
+/* todo: general _wireless_init() */
+Result *wireless_essid() {
     struct iwreq *val;
     int sock;
+    Result *res;
 
     res = init_res();
     val = calloc(sizeof(struct iwreq), 1);
-    val->u.essid.pointer = malloc(sizeof(char) * IW_ESSID_MAX_SIZE + 1);
-    val->u.essid.length = IW_ESSID_MAX_SIZE;
-    ((char *)(val->u.essid.pointer))[0] = 0;
     strcat(val->ifr_name, NETWORK_INTERFACE);
     if((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
-        res->error = -1;
-        free(val->u.essid.pointer);
         free(val);
+        res->error = -1;
         return res;
     }
-    if(ioctl(sock, SIOCGIWESSID, val)<0) {
-        res->error = -1;
+    val->u.essid.pointer = malloc(sizeof(char) * IW_ESSID_MAX_SIZE + 1);
+    val->u.essid.length = IW_ESSID_MAX_SIZE;
+
+    if(ioctl(sock, SIOCGIWESSID, val) < 0) {
+        free(val->u.essid.pointer);
         free(val);
+        res->error = -1;
         return res;
     }
 
