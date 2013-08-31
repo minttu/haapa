@@ -208,19 +208,19 @@ int main(int argc, char* const argv[]) {
 			case 'o':
 				arguments.once++;
 				break;
-				
+
 			case 'v':
 				display_version();
 				break;
-				
-			case 'h':   /* fall-through is intentional */
+
+			case 'h':
 			case '?':
 				display_usage();
 				break;
-				
+
 			default: break;
 		}
-		
+
 		opt = getopt_long( argc, argv, optString, longOpts, &longIndex );
 	}
 

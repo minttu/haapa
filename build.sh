@@ -21,22 +21,54 @@ function adddep () {
 	i=`expr $i + 1`
 }
 
+function expto () {
+	string=$1
+	length=${#string}
+	untill=$2
+	echo -n $1
+	while [ $length -ne $untill ]
+	do
+		echo -n ' '
+		length=`expr $length + 1`
+	done
+}
+
 function check_deps () {
-	echo "> Checking for dependencies"
+	echo -e "> Checking for dependencies\n"
 
 	# dependency checking
 	# optional | name | .c files | cflags | libs | required files
 
-	adddep false "Required | libevent" "src/haapa.c src/proc.c src/result.c src/time.c src/battery.c src/network.c" "" "" "/usr/include/event.h"
-	adddep true "Optional | libmpdclient" "src/mpd.c" "-DINCLUDE_MPD" "-lmpdclient" "/usr/include/mpd/client.h"
-	adddep true "Optional | iwlib" "src/wireless.c" "-DINCLUDE_IWLIB" "-liw" "/usr/include/iwlib.h"
+	adddep false "libevent" "src/haapa.c src/proc.c src/result.c src/time.c src/battery.c src/network.c" "" "" "/usr/include/event.h"
+	adddep true "libmpdclient" "src/mpd.c" "-DINCLUDE_MPD" "-lmpdclient" "/usr/include/mpd/client.h"
+	adddep true "iwlib" "src/wireless.c" "-DINCLUDE_IWLIB" "-liw" "/usr/include/iwlib.h"
+
+	echo "+-----------+---------------------+-----------+"
+	echo "| Needed    | Name                | Found     |"
+	echo "+-----------+---------------------+-----------+"
 
 	while [ $x -le `expr $i - 1` ]
 	do
 		if [ -f ${REQUIRE[$x]} ]; then
 			VARS[$x]=true
 		fi
-		echo ${NAME[$x]}": "${VARS[$x]}
+
+		echo -n "| "
+		if [ ${OPTIONAL[$x]} = true ]; then
+			expto "no" 10
+		else
+			expto "yes" 10
+		fi
+		echo -n "| "
+		expto ${NAME[$x]} 20
+		echo -n "| "
+		if [ ${VARS[$x]} = true ]; then
+			expto "yes" 10
+		else
+			expto "no" 10
+		fi
+		echo -e "|"
+
 		if [ ${VARS[$x]} = true ]; then
 			ADD_LIB=$ADD_LIB" "${LIBS[$x]}
 			ADD_FILE=$ADD_FILE" "${FILES[$x]}
@@ -50,20 +82,37 @@ function check_deps () {
 		fi
 		x=`expr $x + 1`
 	done
+	echo "+-----------+---------------------+-----------+"
 	status=0
 	return 0
 }
 
 function compile () {
-	echo "> Compiling"
-
+	echo -e "\n> Cleaning\n"
 	make clean
+
+	echo -e "\n> Compiling\n"
 	make build_haapa
+}
+
+function test_run () {
+	echo -e "\n> Testing\n"
+
+	./haapa -o
+
+	if [ $? -eq 0 ]; then
+		echo -e "\nTesting successfull"
+	else
+		echo -e "\nTesting unsuccessfull"
+	fi
 }
 
 init
 check_deps
-if [ $status = 0 ]; then
+if [ $status -eq 0 ]; then
 	compile
+	if [ $? -eq 0 ]; then
+		test_run
+	fi
 fi
 
