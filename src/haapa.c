@@ -162,7 +162,9 @@ void tick(int fd, short event, void *arg) {
 #ifdef INCLUDE_MPD
 	_mpd_update();
 #endif
-
+#ifdef INCLUDE_ALSA
+    _alsa_update();
+#endif
 	buffer[0] = 0;
 
 	if(output_format == FORMAT_I3)
@@ -256,3 +258,4 @@ int main(int argc, char *const argv[]) {
 
 	return 0;
 }
+

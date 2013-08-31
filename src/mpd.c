@@ -98,6 +98,7 @@ int _mpd_update() {
     }
     mpd_response_finish(conn);
     mpd_status_free(status);
+    mpd_song_free(song);
     return 0;
 }
 
