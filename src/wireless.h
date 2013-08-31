@@ -6,6 +6,6 @@
 
 Result *wireless_essid();
 
-#define network_github_stop_detecting_cpp_please
+#define wireless_github_stop_detecting_cpp_please
 
 #endif
