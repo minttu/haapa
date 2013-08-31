@@ -7,14 +7,14 @@
 #include "iwlib.h"
 
 /* todo: general _wireless_init() */
-Result *wireless_essid() {
+Result *wireless_essid(char* str) {
     struct iwreq *val;
     int sock;
     Result *res;
 
     res = init_res();
     val = calloc(sizeof(struct iwreq), 1);
-    strcat(val->ifr_name, NETWORK_INTERFACE);
+    strcat(val->ifr_name, str);
     if((sock = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
         free(val);
         res->error = -1;

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <getopt.h>
 #include <sys/types.h>
+#include <stdbool.h>
 
 #include "haapa.h"
 #include "config.h"
@@ -40,24 +41,23 @@ static const struct option longOpts[] = {
 };
 
 void start_segment() {
-#if I3_ENABLED == 1
-	strcat(buffer, ",{\"full_text\": \"");
-#endif
+	if(output_format == FORMAT_I3)
+		strcat(buffer, ",{\"full_text\": \"");
 }
 
 void end_segment(char* color) {
-#if I3_ENABLED == 1
-	char colorbuffer[64];
-	colorbuffer[0] = 0;
-	sprintf(colorbuffer, "\", \"color\": \"%s\"}\n", color);
-	strcat(buffer, colorbuffer);
-#else
-	strcat(buffer, " ");
-#endif
+	if(output_format == FORMAT_I3){
+		char colorbuffer[64];
+		colorbuffer[0] = 0;
+		sprintf(colorbuffer, "\", \"color\": \"%s\"}\n", color);
+		strcat(buffer, colorbuffer);
+	}else{
+		strcat(buffer, " ");
+	}
 }
 
-void string(Result* (*function)()) {
-	Result *res = function();
+void string(Result* (*function)(char* str), char* str) {
+	Result *res = function(str);
 	if(res->error) {
 		free(res);
 		strcat(buffer, "error");
@@ -67,8 +67,14 @@ void string(Result* (*function)()) {
 	free(res);
 }
 
-void bar(Result *(*function)()) {
-	Result *res = function();
+Result* text(char* str) {
+	Result *res = init_res();
+	strcpy(res->string, str);
+	return res;
+}
+
+void bar(Result* (*function)(char* str), char* str) {
+	Result *res = function(str);
 	char bar[11];
 	char buffbar[13];
 	int i;
@@ -98,8 +104,8 @@ void bar(Result *(*function)()) {
 	free(res);
 }
 
-void percent(Result *(*function)()) {
-	Result *res = function();
+void percent(Result* (*function)(char* str), char* str) {
+	Result *res = function(str);
 	char per[5];
 	per[0] = 0;
 	if(res->error) {
@@ -112,8 +118,8 @@ void percent(Result *(*function)()) {
 	free(res);
 }
 
-void timeconv(Result *(*function)()) {
-    Result *res = function();
+void timeconv(Result* (*function)(char* str), char* str) {
+    Result *res = function(str);
     char buf[128];
     buf[0] = 0;
     int w, d, h, m, s;
@@ -138,38 +144,48 @@ void timeconv(Result *(*function)()) {
     strcat(buffer, buf);
 }
 
-void t(char* str) {
-	strcat(buffer, str);
+int always(char* str) {
+	return 1;
 }
 
-#ifndef true
-int true() { return 1; }
-#endif
-#ifndef false
-int false() { return 0; }
-#endif
+int never(char* str) {
+	return 0;
+}
 
 void tick(int fd, short event, void* arg) {
+
+	int i;
 
 #ifdef INCLUDE_MPD
 	_mpd_update();
 #endif
-	buffer[0] = 0;
-#if I3_ENABLED == 1
-	strcat(buffer, "[{\"full_text\":\" \"}\n");
-#endif
-	OUTPUT
-#if I3_ENABLED == 1
-	strcat(buffer, "],");
-#endif
 
-#if FORMAT == 1
-	printf("\r%s", buffer);
-	fflush( stdout );
-#else
-	printf("%s\n", buffer);
-	fflush( stdout );
-#endif
+	buffer[0] = 0;
+
+	if(output_format == FORMAT_I3)
+		strcat(buffer, "[{\"full_text\":\" \"}\n");
+
+	for(i = 0; i < sizeof(segments)/sizeof(segments[0]); i++) {
+		if(segments[i].condition_function(segments[i].condition_argument) == 1) {
+			if(output_format == FORMAT_I3)
+				start_segment();
+			segments[i].output_function(segments[i].function, segments[i].function_argument);
+			if(output_format == FORMAT_I3)
+				end_segment(segments[i].color);
+			strcat(buffer, segment_seperator);
+		}
+	}
+
+	if(output_format == FORMAT_I3)
+		strcat(buffer, "],");
+
+	if(output_ontop == true) {
+		printf("\r%s", buffer);
+		fflush( stdout );
+	}else {
+		printf("%s\n", buffer);
+		fflush( stdout );
+	}
 
 	if(arguments.once) {
 		exit(0);
@@ -199,7 +215,7 @@ int main(int argc, char* const argv[]) {
 
 	arguments.once = 0;
 
-	tv.tv_sec = INTERVAL;
+	tv.tv_sec = interval;
 	tv.tv_usec = 0;
 
 	opt = getopt_long( argc, argv, optString, longOpts, &longIndex );
@@ -224,10 +240,11 @@ int main(int argc, char* const argv[]) {
 		opt = getopt_long( argc, argv, optString, longOpts, &longIndex );
 	}
 
-#if I3_ENABLED == 1
+	if(output_format == FORMAT_I3) {
 		printf("{\"version\":1}\n[[{\"full_text\":\"Haapa says hello!\"}],");
 		fflush(stdout);
-#endif
+	}
+
 
 	event_init();
 	event_set(&ev, 0, EV_PERSIST, tick, NULL);

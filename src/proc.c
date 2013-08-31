@@ -6,12 +6,13 @@
 #include "config.h"
 #include "result.h"
 
-Result* proc_load() {
+Result* proc_load(char* str) {
 	FILE* f;
 	Result* res;
 	res = init_res();
 	float loads[3];
 	int val;
+	int loadtime = atoi(str);
 
 	f = fopen("/proc/loadavg", "r");
 
@@ -27,11 +28,11 @@ Result* proc_load() {
 		return res;
 	}
 
-#if PROC_LOAD_TIME != 3
-	sprintf(res->string, "%.2f", loads[PROC_LOAD_TIME]);
-#else
-	sprintf(res->string, "%.2f %.2f %.2f", loads[0], loads[1], loads[2]);
-#endif
+	if(loadtime != 3)
+		sprintf(res->string, "%.2f", loads[loadtime]);
+	else
+		sprintf(res->string, "%.2f %.2f %.2f", loads[0], loads[1], loads[2]);
+
 	return res;
 }
 

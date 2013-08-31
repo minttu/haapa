@@ -1,47 +1,49 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define OUTPUT \
-s( t("wlan0 down");, "#ff0000", network_interface_down) \
-s( t("\u21CB "); string(wireless_essid); t(" "); string(network_ip); ,"#5F9F74", network_interface_up) \
-s( t("\u2764 "); bar(proc_cpu); ,"#B94557", true) \
-s( t("\u2263 "); bar(proc_memory); ,"#B28D4C", true) \
-s( t("\u2607 "); string(battery_status); t(": "); bar(battery_capacity); ,"#9933CC", true) \
-s( t("| "); string(time_date); ,"#FFFFFF", true) \
+#include <stdbool.h>
 
-/*
+#include "haapa.h"
+#include "config.h"
+#include "result.h"
+#include "proc.h"
+#include "time.h"
+#include "battery.h"
+#include "network.h"
 
-static const int format = FORMAT_I3; // FORMAT_I3 or FORMAT_PLAIN
-static const int interval = 1 // in seconds
-static const char batterypath[] = "/sys/class/power_supply/"
+#ifdef INCLUDE_IWLIB
+#include "wireless.h"
+#endif
+#ifdef INCLUDE_MPD
+#include "mpd.h"
+#endif
+
+static const format_type output_format = FORMAT_I3;	    /* FORMAT_PLAIN or FORMAT_I3 */
+static const bool output_ontop = false;					/* is printed ontop of self */
+static const int interval = 1;							/* time in seconds between ticks */
+static const char batpath[] = "/sys/class/power_supply/";
+static const char segment_seperator[] = " ";
 
 static const Segment segments[] = {
-	{text,		{.s = "wlan0 down"}, 						"#ff0000", true, 					{}},
-	{text,  	{.s = "\u21CB"},							"#5F9F74", true, 					{}},
-	{string,	{.c = wireless_essid}, 						"#5F9F74", network_interface_up, 	{.s = "wlan0"},
-	{string,	{.c = network_ip, .a = {.s = "wlan0"}}, 	"#5F9F74", network_interface_up, 	{.s = "wlan0"},
-	{text,		{.s = "\u2764"}, 							"#B94557", true, 					{}},
-	{bar,		{.c = proc_cpu}, 							"#B94557", true, 					{}},
-	{text,  	{.s = "\u2263"}, 							"#B28D4C", true, 					{}},
-	{bar,		{.c = proc_memory}, 						"#B28D4C", true, 					{}},
-	{text,  	{.s = "\u2607"}, 							"#9933CC", true, 					{}},
-	{bar,		{.c = battery_capacity, .a = {.s = "BAT0"}},"#9933CC", true, 					{}},
-	{text,		{.s = "|"}, 								"#FFFFFF", true, 					{}},
-	{string,	{.c = time_date, .a = {.s = "%T"}}, 		"#FFFFFF", true, 					{}}
+	{string,	text, 				"\u21CB",	"#5F9F74", always, 		""},
+	{string,	wireless_essid,		"wlan0",	"#5F9F74", net_ifup,	"wlan0"},
+	{string,	network_ip,			"wlan0",	"#5F9F74", net_ifup,	"wlan0"},
+	{string,	text,				"down",		"#FF0000", net_ifdown,	"wlan0"},
+	{string,	text,				"\u2764", 	"#B94557", always,		""},
+	{bar,		proc_cpu,			"",			"#B94557", always,		""},
+	{string,	text,				"\u2263",	"#B28D4C", always,		""},
+	{bar,		proc_memory,		"",			"#B28D4C", always,		""},
+	{string,	text,				"\u2607",	"#9933CC", always,		""},
+	{string,	battery_status,		"BAT0",		"#9933CC", always,		""},
+	{bar,		battery_capacity,	"BAT0",		"#9933CC", always,		""},
+	{string,	text,				"|",		"#FFFFFF", always,		""},
+	{string,	time_date,			"%T",		"#FFFFFF", always,		""}
 };
-*/
 
-#define FORMAT 0					/* 0: \n 1: ontop */
-#define I3_ENABLED 0				/* is I3 format enabled */
-#define INTERVAL 1 					/* 1 - N */
-#define BATTERY_LOCATION "/sys/class/power_supply/BAT0/"
-#define NETWORK_INTERFACE "wlan0"
-#define PROC_LOAD_TIME 0
-#define TIME_FORMAT "%H:%M:%S"
-
-#define MPD_HOSTNAME NULL
-#define MPD_PORT 0
-#define MPD_TIMEOUT 30000
-#define MPD_PASS NULL
+static const char mpd_hostname[] = "localhost";
+static const int  mpd_port = 0;
+static const int  mpd_timeout = 30000;
+static const bool mpd_use_password = false;
+static const char mpd_pass[] = "";
 
 #endif

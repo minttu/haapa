@@ -3,11 +3,11 @@
 
 #include "result.h"
 
-Result* network_ip();
+Result* network_ip(char* str);
 
-int network_interface_up();
+int net_ifup(char* str);
 
-int network_interface_down();
+int net_ifdown(char* str);
 
 #define network_github_stop_detecting_cpp_please
 #define network_github_stop_detecting_cpp_please2

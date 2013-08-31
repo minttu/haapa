@@ -12,7 +12,7 @@
 #include "result.h"
 #include "network.h"
 
-Result* network_ip() {
+Result* network_ip(char* str) {
 	Result* res;
 	res = init_res();
 
@@ -23,7 +23,7 @@ Result* network_ip() {
 
 	ifr.ifr_addr.sa_family = AF_INET;
 
-	strncpy(ifr.ifr_name, NETWORK_INTERFACE, IFNAMSIZ-1);
+	strncpy(ifr.ifr_name, str, IFNAMSIZ-1);
 
 	ioctl(fd, SIOCGIFADDR, &ifr);
 
@@ -34,7 +34,7 @@ Result* network_ip() {
 	return res;
 }
 
-int network_interface_up() {
+int net_ifup(char* str) {
 	int fd;
 	struct ifreq ifr;
 
@@ -44,7 +44,7 @@ int network_interface_up() {
 
     memset(&ifr, 0, sizeof(ifr));
 
-    strncpy(ifr.ifr_name, NETWORK_INTERFACE, IFNAMSIZ-1);
+    strncpy(ifr.ifr_name, str, IFNAMSIZ-1);
 
     ioctl(fd, SIOCGIFFLAGS, &ifr);
 
@@ -53,4 +53,4 @@ int network_interface_up() {
     return !!(ifr.ifr_flags & IFF_UP);
 }
 
-int network_interface_down() { return !(network_interface_up()); }
+int net_ifdown(char* str) { return !(net_ifup(str)); }

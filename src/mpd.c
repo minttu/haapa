@@ -33,9 +33,9 @@ int _mpd_update() {
         return -1;
     }
     if(!conn)
-        conn = mpd_connection_new(MPD_HOSTNAME, MPD_PORT, MPD_TIMEOUT);
-    if(MPD_PASS) {
-        mpd_send_password(conn, MPD_PASS);
+        conn = mpd_connection_new(mpd_hostname, mpd_port, mpd_timeout);
+    if(mpd_use_password) {
+        mpd_send_password(conn, mpd_pass);
     }
     if(mpd_connection_get_error(conn) != MPD_ERROR_SUCCESS) {
         fprintf(stderr, "MPD connection: %s\n", mpd_connection_get_error_message(conn));

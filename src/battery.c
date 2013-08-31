@@ -5,7 +5,7 @@
 #include "config.h"
 #include "result.h"
 
-Result* battery_status() {
+Result* battery_status(char* str) {
 	Result* res;
 	res = init_res();
 	FILE* f;
@@ -13,7 +13,9 @@ Result* battery_status() {
 	int val;
 
 	file_location[0] = 0;
-	strcat(file_location, BATTERY_LOCATION);
+	strcat(file_location, batpath);
+	strcat(file_location, str);
+	strcat(file_location, "/");
 	strcat(file_location, "status");
 
 	f = fopen(file_location, "r");
@@ -34,7 +36,7 @@ Result* battery_status() {
 	return res;
 }
 
-Result* battery_capacity() {
+Result* battery_capacity(char* str) {
 	Result* res;
 	res = init_res();
 	FILE* f;
@@ -42,7 +44,9 @@ Result* battery_capacity() {
 	char file_location[128];
 	int val;
 	file_location[0] = 0;
-	strcat(file_location, BATTERY_LOCATION);
+	strcat(file_location, batpath);
+	strcat(file_location, str);
+	strcat(file_location, "/");
 	strcat(file_location, "capacity");
 
 	f = fopen(file_location, "r");
