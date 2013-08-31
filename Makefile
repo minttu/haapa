@@ -20,7 +20,6 @@ args:
 	$(eval FILES += $(ADD_FILE))
 	$(eval LIBS += $(ADD_LIB))
 	$(eval CFLAGS += $(ADD_CFLAG))
-	echo $(ADD_CFLAG)
 
 build_haapa: args haapa
 

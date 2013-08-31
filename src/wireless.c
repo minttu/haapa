@@ -26,11 +26,13 @@ Result *wireless_essid() {
     if(ioctl(sock, SIOCGIWESSID, val) < 0) {
         free(val->u.essid.pointer);
         free(val);
+        close(sock);
         res->error = -1;
         return res;
     }
 
     strcat(res->string, val->u.essid.pointer);
+    close(sock);
     free(val->u.essid.pointer);
     free(val);
     return res;

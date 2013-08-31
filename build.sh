@@ -10,44 +10,26 @@ function init () {
 	return 0
 }
 
-function require_event () {
+function adddep () {
 	VARS[$i]=false
-	OPTIONAL[$i]=false
-	NAME[$i]="Required | libevent"
-	FILES[$i]="src/haapa.c src/proc.c src/result.c src/time.c src/battery.c src/network.c"
-	CFLAGS[$i]=""
-	LIBS[$i]=""
-	REQUIRE[$i]="/usr/include/event.h"
-	i=`expr $i + 1`
-}
-
-function require_mpd () {
-	VARS[$i]=false
-	OPTIONAL[$i]=true
-	NAME[$i]="Optional | libmpdclient"
-	FILES[$i]="src/mpd.c"
-	CFLAGS[$i]="-DINCLUDE_MPD"
-	LIBS[$i]="-lmpdclient"
-	REQUIRE[$i]="/usr/include/mpd/client.h"
-	i=`expr $i + 1`
-}
-
-function require_iwlib () {
-	VARS[$i]=false
-	OPTIONAL[$i]=true
-	NAME[$i]="Optional | iwlib"
-	FILES[$i]="src/wireless.c"
-	CFLAGS[$i]="-DINCLUDE_IWLIB"
-	LIBS[$i]="-liw"
-	REQUIRE[$i]="/usr/include/iwlib.h"
+	OPTIONAL[$i]=$1
+	NAME[$i]=$2
+	FILES[$i]=$3
+	CFLAGS[$i]=$4
+	LIBS[$i]=$5
+	REQUIRE[$i]=$6
 	i=`expr $i + 1`
 }
 
 function check_deps () {
 	echo "> Checking for dependencies"
-	require_event
-	require_mpd
-	require_iwlib
+
+	# dependency checking
+	# optional | name | .c files | cflags | libs | required files
+
+	adddep false "Required | libevent" "src/haapa.c src/proc.c src/result.c src/time.c src/battery.c src/network.c" "" "" "/usr/include/event.h"
+	adddep true "Optional | libmpdclient" "src/mpd.c" "-DINCLUDE_MPD" "-lmpdclient" "/usr/include/mpd/client.h"
+	adddep true "Optional | iwlib" "src/wireless.c" "-DINCLUDE_IWLIB" "-liw" "/usr/include/iwlib.h"
 
 	while [ $x -le `expr $i - 1` ]
 	do
