@@ -15,21 +15,33 @@ static const int  mpd_port = 0;
 static const int  mpd_timeout = 30000;
 
 static const Segment segments[] = {
-	{string,	mpd_uri,			"",			"#FFFFFF", mpd_playing, ""},
-	{string,	mpd_artist,			"",			"#FFFFFF", mpd_playing, ""},
-	{string,	text, 				"\u21CB",	"#5F9F74", always, 		""},
-	{string,	wireless_essid,		"wlan0",	"#5F9F74", net_ifup,	"wlan0"},
-	{string,	network_ip,			"wlan0",	"#5F9F74", net_ifup,	"wlan0"},
-	{string,	text,				"down",		"#FF0000", net_ifdown,	"wlan0"},
-	{string,	text,				"\u2764", 	"#B94557", always,		""},
-	{bar,		proc_cpu,			"",			"#B94557", always,		""},
-	{string,	text,				"\u2263",	"#B28D4C", always,		""},
-	{bar,		proc_memory,		"",			"#B28D4C", always,		""},
-	{string,	text,				"\u2607",	"#9933CC", always,		""},
-	{string,	battery_status,		"BAT0",		"#9933CC", always,		""},
-	{bar,		battery_capacity,	"BAT0",		"#9933CC", always,		""},
-	{string,	text,				"|",		"#FFFFFF", always,		""},
-	{string,	time_date,			"%T",		"#FFFFFF", always,		""}
+#ifdef INCLUDE_MPD
+    {string,    text,               "\u266A",   "#5F9F74", mpd_playing, ""},
+    {string,    mpd_uri,            "",         "#FFFFFF", mpd_playing, ""},
+    {string,    mpd_sels,           "",         "#FFFFFF", mpd_playing, ""},
+    {string,    text,               "/",        "#5F9F74", mpd_playing, ""},
+    {string,    mpd_slen,           "",         "#FFFFFF", mpd_playing, ""},
+#endif
+#ifdef INCLUDE_IWLIB
+    {string,    text,               "\u21CB",   "#5F9F74", always,      ""},
+    {string,    wireless_essid,     "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
+    {string,    network_ip,         "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
+    {string,    text,               "down",     "#FF0000", net_ifdown,  "wlan0"},
+#endif
+    {string,    text,               "\u2764",   "#B94557", always,      ""},
+    {bar,       proc_cpu,           "",         "#B94557", always,      ""},
+    {string,    text,               "\u2263",   "#B28D4C", always,      ""},
+    {bar,       proc_memory,        "",         "#B28D4C", always,      ""},
+    {string,    text,               "\u2607",   "#9933CC", bat_exists,  "BAT0"},
+    {string,    battery_status,     "BAT0",     "#9933CC", bat_exists,  "BAT0"},
+    {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
+#ifdef INCLUDE_ALSA
+    {string,    text,               "\u266B",   "#BBDD64", always,      ""},
+    {percent,   alsa_volume,        "Master",   "#BBDD64", alsa_nmuted, "Master"},
+    {string,    text,               "muted",    "#BBDD64", alsa_muted,  "Master"},
+#endif
+    {string,    text,               "|",        "#FFFFFF", always,      ""},
+    {string,    time_date,          "%T",       "#FFFFFF", always,      ""},
 };
 
 #endif

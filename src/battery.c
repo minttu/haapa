@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
 #include "battery.h"
 #include "config.h"
 #include "result.h"
@@ -71,4 +75,17 @@ Result *battery_capacity(char *str) {
 	sprintf(res->string, "%i%%", capacity);
 
 	return res;
+}
+
+int bat_exists(char *str) {
+	char file_location[128];
+	struct stat s;
+	file_location[0] = 0;
+	strcat(file_location, batpath);
+	strcat(file_location, str);
+	strcat(file_location, "/");
+
+	stat(file_location, &s);
+
+	return S_ISDIR(s.st_mode);
 }

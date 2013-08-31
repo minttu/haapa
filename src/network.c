@@ -38,19 +38,19 @@ int net_ifup(char *str) {
 	int fd;
 	struct ifreq ifr;
 
-    fd = socket(AF_INET, SOCK_DGRAM, 0);
+	fd = socket(AF_INET, SOCK_DGRAM, 0);
 
-    ifr.ifr_addr.sa_family = AF_INET;
+	ifr.ifr_addr.sa_family = AF_INET;
 
-    memset(&ifr, 0, sizeof(ifr));
+	memset(&ifr, 0, sizeof(ifr));
 
-    strncpy(ifr.ifr_name, str, IFNAMSIZ-1);
+	strncpy(ifr.ifr_name, str, IFNAMSIZ-1);
 
-    ioctl(fd, SIOCGIFFLAGS, &ifr);
+	ioctl(fd, SIOCGIFFLAGS, &ifr);
 
-    close(fd);
+	close(fd);
 
-    return !!(ifr.ifr_flags & IFF_UP);
+	return !!(ifr.ifr_flags & IFF_UP);
 }
 
 int net_ifdown(char *str) { return !(net_ifup(str)); }
