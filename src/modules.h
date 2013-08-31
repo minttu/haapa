@@ -1,0 +1,10 @@
+#include <stdbool.h>
+#include "result.h"
+#include "time.h"
+#include "haapa.h"
+#include "proc.h"
+#include "battery.h"
+#include "network.h"
+#include "wireless.h"
+#include "mpd.h"
+#include "config.h"
