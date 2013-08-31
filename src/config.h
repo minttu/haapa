@@ -30,6 +30,7 @@ static const Segment segments[] = {
     {string,    network_ip,         "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
     {string,    text,               "down",     "#FF0000", net_ifdown,  "wlan0"},
 #endif
+    {string,    exec,               "echo mui", "#FFFFFF", always,      ""},
     {string,    text,               "\u2764",   "#B94557", always,      ""},
     {bar,       proc_cpu,           "",         "#B94557", always,      ""},
     {string,    text,               "\u2263",   "#B28D4C", always,      ""},
