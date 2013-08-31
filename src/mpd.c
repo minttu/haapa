@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -12,20 +13,12 @@ struct mpd_status *status;
 struct mpd_audio_format *format;
 mpd_response *response;
 
-void _mpd_free() {
-    if(conn)
-        mpd_connection_free(conn);
-    if(status)
-        mpd_status_free(status);
-    conn = NULL;
-    status = NULL;
-}
 /* call from tick() */
 int _mpd_update() {
     int val;
     unsigned int const *val_arr;
     struct mpd_audio_format const *format;
-    struct mpd_song const *song;
+    struct mpd_song *song;
     if(!response)
         response = calloc(sizeof(mpd_response), 1);
     /* TODO: reconnect to MPD if no connection */
@@ -34,7 +27,7 @@ int _mpd_update() {
     }
     if(!conn)
         conn = mpd_connection_new(mpd_hostname, mpd_port, mpd_timeout);
-    if(mpd_use_password) {
+    if(mpd_pass) {
         mpd_send_password(conn, mpd_pass);
     }
     if(mpd_connection_get_error(conn) != MPD_ERROR_SUCCESS) {
@@ -137,11 +130,17 @@ Result *_mpd_swrap(int i) {
     return res;
 }
 
+int mpd_playing() {
+    if(!response)
+        return 0;
+    if(response->err)
+        return 0;
+    return !response->playing;
+}
 #define M(a,b) Result *mpd_ ##a() { \
     return _mpd_wrap(b);\
 }
 
-M(playing,0)
 M(vera,1)
 M(verb,2)
 M(verc,3)

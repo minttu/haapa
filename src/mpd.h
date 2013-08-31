@@ -41,12 +41,12 @@ typedef struct mpd_response {
 } mpd_response;
 
 int _mpd_update();
+int mpd_playing();
 Result *_mpd_wrap(int i);
 Result *_mpd_swrap(int i);
 
-/* use mpd_playing for example */
+/* use mpd_vera for example */
 #define M(a) Result *mpd_ ##a();
-M(playing)
 M(vera)
 M(verb)
 M(verc)
