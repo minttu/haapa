@@ -35,9 +35,9 @@ static const Segment segments[] = {
     {bar,       proc_cpu,           "",         "#B94557", always,      ""},
     {string,    text,               "\u2263",   "#B28D4C", always,      ""},
     {bar,       proc_memory,        "",         "#B28D4C", always,      ""},
-    {string,    text,               "\u2607",   "#9933CC", always,      ""},
-    {string,    battery_status,     "BAT0",     "#9933CC", always,      ""},
-    {bar,       battery_capacity,   "BAT0",     "#9933CC", always,      ""},
+    {string,    text,               "\u2607",   "#9933CC", bat_exists,  "BAT0"},
+    {string,    battery_status,     "BAT0",     "#9933CC", bat_exists,  "BAT0"},
+    {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
     {string,    text,               "|",        "#FFFFFF", always,      ""},
     {string,    time_date,          "%T",       "#FFFFFF", always,      ""}
 };
