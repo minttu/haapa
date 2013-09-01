@@ -20,9 +20,9 @@ static const Segment segments[] = {
 #ifdef INCLUDE_MPD
     {string,    text,               "\u266A",   "#5F9F74", mpd_playing, ""},
     {string,    mpd_uri,            "",         "#FFFFFF", mpd_playing, ""},
-    {string,    mpd_sels,           "",         "#FFFFFF", mpd_playing, ""},
+    {timeconv,  mpd_sels,           "",         "#FFFFFF", mpd_playing, ""},
     {string,    text,               "/",        "#5F9F74", mpd_playing, ""},
-    {string,    mpd_slen,           "",         "#FFFFFF", mpd_playing, ""},
+    {timeconv,  mpd_slen,           "",         "#FFFFFF", mpd_playing, ""},
 #endif
 #ifdef INCLUDE_IWLIB
     {string,    text,               "\u21CB",   "#5F9F74", always,      ""},
@@ -30,7 +30,6 @@ static const Segment segments[] = {
     {string,    network_ip,         "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
     {string,    text,               "down",     "#FF0000", net_ifdown,  "wlan0"},
 #endif
-    {string,    exec,               "echo mui", "#FFFFFF", always,      ""},
     {string,    text,               "\u2764",   "#B94557", always,      ""},
     {bar,       proc_cpu,           "",         "#B94557", always,      ""},
     {string,    text,               "\u2263",   "#B28D4C", always,      ""},

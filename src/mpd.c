@@ -11,6 +11,7 @@
 struct mpd_connection *conn;
 struct mpd_status *status;
 struct mpd_audio_format *format;
+struct mpd_song *song = NULL;
 mpd_response *response;
 
 /* call from tick() */
@@ -18,7 +19,6 @@ int _mpd_update() {
     int val;
     unsigned int const *val_arr;
     struct mpd_audio_format const *format;
-    struct mpd_song *song;
     if(!response)
         response = calloc(sizeof(mpd_response), 1);
     /* TODO: reconnect to MPD if no connection */
@@ -78,6 +78,8 @@ int _mpd_update() {
     response->afchan = format->channels;
 
     mpd_response_next(conn);
+    if(song)
+        mpd_song_free(song);
     song = mpd_recv_song(conn);
     if(!song) {
         fprintf(stderr, "Failed to get song data: %s\n",
@@ -98,7 +100,6 @@ int _mpd_update() {
     }
     mpd_response_finish(conn);
     mpd_status_free(status);
-    mpd_song_free(song);
     return 0;
 }
 
