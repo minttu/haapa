@@ -129,6 +129,7 @@ void timeconv(Result *(*function)(char *str), char *str) {
     else
         snprintf(buf, sizeof(buf), "%02d:%02d", m, s);
     strcat(buffer, buf);
+    free(res);
 }
 
 int always(char *str) {

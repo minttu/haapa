@@ -24,6 +24,23 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | exec              | command   | Executes the command and returns the output               |          | Yes     |
 | wireless_essid    | interface | Returns the networks ESSID for the interface              | iwlib    | Yes     |
 | alsa_volume       | channel   | Returns the volume of the channel                         | alsa     | No      |
+| mpd_vera          |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_verb          |           | Returns mpd's middle version number                       | mpd      | Yes     |
+| mpd_verc          |           | Returns mpd's minor version number                        | mpd      | Yes     |
+| mpd_qv            |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_ql            |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_spos          |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_sels          |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_selms         |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_sbrat         |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_afsr          |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_afchan        |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_afsr          |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_uri           |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_artist        |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_album         |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_afsr          |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_afsr          |           | Returns mpd's major version number                        | mpd      | Yes     |
 
 **Conditions**
 --------------
@@ -34,7 +51,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | net_ifdown        | interface | Returns 1 if interface is down                            |          | Yes     |
 | bat_exists        | battery   | Returns 1 if battery exists                               |          | Yes     |
 | alsa_muted        | channel   | Returns 1 if channel is muted                             | alsa     | No      |
-| alsa_nmuted       | channel   | Returns 1 if channel is not muted                         | alsa     | No      |
+| mpd_playing       |           | Returns 1 if mpd is playing                               | mpd      | Yes     |
 
 **Global options**
 ------------------
