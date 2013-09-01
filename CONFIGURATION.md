@@ -21,6 +21,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | battery_status    | battery   | Returns the status for the battery                        |          | Yes     |
 | battery_capacity  | battery   | Returns the current capacity for the battery              |          | Yes     |
 | network_ip        | interface | Returns the IP for the interface                          |          | Yes     |
+| exec              | command   | Executes the command and returns the output               |          | Yes     |
 | wireless_essid    | interface | Returns the networks ESSID for the interface              | iwlib    | Yes     |
 | alsa_volume       | channel   | Returns the volume of the channel                         | alsa     | No      |
 
