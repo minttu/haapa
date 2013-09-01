@@ -5,6 +5,7 @@
 #include "proc.h"
 #include "battery.h"
 #include "network.h"
+#include "exec.h"
 #ifdef INCLUDE_MPD
 #include "mpd.h"
 #endif

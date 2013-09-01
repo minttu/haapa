@@ -32,7 +32,6 @@ int _alsa_update() {
 	    snd_mixer_selem_id_set_name(sid, mix_name);
 
 	    snd_mixer_open(&handle, 0);
-        snd_config_update_free_global();
     	snd_mixer_attach(handle, card);
     	snd_mixer_selem_register(handle, NULL, NULL);
 	    snd_mixer_load(handle);
