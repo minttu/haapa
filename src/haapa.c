@@ -10,23 +10,7 @@
 #include <sys/types.h>
 #include <stdbool.h>
 
-#include "haapa.h"
-#include "config.h"
-#include "result.h"
-#include "proc.h"
-#include "time.h"
-#include "battery.h"
-#include "network.h"
-
-#ifdef INCLUDE_IWLIB
-#include "wireless.h"
-#endif
-#ifdef INCLUDE_MPD
-#include "mpd.h"
-#endif
-#ifdef INCLUDE_ALSA
-#include "alsa.h"
-#endif
+#include "modules.h"
 
 char buffer[1024];
 
