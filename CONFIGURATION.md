@@ -24,23 +24,26 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | exec              | command   | Executes the command and returns the output               |          | Yes     |
 | wireless_essid    | interface | Returns the networks ESSID for the interface              | iwlib    | Yes     |
 | alsa_volume       | channel   | Returns the volume of the channel                         | alsa     | No      |
-| mpd_vera          |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_verb          |           | Returns mpd's middle version number                       | mpd      | Yes     |
-| mpd_verc          |           | Returns mpd's minor version number                        | mpd      | Yes     |
-| mpd_qv            |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_ql            |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_spos          |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_sels          |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_selms         |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_sbrat         |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_afsr          |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_afchan        |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_afsr          |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_uri           |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_artist        |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_album         |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_afsr          |           | Returns mpd's major version number                        | mpd      | Yes     |
-| mpd_afsr          |           | Returns mpd's major version number                        | mpd      | Yes     |
+| mpd_vera          |           | Returns MPD's major version number                        | mpd      | Yes     |
+| mpd_verb          |           | Returns MPD's middle version number                       | mpd      | Yes     |
+| mpd_verc          |           | Returns MPD's minor version number                        | mpd      | Yes     |
+| mpd_qv            |           | Returns MPD's queue version                               | mpd      | Yes     |
+| mpd_ql            |           | Returns MPD's queue (playlist) length                     | mpd      | Yes     |
+| mpd_spos          |           | Returns MPD's currently playing song's position in queue  | mpd      | Yes     |
+| mpd_sels          |           | Returns MPD's currently playing song's elapsed seconds    | mpd      | Yes     |
+| mpd_selms         |           | Returns MPD's currently playing song's elased milliseconds| mpd      | Yes     |
+| mpd_sbrat         |           | Returns MPD's currently playing song's bit rate           | mpd      | Yes     |
+| mpd_afsr          |           | Returns MPD's currently playing song's sample rate        | mpd      | Yes     |
+| mpd_afbits        |           | Returns MPD's currently playing song's bit amount         | mpd      | Yes     |
+| mpd_afchan        |           | Returns MPD's currently playing song's channel amount     | mpd      | Yes     |
+| mpd_ur            |           | Returns MPD's currently playing song's uri (file name)    | mpd      | Yes     |
+| mpd_artist        |           | Returns MPD's currently playing song's artist             | mpd      | Yes     |
+| mpd_album         |           | Returns MPD's currently playing song's album              | mpd      | Yes     |
+| mpd_title         |           | Returns MPD's currently playing song's title              | mpd      | Yes     |
+| mpd_track         |           | Returns MPD's currently playing song's track number       | mpd      | Yes     |
+| mpd_name          |           | Returns MPD's currently playing song's name               | mpd      | Yes     |
+| mpd_date          |           | Returns MPD's currently playing song's name               | mpd      | Yes     |
+| mpd_smart         | separator | MPD's current song as artist - name if possible, else uri | mpd      | No      |
 
 **Conditions**
 --------------

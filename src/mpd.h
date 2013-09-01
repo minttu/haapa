@@ -44,6 +44,7 @@ int _mpd_update();
 int mpd_playing();
 Result *_mpd_wrap(int i);
 Result *_mpd_swrap(int i);
+Result *mpd_smart(char *sep);
 
 /* use mpd_vera for example */
 #define M(a) Result *mpd_ ##a();

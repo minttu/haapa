@@ -139,6 +139,24 @@ int mpd_playing() {
         return 0;
     return !response->playing;
 }
+
+Result *mpd_smart(char *sep) {
+    Result *res = init_res();
+    if(!response) {
+        res->error = -1;
+        return res;
+    }
+    if(response->err) {
+        res->error = response->err;
+        return res;
+    }
+    if(response->artist && response->title && strlen(response->artist) && strlen(response->title))
+        snprintf(res->string, sizeof(res->string), "%s%s%s", response->artist, sep, response->title);
+    else
+        sprintf(res->string, "%s", response->uri);
+    return res;
+}
+
 #define M(a,b) Result *mpd_ ##a() { \
     return _mpd_wrap(b);\
 }

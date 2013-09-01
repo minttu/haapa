@@ -41,6 +41,8 @@ int _alsa_update() {
     snd_mixer_selem_get_playback_volume(elem, 0, &(response->volume));
     snd_mixer_selem_get_playback_switch(elem, 0, &(response->unmuted));
 
+    snd_mixer_close(handle);
+    sid = 0;
 
 	response->volume -= response->minvol;
 	response->maxvol -= response->minvol;

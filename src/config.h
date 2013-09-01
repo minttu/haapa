@@ -19,7 +19,7 @@ static const char *const alsa_channel = "Master";
 static const Segment segments[] = {
 #ifdef INCLUDE_MPD
     {string,    text,               "\u266A",   "#5F9F74", mpd_playing, ""},
-    {string,    mpd_uri,            "",         "#FFFFFF", mpd_playing, ""},
+    {string,    mpd_smart,          " - ",      "#FFFFFF", mpd_playing, ""},
     {timeconv,  mpd_sels,           "",         "#FFFFFF", mpd_playing, ""},
     {string,    text,               "/",        "#5F9F74", mpd_playing, ""},
     {timeconv,  mpd_slen,           "",         "#FFFFFF", mpd_playing, ""},
