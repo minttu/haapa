@@ -12,6 +12,11 @@
 
 #include "modules.h"
 
+static const char *bar_unicode[2][8] = {{"\u2581", "\u2582", "\u2583", "\u2584",
+										"\u2585", "\u2586", "\u2587", "\u2588"},
+								      {	"\u258F", "\u258E", "\u258D", "\u258C",
+								  		"\u258B", "\u258A", "\u2589", "\u2588"}};
+
 char buffer[1024];
 
 static const char *optString = "hov?";
@@ -62,8 +67,8 @@ Result *text(char *str) {
 
 void bar(Result *(*function)(char *str), char *str) {
 	Result *res = function(str);
-	char bar[11];
-	char buffbar[13];
+	char bar[32];
+	char buffbar[38];
 	int i;
 	float value;
 	float tmp_val;
@@ -72,21 +77,33 @@ void bar(Result *(*function)(char *str), char *str) {
 		strcat(buffer, "error");
 		return;
 	}
-
-	value = (res->value / res->max)*10;
+	if(bar_format_unicode==0)
+		value = (res->value / res->max)*10;
+	else
+		value = (res->value / res->max)*80;
 	tmp_val = round(value);
 
 	bar[0] = 0;
 
 	for(i = 0; i < 10; i++) {
-		if(i < tmp_val) {
-			strcat(bar, "#");
+		if(bar_format_unicode==0) {
+			if(i < tmp_val)
+				strcat(bar, "#");
+			else
+				strcat(bar, "_");
 		}else{
-			strcat(bar, "_");
+			if(i*8 < tmp_val) {
+				if(tmp_val-i*8>0 && tmp_val-i*8<9)
+					strcat(bar, bar_unicode[bar_format_unicode-1][((int)tmp_val-i*8)-1]);
+				else
+					strcat(bar, bar_unicode[bar_format_unicode-1][7]);
+			}else{
+				strcat(bar, " ");
+			}
 		}
 	}
 
-	sprintf(buffbar, "[%s]", bar);
+	sprintf(buffbar, bar_format, bar);
 	strcat(buffer, buffbar);
 	free(res);
 }

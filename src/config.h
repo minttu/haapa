@@ -9,6 +9,9 @@ static const int interval = 1;							/* time in seconds between ticks */
 static const char *const batpath = "/sys/class/power_supply/";
 static const char *const segment_seperator = " ";
 
+static const int  bar_format_unicode = 1; /* 0: no unicode, 1: vertical, 2: horizontal */
+static const char *const bar_format = "\u2502%s\u2502";
+
 static const char *const mpd_hostname = NULL;
 static const char *const mpd_pass = NULL;
 static const int  mpd_port = 0;
