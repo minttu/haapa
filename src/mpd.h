@@ -40,6 +40,7 @@ typedef struct mpd_response {
     };
 } mpd_response;
 
+void _mpd_reset();
 int _mpd_update();
 int mpd_playing();
 Result *_mpd_wrap(int i);

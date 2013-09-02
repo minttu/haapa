@@ -13,8 +13,13 @@ struct mpd_status *status;
 struct mpd_audio_format *format;
 struct mpd_song *song = NULL;
 mpd_response *response;
+static int mpd_updated;
 
 /* call from tick() */
+void _mpd_reset() {
+    mpd_updated = 0;
+}
+
 int _mpd_update() {
     int val;
     unsigned int const *val_arr;
@@ -105,6 +110,8 @@ int _mpd_update() {
 
 Result *_mpd_wrap(int i) {
     Result *res = init_res();
+    if(!mpd_updated)
+        _mpd_update();
     if(!response) {
         res->error = -1;
         return res;
@@ -120,6 +127,8 @@ Result *_mpd_wrap(int i) {
 }
 Result *_mpd_swrap(int i) {
     Result *res = init_res();
+    if(!mpd_updated)
+        _mpd_update();
     if(!response) {
         res->error = -1;
         return res;
@@ -142,6 +151,8 @@ int mpd_playing() {
 
 Result *mpd_smart(char *sep) {
     Result *res = init_res();
+    if(!mpd_updated)
+        _mpd_update();
     if(!response) {
         res->error = -1;
         return res;

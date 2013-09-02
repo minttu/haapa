@@ -17,6 +17,7 @@ typedef struct alsa_response {
     long max_arr[4];
 } alsa_response;
 
+void _alsa_reset();
 int _alsa_update();
 Result *alsa_volume(char *str);
 int alsa_muted(char *str);

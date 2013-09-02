@@ -12,9 +12,14 @@
 alsa_response *response;
 int mix_index = 0, i;
 char *card = "default";
+static int alsa_updated = 0;
 snd_mixer_t *handle;
 snd_mixer_elem_t *elem;
 snd_mixer_selem_id_t *sid = NULL;
+
+void _alsa_reset() {
+    alsa_updated = 0;
+}
 
 int _alsa_update() {
     int i;
@@ -25,18 +30,17 @@ int _alsa_update() {
         for(i = 0; i < 4; i++)
             response->max_arr[i] = 1;
     }
-    if(!sid) {
-    	snd_mixer_selem_id_alloca(&sid);
 
-    	snd_mixer_selem_id_set_index(sid, mix_index);
-	    snd_mixer_selem_id_set_name(sid, mix_name);
+  	snd_mixer_selem_id_alloca(&sid);
+   	snd_mixer_selem_id_set_index(sid, mix_index);
+    snd_mixer_selem_id_set_name(sid, mix_name);
 
-	    snd_mixer_open(&handle, 0);
-    	snd_mixer_attach(handle, card);
-    	snd_mixer_selem_register(handle, NULL, NULL);
-	    snd_mixer_load(handle);
-	    elem = snd_mixer_find_selem(handle, sid);
-    }
+    snd_mixer_open(&handle, 0);
+   	snd_mixer_attach(handle, card);
+   	snd_mixer_selem_register(handle, NULL, NULL);
+    snd_mixer_load(handle);
+    elem = snd_mixer_find_selem(handle, sid);
+
     snd_mixer_selem_get_playback_volume_range (elem, &(response->minvol), &(response->maxvol));
     snd_mixer_selem_get_playback_volume(elem, 0, &(response->volume));
     snd_mixer_selem_get_playback_switch(elem, 0, &(response->unmuted));
@@ -56,7 +60,11 @@ int _alsa_update() {
 }
 
 int alsa_muted(char *str) {
-    return !response->unmuted;
+    if(!alsa_updated)
+        _alsa_update();
+    if(response)
+        return !response->unmuted;
+    return 1;
 }
 
 int alsa_nmuted(char *str) {
@@ -65,6 +73,8 @@ int alsa_nmuted(char *str) {
 
 Result *_alsa_wrap(int i) {
     Result *res = init_res();
+    if(!alsa_updated)
+        _alsa_update();
     res->value = response->int_arr[i];
     res->max = response->max_arr[i];
     sprintf(res->string, "%ld", response->int_arr[i]);

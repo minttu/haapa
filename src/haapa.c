@@ -145,10 +145,10 @@ void tick(int fd, short event, void *arg) {
 	int i;
 
 #ifdef INCLUDE_MPD
-	_mpd_update();
+    _mpd_reset();
 #endif
 #ifdef INCLUDE_ALSA
-    _alsa_update();
+    _alsa_reset();
 #endif
 	buffer[0] = 0;
 
@@ -234,6 +234,13 @@ int main(int argc, char *const argv[]) {
 		printf("{\"version\":1}\n[[{\"full_text\":\"Haapa says hello!\"}],");
 		fflush(stdout);
 	}
+
+#ifdef INCLUDE_MPD
+    _mpd_update();
+#endif
+#ifdef INCLUDE_ALSA
+    _alsa_update();
+#endif
 
 
 	event_init();
