@@ -3,13 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <mpd/client.h>
+#include <signal.h>
 
 #include "mpd.h"
 #include "result.h"
 #include "config.h"
 
 struct mpd_connection *conn;
-struct mpd_status *status;
+struct mpd_status *status = NULL;
 struct mpd_audio_format *format;
 struct mpd_song *song = NULL;
 mpd_response *response;
@@ -20,27 +21,33 @@ void _mpd_reset() {
     mpd_updated = 0;
 }
 
+static void pipe_handle(int signal) {
+    if(response)
+        response->err = -1;
+}
+
 int _mpd_update() {
     int val;
     unsigned int const *val_arr;
     struct mpd_audio_format const *format;
     if(!response)
         response = calloc(sizeof(mpd_response), 1);
-    /* TODO: reconnect to MPD if no connection */
-    if(response->err) {
+    if(signal(SIGPIPE, pipe_handle) == SIG_ERR) {
+        response->err = -1;
         return -1;
     }
-    if(!conn)
+    /* TODO: reconnect to MPD if no connection */
+    if(!conn || response->err)
         conn = mpd_connection_new(mpd_hostname, mpd_port, mpd_timeout);
     if(mpd_pass) {
         mpd_send_password(conn, mpd_pass);
     }
     if(mpd_connection_get_error(conn) != MPD_ERROR_SUCCESS) {
-        fprintf(stderr, "MPD connection: %s\n", mpd_connection_get_error_message(conn));
         mpd_connection_free(conn);
         response->err = -1;
         return -1;
     }
+    response->err = 0;
     mpd_command_list_begin(conn, 1);
     mpd_send_status(conn);
     mpd_send_current_song(conn);
@@ -48,13 +55,11 @@ int _mpd_update() {
 
     status = mpd_recv_status(conn);
     if(status == NULL) {
-        fprintf(stderr, "MPD update failed!: %s\n", mpd_connection_get_error_message(conn));
         mpd_connection_free(conn);
         response->err = -1;
         return -1;
     }
     if(!response) {
-        fprintf(stderr, "MPD update failed!: %s\n", mpd_connection_get_error_message(conn));
         mpd_connection_free(conn);
         response->err = -1;
         return -1;
@@ -87,8 +92,6 @@ int _mpd_update() {
         mpd_song_free(song);
     song = mpd_recv_song(conn);
     if(!song) {
-        fprintf(stderr, "Failed to get song data: %s\n",
-                        mpd_connection_get_error_message(conn));
         response->err = -1;
     }
     else {
@@ -103,6 +106,7 @@ int _mpd_update() {
         response->max_arr[8] = response->slen;
         response->max_arr[9] = response->slen;
     }
+    mpd_updated = 1;
     mpd_response_finish(conn);
     mpd_status_free(status);
     return 0;
@@ -142,6 +146,8 @@ Result *_mpd_swrap(int i) {
 }
 
 int mpd_playing() {
+    if(!mpd_updated)
+        _mpd_update();
     if(!response)
         return 0;
     if(response->err)

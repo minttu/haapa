@@ -55,6 +55,7 @@ int _alsa_update() {
     response->max_arr[0] = response->maxvol;
     response->max_arr[1] = response->maxvol;
     response->max_arr[2] = response->maxvol;
+    alsa_updated = 1;
 
     return 0;
 }
