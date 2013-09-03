@@ -45,7 +45,7 @@ static const Segment segments[] = {
     {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
 #ifdef INCLUDE_ALSA
     {string,    text,               "\u266B",   "#BBDD64", always,      ""},
-    {bar,   alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
+    {percent,   alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
     {string,    text,               "muted",    "#BBDD64", alsa_muted,  ""},
 #endif
     {string,    text,               "|",        "#FFFFFF", always,      ""},

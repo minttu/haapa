@@ -170,3 +170,38 @@ Result *proc_uptime() {
 
 	return res;
 }
+
+Result *proc_cpu_mhz() {
+	FILE *f;
+	Result *res;
+	char* match;
+	char buffer[1024];
+	float mhz;
+	res = init_res();
+
+	f = fopen("/proc/cpuinfo", "r");
+
+	if(f == NULL) {
+		res->error=1;
+		return res;
+	}
+
+	fread(buffer, 1, sizeof (buffer), f);
+
+	fclose(f);
+
+	match = strstr(buffer, "cpu MHz");
+
+	if(match == NULL) {
+		res->error=1;
+		return res;
+	}
+
+	sscanf (match, "cpu MHz  :  %f", &mhz);
+
+	res->value = mhz;
+
+	sprintf(res->string, "%i MHz", (int)mhz);
+
+	return res;
+}
