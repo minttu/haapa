@@ -59,10 +59,12 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 **Global options**
 ------------------
 
-| Name              | Arguments | Effect                                                    | Requires | Working |
-| ----------------- | --------- | --------------------------------------------------------- | -------- | ------- |
-| output_format     | FORMAT_*  | FORMAT_PLAIN: plain output. FORMAT_I3: i3bar formatted    |          | Yes     |
-| output_ontop      | boolean   | Should haapa print ontop of itself, erasing the previous  |          | Yes     |
-| interval          | integer   | How often should haapa update, in seconds                 |          | Yes     |
-| batpath           | path      | Path to where the systems batteries reside                |          | Yes     |
-| segment_seperator | string    | What string will seperate each segment in FORMAT_PLAIN    |          | Yes     |
+| Name               | Arguments | Effect                                                    | Requires | Working |
+| ------------------ | --------- | --------------------------------------------------------- | -------- | ------- |
+| output_format      | FORMAT_*  | FORMAT_PLAIN: plain output. FORMAT_I3: i3bar formatted    |          | Yes     |
+| output_ontop       | boolean   | Should haapa print ontop of itself, erasing the previous  |          | Yes     |
+| interval           | integer   | How often should haapa update, in seconds                 |          | Yes     |
+| batpath            | path      | Path to where the systems batteries reside                |          | Yes     |
+| segment_seperator  | string    | What string will seperate each segment in FORMAT_PLAIN    |          | Yes     |
+| bar_format_unicode | integer   | How is the bar drawn. 0: no unicode, 1: vert 2: hori      |          | Yes     |
+| bar_format         | string    | Whats aside the bar                                       |          | Yes     |
