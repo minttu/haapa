@@ -61,7 +61,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 
 | Name               | Arguments | Effect                                                    | Requires | Working |
 | ------------------ | --------- | --------------------------------------------------------- | -------- | ------- |
-| output_format      | FORMAT_*  | FORMAT_PLAIN: plain output. FORMAT_I3: i3bar formatted    |          | Yes     |
+| formatter          | format_*  | Possible values: plain, i3, dzen, xmobar                  |          | Yes     |
 | output_ontop       | boolean   | Should haapa print ontop of itself, erasing the previous  |          | Yes     |
 | interval           | integer   | How often should haapa update, in seconds                 |          | Yes     |
 | batpath            | path      | Path to where the systems batteries reside                |          | Yes     |

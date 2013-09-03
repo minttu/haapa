@@ -2,8 +2,9 @@
 #define CONFIG_H
 
 #include "modules.h"
+#include "format.h"
 
-static const format_type output_format = FORMAT_PLAIN;  /* FORMAT_PLAIN or FORMAT_I3 */
+static Format *(* const formatter)() = format_plain;
 static const bool output_ontop = false;					/* is printed ontop of self */
 static const int interval = 1;							/* time in seconds between ticks */
 static const char *const batpath = "/sys/class/power_supply/";
@@ -43,7 +44,7 @@ static const Segment segments[] = {
     {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
 #ifdef INCLUDE_ALSA
     {string,    text,               "\u266B",   "#BBDD64", always,      ""},
-    {percent,   alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
+    {bar,   alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
     {string,    text,               "muted",    "#BBDD64", alsa_muted,  ""},
 #endif
     {string,    text,               "|",        "#FFFFFF", always,      ""},
