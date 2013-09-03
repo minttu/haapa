@@ -136,11 +136,6 @@ Result *proc_uptime() {
 	Result *res;
 	res = init_res();
 	float uptime = 0;
-	int upint = 0;
-	int days = 0;
-	int hours = 0;
-	int minutes = 0;
-	int seconds = 0;
 	int val;
 
 	f = fopen("/proc/uptime", "r");
@@ -158,15 +153,7 @@ Result *proc_uptime() {
 		return res;
 	}
 
-
-	upint = (int) (uptime);
-
-	days = upint/86400;
-	hours = upint/3600 - days*24;
-	minutes = upint/60 - hours*60 - days*1440;
-	seconds = (upint)%60;
-
-	sprintf(res->string, "%i days, %02i:%02i:%02i", days, hours, minutes, seconds);
+	res->value = uptime;
 
 	return res;
 }
