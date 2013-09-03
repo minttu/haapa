@@ -83,10 +83,13 @@ int _mpd_update() {
     response->sbrate = mpd_status_get_kbit_rate(status);
 
     format = mpd_status_get_audio_format(status);
-    response->afsr = format->sample_rate;
-    response->afbits = format->bits;
-    response->afchan = format->channels;
-
+    if(!format)
+        response->err = -1;
+    else {
+        response->afsr = format->sample_rate;
+        response->afbits = format->bits;
+        response->afchan = format->channels;
+    }
     mpd_response_next(conn);
     if(song)
         mpd_song_free(song);
@@ -153,6 +156,15 @@ int mpd_playing() {
     if(response->err)
         return 0;
     return !response->playing;
+}
+int mpd_exists() {
+    if(!mpd_updated)
+        _mpd_update();
+    if(!response)
+        return 0;
+    if(response->err)
+        return 0;
+    return (response->playing!=MPD_STATE_PAUSE&&response->playing!=MPD_STATE_PLAY);
 }
 
 Result *mpd_smart(char *sep) {

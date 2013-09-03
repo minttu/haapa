@@ -6,6 +6,7 @@
 static const format_type output_format = FORMAT_PLAIN;  /* FORMAT_PLAIN or FORMAT_I3 */
 static const bool output_ontop = false;					/* is printed ontop of self */
 static const int interval = 1;							/* time in seconds between ticks */
+static const bool use_xstorename = true;                      /* Uses xsetroot for output */
 static const char *const batpath = "/sys/class/power_supply/";
 static const char *const segment_seperator = " ";
 
@@ -18,11 +19,11 @@ static const char *const alsa_channel = "Master";
 
 static const Segment segments[] = {
 #ifdef INCLUDE_MPD
-    {string,    text,               "\u266A",   "#5F9F74", mpd_playing, ""},
-    {string,    mpd_smart,          " - ",      "#FFFFFF", mpd_playing, ""},
-    {timeconv,  mpd_sels,           "",         "#FFFFFF", mpd_playing, ""},
-    {string,    text,               "/",        "#5F9F74", mpd_playing, ""},
-    {timeconv,  mpd_slen,           "",         "#FFFFFF", mpd_playing, ""},
+    {string,    text,               "\u266A",   "#5F9F74", mpd_exists, ""},
+    {string,    mpd_smart,          " - ",      "#FFFFFF", mpd_exists, ""},
+    {timeconv,  mpd_sels,           "",         "#FFFFFF", mpd_exists, ""},
+    {string,    text,               "/",        "#5F9F74", mpd_exists, ""},
+    {timeconv,  mpd_slen,           "",         "#FFFFFF", mpd_exists, ""},
 #endif
 #ifdef INCLUDE_IWLIB
     {string,    text,               "\u21CB",   "#5F9F74", always,      ""},

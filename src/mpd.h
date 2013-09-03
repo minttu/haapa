@@ -43,6 +43,7 @@ typedef struct mpd_response {
 void _mpd_reset();
 int _mpd_update();
 int mpd_playing();
+int mpd_exists();
 Result *_mpd_wrap(int i);
 Result *_mpd_swrap(int i);
 Result *mpd_smart(char *sep);

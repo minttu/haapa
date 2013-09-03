@@ -9,10 +9,12 @@
 #include <getopt.h>
 #include <sys/types.h>
 #include <stdbool.h>
+#include <X11/Xlib.h>
 
 #include "modules.h"
 
 char buffer[1024];
+static Display *dpy;
 
 static const char *optString = "hov?";
 
@@ -169,7 +171,11 @@ void tick(int fd, short event, void *arg) {
 	if(output_format == FORMAT_I3)
 		strcat(buffer, "],");
 
-	if(output_ontop == true) {
+    if(use_xstorename == true) {
+        XStoreName(dpy, DefaultRootWindow(dpy), buffer);
+        XSync(dpy, false);
+    }
+	else if(output_ontop == true) {
 		printf("\r%s", buffer);
 		fflush( stdout );
 	}else {
@@ -241,7 +247,11 @@ int main(int argc, char *const argv[]) {
 #ifdef INCLUDE_ALSA
     _alsa_update();
 #endif
-
+    if(use_xstorename)
+        if((dpy = XOpenDisplay(NULL))==NULL) {
+            fprintf(stderr, "Could not open X display for XStoreName\n");
+            return 1;
+        }
 
 	event_init();
 	event_set(&ev, 0, EV_PERSIST, tick, NULL);
