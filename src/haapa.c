@@ -11,7 +11,8 @@
 #include <stdbool.h>
 
 #include "modules.h"
-#include "format.h"
+
+#include "output.h"
 
 static const char *bar_unicode[2][8] ={{"\u2581", "\u2582", "\u2583", "\u2584",
 										"\u2585", "\u2586", "\u2587", "\u2588"},
@@ -171,13 +172,7 @@ void tick(int fd, short event, void *arg) {
 	if(f->end != NULL)
 		strcat(output, f->end);
 
-	if(output_ontop == true) {
-		printf("\r%s", output);
-		fflush( stdout );
-	}else {
-		printf("%s\n", output);
-		fflush( stdout );
-	}
+	outputter(output);
 
 	if(arguments.once) {
 		exit(0);
@@ -236,8 +231,7 @@ int main(int argc, char *const argv[]) {
 	output = malloc(sizeof(char)*1024);
 
 	if(f->init != NULL) {
-		printf(f->init);
-		fflush(stdout);
+		outputter(f->init);
 	}
 
 #ifdef INCLUDE_MPD
