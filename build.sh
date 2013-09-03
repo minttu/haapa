@@ -43,6 +43,7 @@ function check_deps () {
 	adddep true "libmpdclient" "src/mpd.c" "-DINCLUDE_MPD" "-lmpdclient" "/usr/include/mpd/client.h"
 	adddep true "iwlib" "src/wireless.c" "-DINCLUDE_IWLIB" "-liw" "/usr/include/iwlib.h"
 	adddep true "alsa" "src/alsa.c" "-DINCLUDE_ALSA" "-lasound" "/usr/include/alsa/asoundlib.h"
+	adddep true "Xlib" "src/output_x.c" "-DINCLUDE_XLIB" "-lX11" "/usr/include/X11/Xlib.h"
 
 	echo "+-----------+---------------------+-----------+"
 	echo "| Needed    | Name                | Found     |"

@@ -62,7 +62,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | Name               | Arguments | Effect                                                    | Requires | Working |
 | ------------------ | --------- | --------------------------------------------------------- | -------- | ------- |
 | formatter          | format_*  | Possible values: plain, i3, dzen, xmobar                  |          | Yes     |
-| outputter          | output_*  | Possible values: plain, ontop                             |          | Yes     |
+| outputter          | output_*  | Possible values: plain, ontop, x                          | x: Xlib  | Yes     |
 | interval           | integer   | How often should haapa update, in seconds                 |          | Yes     |
 | batpath            | path      | Path to where the systems batteries reside                |          | Yes     |
 | segment_seperator  | string    | What string will seperate each segment in FORMAT_PLAIN    |          | Yes     |

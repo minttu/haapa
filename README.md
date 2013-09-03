@@ -6,12 +6,14 @@ A simple status program.
 dependencies
 ------------
 
-	required:
-	- libevent
-	optional:
-	- libmpdclient
-	- alsa
-	- iwlib
+required:
+* libevent
+
+optional:
+* libmpdclient
+* alsa
+* iwlib
+
 
 usage
 -----
