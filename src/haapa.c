@@ -189,8 +189,8 @@ void display_usage() {
 
 void display_version() {
 	printf("haapa git\n");
-	printf("Copyright (C) 2013 Haapa contributors\n");
-	printf("License MIT\n");
+	printf("Copyright (c) 2013, contributors of the haapa project\n");
+	printf("License MIT, see LICENSE for more detail\n");
 	exit(0);
 }
 
