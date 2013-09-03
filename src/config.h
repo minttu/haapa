@@ -2,16 +2,18 @@
 #define CONFIG_H
 
 #include "modules.h"
+#include "format.h"
+#include "output.h"
 
-static const format_type output_format = FORMAT_PLAIN;  /* FORMAT_PLAIN or FORMAT_I3 */
-static const bool output_ontop = false;					/* is printed ontop of self */
+static Format *(* const formatter)() = format_plain;
+static void (* const outputter)(char *str) = output_x;
 static const int interval = 1;							/* time in seconds between ticks */
-static const bool use_xstorename = true;                      /* Uses xsetroot for output */
 static const char *const batpath = "/sys/class/power_supply/";
 static const char *const segment_seperator = " ";
 
 static const int  bar_format_unicode = 2; /* 0: no unicode, 1: vertical, 2: horizontal */
 static const char *const bar_format = "\u2502%s\u2502";
+static const int  bar_format_length = 10;
 
 static const char *const mpd_hostname = NULL;
 static const char *const mpd_pass = NULL;
@@ -43,7 +45,7 @@ static const Segment segments[] = {
     {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
 #ifdef INCLUDE_ALSA
     {string,    text,               "\u266B",   "#BBDD64", always,      ""},
-    {percent,   alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
+    {bar,       alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
     {string,    text,               "muted",    "#BBDD64", alsa_muted,  ""},
 #endif
     {string,    text,               "|",        "#FFFFFF", always,      ""},

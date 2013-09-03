@@ -13,13 +13,17 @@
 
 #include "modules.h"
 
-static const char *bar_unicode[2][8] = {{"\u2581", "\u2582", "\u2583", "\u2584",
+#include "output.h"
+
+static const char *bar_unicode[2][8] ={{"\u2581", "\u2582", "\u2583", "\u2584",
 										"\u2585", "\u2586", "\u2587", "\u2588"},
-								      {	"\u258F", "\u258E", "\u258D", "\u258C",
-								  		"\u258B", "\u258A", "\u2589", "\u2588"}};
+									{	"\u258F", "\u258E", "\u258D", "\u258C",
+										"\u258B", "\u258A", "\u2589", "\u2588"}};
 
 char buffer[1024];
-static Display *dpy;
+char *output;
+
+Format *f;
 
 static const char *optString = "hov?";
 
@@ -33,22 +37,6 @@ static const struct option longOpts[] = {
 	{ "help", no_argument, NULL, 'h' },
 	{ NULL, no_argument, NULL, 0 }
 };
-
-void start_segment() {
-	if(output_format == FORMAT_I3)
-		strcat(buffer, ",{\"full_text\": \"");
-}
-
-void end_segment(char *color) {
-	if(output_format == FORMAT_I3){
-		char colorbuffer[64];
-		colorbuffer[0] = 0;
-		sprintf(colorbuffer, "\", \"color\": \"%s\"}\n", color);
-		strcat(buffer, colorbuffer);
-	}else{
-		strcat(buffer, " ");
-	}
-}
 
 void string(Result *(*function)(char *str), char *str) {
 	Result *res = function(str);
@@ -69,8 +57,8 @@ Result *text(char *str) {
 
 void bar(Result *(*function)(char *str), char *str) {
 	Result *res = function(str);
-	char bar[32];
-	char buffbar[38];
+	char bar[bar_format_length*3+2];
+	char buffbar[bar_format_length*3+8];
 	int i;
 	float value;
 	float tmp_val;
@@ -80,14 +68,14 @@ void bar(Result *(*function)(char *str), char *str) {
 		return;
 	}
 	if(bar_format_unicode==0)
-		value = (res->value / res->max)*10;
+		value = (res->value / res->max)*bar_format_length;
 	else
-		value = (res->value / res->max)*80;
+		value = (res->value / res->max)*8*bar_format_length;
 	tmp_val = round(value);
 
 	bar[0] = 0;
 
-	for(i = 0; i < 10; i++) {
+	for(i = 0; i < bar_format_length; i++) {
 		if(bar_format_unicode==0) {
 			if(i < tmp_val)
 				strcat(bar, "#");
@@ -169,36 +157,23 @@ void tick(int fd, short event, void *arg) {
 #ifdef INCLUDE_ALSA
     _alsa_reset();
 #endif
-	buffer[0] = 0;
+	output[0] = 0;
 
-	if(output_format == FORMAT_I3)
-		strcat(buffer, "[{\"full_text\":\" \"}\n");
+	if(f->start != NULL)
+		strcat(output, f->start);
 
 	for(i = 0; i < sizeof(segments)/sizeof(segments[0]); i++) {
 		if(segments[i].condition_function(segments[i].condition_argument) == 1) {
-			if(output_format == FORMAT_I3)
-				start_segment();
+			buffer[0] = 0;
 			segments[i].output_function(segments[i].function, segments[i].function_argument);
-			if(output_format == FORMAT_I3)
-				end_segment(segments[i].color);
-			strcat(buffer, segment_seperator);
+			f->segment(output, buffer, segments[i].color);
 		}
 	}
 
-	if(output_format == FORMAT_I3)
-		strcat(buffer, "],");
+	if(f->end != NULL)
+		strcat(output, f->end);
 
-    if(use_xstorename == true) {
-        XStoreName(dpy, DefaultRootWindow(dpy), buffer);
-        XSync(dpy, false);
-    }
-	else if(output_ontop == true) {
-		printf("\r%s", buffer);
-		fflush( stdout );
-	}else {
-		printf("%s\n", buffer);
-		fflush( stdout );
-	}
+	outputter(output);
 
 	if(arguments.once) {
 		exit(0);
@@ -215,8 +190,8 @@ void display_usage() {
 
 void display_version() {
 	printf("haapa git\n");
-	printf("Copyright (C) 2013 Haapa contributors\n");
-	printf("License MIT\n");
+	printf("Copyright (c) 2013, contributors of the haapa project\n");
+	printf("License MIT, see LICENSE for more detail\n");
 	exit(0);
 }
 
@@ -253,9 +228,11 @@ int main(int argc, char *const argv[]) {
 		opt = getopt_long( argc, argv, optString, longOpts, &longIndex );
 	}
 
-	if(output_format == FORMAT_I3) {
-		printf("{\"version\":1}\n[[{\"full_text\":\"Haapa says hello!\"}],");
-		fflush(stdout);
+	f = formatter();
+	output = malloc(sizeof(char)*1024);
+
+	if(f->init != NULL) {
+		outputter(f->init);
 	}
 
 #ifdef INCLUDE_MPD
@@ -264,11 +241,6 @@ int main(int argc, char *const argv[]) {
 #ifdef INCLUDE_ALSA
     _alsa_update();
 #endif
-    if(use_xstorename)
-        if((dpy = XOpenDisplay(NULL))==NULL) {
-            fprintf(stderr, "Could not open X display for XStoreName\n");
-            return 1;
-        }
 
 	event_init();
 	event_set(&ev, 0, EV_PERSIST, tick, NULL);

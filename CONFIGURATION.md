@@ -23,7 +23,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | network_ip        | interface | Returns the IP for the interface                          |          | Yes     |
 | exec              | command   | Executes the command and returns the output               |          | Yes     |
 | wireless_essid    | interface | Returns the networks ESSID for the interface              | iwlib    | Yes     |
-| alsa_volume       | channel   | Returns the volume of the channel                         | alsa     | No      |
+| alsa_volume       | channel   | Returns the volume of the channel                         | alsa     | Yes     |
 | mpd_vera          |           | Returns MPD's major version number                        | mpd      | Yes     |
 | mpd_verb          |           | Returns MPD's middle version number                       | mpd      | Yes     |
 | mpd_verc          |           | Returns MPD's minor version number                        | mpd      | Yes     |
@@ -43,7 +43,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | mpd_track         |           | Returns MPD's currently playing song's track number       | mpd      | Yes     |
 | mpd_name          |           | Returns MPD's currently playing song's name               | mpd      | Yes     |
 | mpd_date          |           | Returns MPD's currently playing song's name               | mpd      | Yes     |
-| mpd_smart         | separator | MPD's current song as artist - name if possible, else uri | mpd      | No      |
+| mpd_smart         | separator | MPD's current song as artist - name if possible, else uri | mpd      | Yes     |
 
 **Conditions**
 --------------
@@ -53,7 +53,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | net_ifup          | interface | Returns 1 if interface is up                              |          | Yes     |
 | net_ifdown        | interface | Returns 1 if interface is down                            |          | Yes     |
 | bat_exists        | battery   | Returns 1 if battery exists                               |          | Yes     |
-| alsa_muted        | channel   | Returns 1 if channel is muted                             | alsa     | No      |
+| alsa_muted        | channel   | Returns 1 if channel is muted                             | alsa     | Yes     |
 | mpd_playing       |           | Returns 1 if mpd is playing                               | mpd      | Yes     |
 
 **Global options**
@@ -61,10 +61,11 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 
 | Name               | Arguments | Effect                                                    | Requires | Working |
 | ------------------ | --------- | --------------------------------------------------------- | -------- | ------- |
-| output_format      | FORMAT_*  | FORMAT_PLAIN: plain output. FORMAT_I3: i3bar formatted    |          | Yes     |
-| output_ontop       | boolean   | Should haapa print ontop of itself, erasing the previous  |          | Yes     |
+| formatter          | format_*  | Possible values: plain, i3, dzen, xmobar                  |          | Yes     |
+| outputter          | output_*  | Possible values: plain, ontop, x                          | x: Xlib  | Yes     |
 | interval           | integer   | How often should haapa update, in seconds                 |          | Yes     |
 | batpath            | path      | Path to where the systems batteries reside                |          | Yes     |
 | segment_seperator  | string    | What string will seperate each segment in FORMAT_PLAIN    |          | Yes     |
 | bar_format_unicode | integer   | How is the bar drawn. 0: no unicode, 1: vert 2: hori      |          | Yes     |
-| bar_format         | string    | Whats aside the bar                                       |          | Yes     |
+| bar_format         | string    | Whats aside the bar                                       |          | Yes     |
+| bar_format_length  | integer   | How long are bars                                         |          | Yes     |

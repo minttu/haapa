@@ -17,6 +17,7 @@ int _wireless_update(char *ifname) {
         info.has_range = 1;
     if(iw_get_stats(sock, ifname, &(info.stats), &info.range, info.has_range) >= 0)
         info.has_stats = 1;
+    return 0;
 }
 
 /* todo: general _wireless_init() */
