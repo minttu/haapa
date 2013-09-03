@@ -67,8 +67,8 @@ Result *text(char *str) {
 
 void bar(Result *(*function)(char *str), char *str) {
 	Result *res = function(str);
-	char bar[32];
-	char buffbar[38];
+	char bar[bar_format_length*3+2];
+	char buffbar[bar_format_length*3+8];
 	int i;
 	float value;
 	float tmp_val;
@@ -78,14 +78,14 @@ void bar(Result *(*function)(char *str), char *str) {
 		return;
 	}
 	if(bar_format_unicode==0)
-		value = (res->value / res->max)*10;
+		value = (res->value / res->max)*bar_format_length;
 	else
-		value = (res->value / res->max)*80;
+		value = (res->value / res->max)*8*bar_format_length;
 	tmp_val = round(value);
 
 	bar[0] = 0;
 
-	for(i = 0; i < 10; i++) {
+	for(i = 0; i < bar_format_length; i++) {
 		if(bar_format_unicode==0) {
 			if(i < tmp_val)
 				strcat(bar, "#");

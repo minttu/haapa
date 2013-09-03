@@ -43,7 +43,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | mpd_track         |           | Returns MPD's currently playing song's track number       | mpd      | Yes     |
 | mpd_name          |           | Returns MPD's currently playing song's name               | mpd      | Yes     |
 | mpd_date          |           | Returns MPD's currently playing song's name               | mpd      | Yes     |
-| mpd_smart         | separator | MPD's current song as artist - name if possible, else uri | mpd      | No      |
+| mpd_smart         | separator | MPD's current song as artist - name if possible, else uri | mpd      | No      |
 
 **Conditions**
 --------------
@@ -67,4 +67,5 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | batpath            | path      | Path to where the systems batteries reside                |          | Yes     |
 | segment_seperator  | string    | What string will seperate each segment in FORMAT_PLAIN    |          | Yes     |
 | bar_format_unicode | integer   | How is the bar drawn. 0: no unicode, 1: vert 2: hori      |          | Yes     |
-| bar_format         | string    | Whats aside the bar                                       |          | Yes     |
+| bar_format         | string    | Whats aside the bar                                       |          | Yes     |
+| bar_format_length  | integer   | How long are bars                                         |          | Yes     |
