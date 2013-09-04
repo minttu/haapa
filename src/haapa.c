@@ -9,7 +9,6 @@
 #include <getopt.h>
 #include <sys/types.h>
 #include <stdbool.h>
-#include <X11/Xlib.h>
 
 #include "modules.h"
 
