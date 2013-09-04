@@ -10,7 +10,7 @@ default: warn
 all: default
 
 haapa:
-	$(CC) $(CFLAGS) $(LIBS) $(FILES) -o haapa
+	$(CC) -o haapa $(FILES) $(CFLAGS) $(LIBS)
 
 clean:
 	-rm -f src/*.o
