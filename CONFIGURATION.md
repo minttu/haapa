@@ -14,9 +14,10 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | Name              | Arguments | Effect                                                    | Requires | Working |
 | ----------------- | --------- | --------------------------------------------------------- | -------- | ------- |
 | proc_load         | 0-3       | Returns average cpu load. 0: 1min 1: 5min 2: 15min 3: all |          | Yes     |
-| proc_memory       |           | Returns memory usage.                                     |          | Yes     |
-| proc_cpu          |           | Returns cpu usage.                                        |          | Yes     |
-| proc_uptime       |           | Returns system uptime in x days, HH:MM:SS format.         |          | Yes     |
+| proc_memory       |           | Returns memory usage                                      |          | Yes     |
+| proc_cpu          |           | Returns cpu usage                                         |          | Yes     |
+| proc_cpu_mhz      |           | Returns cpu MHz                                           |          | Yes     |
+| proc_uptime       |           | Returns uptime as seconds                                 |          | Yes     |
 | time_date         | strftime  | Returns date time formatted with                          |          | Yes     |
 | battery_status    | battery   | Returns the status for the battery                        |          | Yes     |
 | battery_capacity  | battery   | Returns the current capacity for the battery              |          | Yes     |
@@ -61,7 +62,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 
 | Name               | Arguments | Effect                                                    | Requires | Working |
 | ------------------ | --------- | --------------------------------------------------------- | -------- | ------- |
-| formatter          | format_*  | Possible values: plain, i3, dzen, xmobar                  |          | Yes     |
+| formatter          | format_*  | Possible values: plain, i3, dzen, xmobar, x256            |          | Yes     |
 | outputter          | output_*  | Possible values: plain, ontop, x                          | x: Xlib  | Yes     |
 | interval           | integer   | How often should haapa update, in seconds                 |          | Yes     |
 | batpath            | path      | Path to where the systems batteries reside                |          | Yes     |

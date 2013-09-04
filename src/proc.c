@@ -136,11 +136,6 @@ Result *proc_uptime() {
 	Result *res;
 	res = init_res();
 	float uptime = 0;
-	int upint = 0;
-	int days = 0;
-	int hours = 0;
-	int minutes = 0;
-	int seconds = 0;
 	int val;
 
 	f = fopen("/proc/uptime", "r");
@@ -158,15 +153,42 @@ Result *proc_uptime() {
 		return res;
 	}
 
+	res->value = uptime;
 
-	upint = (int) (uptime);
+	return res;
+}
 
-	days = upint/86400;
-	hours = upint/3600 - days*24;
-	minutes = upint/60 - hours*60 - days*1440;
-	seconds = (upint)%60;
+Result *proc_cpu_mhz() {
+	FILE *f;
+	Result *res;
+	char* match;
+	char buffer[1024];
+	float mhz;
+	res = init_res();
 
-	sprintf(res->string, "%i days, %02i:%02i:%02i", days, hours, minutes, seconds);
+	f = fopen("/proc/cpuinfo", "r");
+
+	if(f == NULL) {
+		res->error=1;
+		return res;
+	}
+
+	fread(buffer, 1, sizeof (buffer), f);
+
+	fclose(f);
+
+	match = strstr(buffer, "cpu MHz");
+
+	if(match == NULL) {
+		res->error=1;
+		return res;
+	}
+
+	sscanf (match, "cpu MHz  :  %f", &mhz);
+
+	res->value = mhz;
+
+	sprintf(res->string, "%i MHz", (int)mhz);
 
 	return res;
 }

@@ -14,5 +14,6 @@ Format *format_plain();
 Format *format_i3();
 Format *format_dzen();
 Format *format_xmobar();
+Format *format_x256();
 
 #endif
