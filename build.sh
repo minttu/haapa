@@ -104,8 +104,10 @@ function test_run () {
 
 	if [ $? -eq 0 ]; then
 		echo -e "\nTesting successfull"
+		exit 0
 	else
 		echo -e "\nTesting unsuccessfull"
+		exit 1
 	fi
 }
 
