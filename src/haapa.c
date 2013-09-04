@@ -157,6 +157,9 @@ void tick(int fd, short event, void *arg) {
 #ifdef INCLUDE_ALSA
     _alsa_reset();
 #endif
+#ifdef INCLUDE_IWLIB
+    _wireless_reset();
+#endif
 	output[0] = 0;
 
 	if(f->start != NULL)

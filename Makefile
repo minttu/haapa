@@ -1,6 +1,6 @@
 LIBS = -lm -levent
 CC = gcc
-CFLAGS = -Wall -O2 --std=gnu99 -g
+CFLAGS = -Wall -O0 --std=gnu99 -g
 LIBS = -lm -levent
 FILES =
 

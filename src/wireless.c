@@ -62,29 +62,68 @@ int _wireless_update(char *ifname) {
     }
     wir_response->essid[0] = 0;
     strncat(wir_response->essid, info.b.essid, IW_ESSID_MAX_SIZE - 1);
-    if(info.has_stats)
+    if(info.has_stats) {
         wir_response->quality = info.stats.qual.qual;
+        wir_response->q_max = info.range.max_qual.qual;
+    }
     wireless_updated = 0;
     return 0;
 }
 
 /* todo: general _wireless_init() */
+#define M() \
+    Result *res; \
+    if(!wireless_updated) \
+        _wireless_update(ifname); \
+    res = init_res()
+
 Result *wireless_essid(char *ifname) {
-    Result *res;
-    if(!wireless_updated)
-        _wireless_update(ifname);
-    res = init_res();
+    M();
     strncat(res->string, wir_response->essid, sizeof(res->string) - 1);
     return res;
 }
 
-Result *wireless_signal(char *ifname) {
-    Result *res;
-    if(!wireless_updated)
-        _wireless_update(ifname);
-    res = init_res();
-    res->max = wir_response->q_max;
-    res->value = wir_response->quality;
+Result *wireless_ap_addr(char *ifname) {
+    M();
+    strncat(res->string, wir_response->ap_addr, sizeof(res->string) - 1);
     return res;
 }
+
+Result *wireless_freq(char *ifname) {
+    M();
+    res->max = wir_response->freq_max;
+    res->value = wir_response->freq;
+    snprintf(res->string, sizeof(res->string) - 1, "%f", wir_response->freq);
+    return res;
+}
+
+Result *wireless_chan(char *ifname) {
+    M();
+    res->max = wir_response->chan_max;
+    res->value = wir_response->channel;
+    snprintf(res->string, sizeof(res->string) - 1, "%d", wir_response->channel);
+    return res;
+}
+
+Result *wireless_bitrate(char *ifname) {
+    M();
+    res->max = wir_response->bit_max;
+    res->value = wir_response->bitrate;
+    snprintf(res->string, sizeof(res->string) - 1, "%d", wir_response->bitrate);
+    return res;
+}
+
+Result *wireless_quality(char *ifname) {
+    M();
+    if(wir_response->q_max == 0)
+        wir_response->q_max = 1;
+    res->max = wir_response->q_max;
+    res->value = wir_response->quality;
+    snprintf(res->string, sizeof(res->string) - 1, "%d",
+                    (wir_response->quality*100)/wir_response->q_max);
+    return res;
+}
+
+#undef M
+
 #endif

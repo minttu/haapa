@@ -5,8 +5,8 @@
 #include "format.h"
 #include "output.h"
 
-static Format *(* const formatter)() = format_plain;
-static void (* const outputter)(char *str) = output_plain;
+static Format *(* const formatter)() = format_x256;
+static void (* const outputter)(char *str) = output_x;
 static const int interval = 1;							/* time in seconds between ticks */
 static const char *const batpath = "/sys/class/power_supply/";
 static const char *const segment_seperator = " ";
@@ -24,15 +24,21 @@ static const char *const alsa_channel = "Master";
 
 static const Segment segments[] = {
 #ifdef INCLUDE_MPD
-    {string,    text,               "\u266A",   "#5F9F74", mpd_exists, ""},
-    {string,    mpd_smart,          " - ",      "#FFFFFF", mpd_exists, ""},
-    {timeconv,  mpd_sels,           "",         "#FFFFFF", mpd_exists, ""},
-    {string,    text,               "/",        "#5F9F74", mpd_exists, ""},
-    {timeconv,  mpd_slen,           "",         "#FFFFFF", mpd_exists, ""},
+    {string,    text,               "\u266B",   "#BBDD64", mpd_exists, ""},
+    {string,    mpd_smart,          " - ",      "#BBDD64", mpd_exists, ""},
+    {timeconv,  mpd_sels,           "",         "#BBDD64", mpd_exists, ""},
+    {string,    text,               "/",        "#BBDD64", mpd_exists, ""},
+    {timeconv,  mpd_slen,           "",         "#BBDD64", mpd_exists, ""},
+#endif
+#ifdef INCLUDE_ALSA
+    {string,    text,               "\u266B",   "#BBDD64", always,      ""},
+    {bar,       alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
+    {string,    text,               "muted",    "#BBDD64", alsa_muted,  ""},
 #endif
 #ifdef INCLUDE_IWLIB
     {string,    text,               "\u21CB",   "#5F9F74", always,      ""},
     {string,    wireless_essid,     "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
+    {string,   wireless_quality,   "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
     {string,    network_ip,         "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
     {string,    text,               "down",     "#FF0000", net_ifdown,  "wlan0"},
 #endif
@@ -43,11 +49,6 @@ static const Segment segments[] = {
     {string,    text,               "\u2607",   "#9933CC", bat_exists,  "BAT0"},
     {string,    battery_status,     "BAT0",     "#9933CC", bat_exists,  "BAT0"},
     {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
-#ifdef INCLUDE_ALSA
-    {string,    text,               "\u266B",   "#BBDD64", always,      ""},
-    {bar,       alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
-    {string,    text,               "muted",    "#BBDD64", alsa_muted,  ""},
-#endif
     {string,    text,               "|",        "#FFFFFF", always,      ""},
     {string,    time_date,          "%T",       "#FFFFFF", always,      ""},
 };

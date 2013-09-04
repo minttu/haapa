@@ -23,7 +23,12 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | battery_capacity  | battery   | Returns the current capacity for the battery              |          | Yes     |
 | network_ip        | interface | Returns the IP for the interface                          |          | Yes     |
 | exec              | command   | Executes the command and returns the output               |          | Yes     |
-| wireless_essid    | interface | Returns the networks ESSID for the interface              | iwlib    | Yes     |
+| wireless_essid    | interface | Returns the network's ESSID for the interface             | iwlib    | Yes     |
+| wireless_ap_addr  | interface | Returns the access point's hardware address               | iwlib    | No      |
+| wireless_freq     | interface | Returns the network's frequency for the interface         | iwlib    | Partial |
+| wireless_chan     | interface | Returns the network's channel for the interface           | iwlib    | No      |
+| wireless_bitrate  | interface | Returns the network's bitrate for the interface           | iwlib    | No      |
+| wireless_quality  | interface | Returns the network's  signal strength  for the interface | iwlib    | Yes     |
 | alsa_volume       | channel   | Returns the volume of the channel                         | alsa     | Yes     |
 | mpd_vera          |           | Returns MPD's major version number                        | mpd      | Yes     |
 | mpd_verb          |           | Returns MPD's middle version number                       | mpd      | Yes     |

@@ -23,8 +23,13 @@ typedef struct wireless_response {
 
 void _wireless_reset();
 int _wireless_update();
-Result *wireless_essid();
-Result *wireless_signal();
+Result *wireless_essid(char *ifname);
+Result *wireless_ap_addr(char *ifname);
+Result *wireless_freq(char *ifname);
+Result *wireless_chan(char *ifname);
+Result *wireless_bitrate(char *ifname);
+Result *wireless_quality(char *ifname);
+
 
 #define wireless_github_stop_detecting_cpp_please
 
