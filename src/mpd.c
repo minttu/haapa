@@ -13,7 +13,7 @@ struct mpd_connection *conn;
 struct mpd_status *status = NULL;
 struct mpd_audio_format *format;
 struct mpd_song *song = NULL;
-mpd_response *response;
+mpd_response *mpdresponse;
 static int mpd_updated;
 
 /* call from tick() */
@@ -22,32 +22,32 @@ void _mpd_reset() {
 }
 
 static void pipe_handle(int signal) {
-    if(response)
-        response->err = -1;
+    if(mpdresponse)
+        mpdresponse->err = -1;
 }
 
 int _mpd_update() {
     int val;
     unsigned int const *val_arr;
     struct mpd_audio_format const *format;
-    if(!response)
-        response = calloc(sizeof(mpd_response), 1);
+    if(!mpdresponse)
+        mpdresponse = calloc(sizeof(mpd_response), 1);
     if(signal(SIGPIPE, pipe_handle) == SIG_ERR) {
-        response->err = -1;
+        mpdresponse->err = -1;
         return -1;
     }
     /* TODO: reconnect to MPD if no connection */
-    if(!conn || response->err)
+    if(!conn || mpdresponse->err)
         conn = mpd_connection_new(mpd_hostname, mpd_port, mpd_timeout);
     if(mpd_pass) {
         mpd_send_password(conn, mpd_pass);
     }
     if(mpd_connection_get_error(conn) != MPD_ERROR_SUCCESS) {
         mpd_connection_free(conn);
-        response->err = -1;
+        mpdresponse->err = -1;
         return -1;
     }
-    response->err = 0;
+    mpdresponse->err = 0;
     mpd_command_list_begin(conn, 1);
     mpd_send_status(conn);
     mpd_send_current_song(conn);
@@ -56,58 +56,58 @@ int _mpd_update() {
     status = mpd_recv_status(conn);
     if(status == NULL) {
         mpd_connection_free(conn);
-        response->err = -1;
+        mpdresponse->err = -1;
         return -1;
     }
-    if(!response) {
+    if(!mpdresponse) {
         mpd_connection_free(conn);
-        response->err = -1;
+        mpdresponse->err = -1;
         return -1;
     }
     for(val = 0; val < 15; val++)
-        response->max_arr[val] = 1;
+        mpdresponse->max_arr[val] = 1;
 
     val = mpd_status_get_state(status);
-    response->playing = val==MPD_STATE_PLAY?0:val==MPD_STATE_PAUSE?1:-1;
+    mpdresponse->playing = val==MPD_STATE_PLAY?0:val==MPD_STATE_PAUSE?1:-1;
     val_arr = mpd_connection_get_server_version(conn);
-    response->vera = val_arr[0];
-    response->verb = val_arr[1];
-    response->verc = val_arr[2];
-    response->repeat = mpd_status_get_repeat(status);
-    response->qv = mpd_status_get_queue_version(status);
-    response->ql = mpd_status_get_queue_length(status);
-    response->spos = mpd_status_get_song_pos(status);
-    response->sels = mpd_status_get_elapsed_time(status);
-    response->selms = mpd_status_get_elapsed_ms(status);
-    response->slen = mpd_status_get_total_time(status);
-    response->sbrate = mpd_status_get_kbit_rate(status);
+    mpdresponse->vera = val_arr[0];
+    mpdresponse->verb = val_arr[1];
+    mpdresponse->verc = val_arr[2];
+    mpdresponse->repeat = mpd_status_get_repeat(status);
+    mpdresponse->qv = mpd_status_get_queue_version(status);
+    mpdresponse->ql = mpd_status_get_queue_length(status);
+    mpdresponse->spos = mpd_status_get_song_pos(status);
+    mpdresponse->sels = mpd_status_get_elapsed_time(status);
+    mpdresponse->selms = mpd_status_get_elapsed_ms(status);
+    mpdresponse->slen = mpd_status_get_total_time(status);
+    mpdresponse->sbrate = mpd_status_get_kbit_rate(status);
 
     format = mpd_status_get_audio_format(status);
     if(!format)
-        response->err = -1;
+        mpdresponse->err = -1;
     else {
-        response->afsr = format->sample_rate;
-        response->afbits = format->bits;
-        response->afchan = format->channels;
+        mpdresponse->afsr = format->sample_rate;
+        mpdresponse->afbits = format->bits;
+        mpdresponse->afchan = format->channels;
     }
     mpd_response_next(conn);
     if(song)
         mpd_song_free(song);
     song = mpd_recv_song(conn);
     if(!song) {
-        response->err = -1;
+        mpdresponse->err = -1;
     }
     else {
-        response->uri = mpd_song_get_uri(song);
-        response->artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
-        response->album = mpd_song_get_tag(song, MPD_TAG_ALBUM, 0);
-        response->title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
-        response->track = mpd_song_get_tag(song, MPD_TAG_TRACK, 0);
-        response->name = mpd_song_get_tag(song, MPD_TAG_NAME, 0);
-        response->date = mpd_song_get_tag(song, MPD_TAG_DATE, 0);
-        response->max_arr[7] = response->ql;
-        response->max_arr[8] = response->slen;
-        response->max_arr[9] = response->slen;
+        mpdresponse->uri = mpd_song_get_uri(song);
+        mpdresponse->artist = mpd_song_get_tag(song, MPD_TAG_ARTIST, 0);
+        mpdresponse->album = mpd_song_get_tag(song, MPD_TAG_ALBUM, 0);
+        mpdresponse->title = mpd_song_get_tag(song, MPD_TAG_TITLE, 0);
+        mpdresponse->track = mpd_song_get_tag(song, MPD_TAG_TRACK, 0);
+        mpdresponse->name = mpd_song_get_tag(song, MPD_TAG_NAME, 0);
+        mpdresponse->date = mpd_song_get_tag(song, MPD_TAG_DATE, 0);
+        mpdresponse->max_arr[7] = mpdresponse->ql;
+        mpdresponse->max_arr[8] = mpdresponse->slen;
+        mpdresponse->max_arr[9] = mpdresponse->slen;
     }
     mpd_updated = 1;
     mpd_response_finish(conn);
@@ -119,70 +119,70 @@ Result *_mpd_wrap(int i) {
     Result *res = init_res();
     if(!mpd_updated)
         _mpd_update();
-    if(!response) {
+    if(!mpdresponse) {
         res->error = -1;
         return res;
     }
-    if(response->err) {
-        res->error = response->err;
+    if(mpdresponse->err) {
+        res->error = mpdresponse->err;
         return res;
     }
-    res->value = response->int_arr[i];
-    res->max = response->max_arr[i];
-    sprintf(res->string, "%d", response->int_arr[i]);
+    res->value = mpdresponse->int_arr[i];
+    res->max = mpdresponse->max_arr[i];
+    sprintf(res->string, "%d", mpdresponse->int_arr[i]);
     return res;
 }
 Result *_mpd_swrap(int i) {
     Result *res = init_res();
     if(!mpd_updated)
         _mpd_update();
-    if(!response) {
+    if(!mpdresponse) {
         res->error = -1;
         return res;
     }
-    if(response->err) {
-        res->error = response->err;
+    if(mpdresponse->err) {
+        res->error = mpdresponse->err;
         return res;
     }
-    strcat(res->string, response->char_arr[i]);
+    strcat(res->string, mpdresponse->char_arr[i]);
     return res;
 }
 
 int mpd_playing() {
     if(!mpd_updated)
         _mpd_update();
-    if(!response)
+    if(!mpdresponse)
         return 0;
-    if(response->err)
+    if(mpdresponse->err)
         return 0;
-    return !response->playing;
+    return !mpdresponse->playing;
 }
 int mpd_exists() {
     if(!mpd_updated)
         _mpd_update();
-    if(!response)
+    if(!mpdresponse)
         return 0;
-    if(response->err)
+    if(mpdresponse->err)
         return 0;
-    return (response->playing!=MPD_STATE_PAUSE&&response->playing!=MPD_STATE_PLAY);
+    return (mpdresponse->playing!=MPD_STATE_PAUSE&&mpdresponse->playing!=MPD_STATE_PLAY);
 }
 
 Result *mpd_smart(char *sep) {
     Result *res = init_res();
     if(!mpd_updated)
         _mpd_update();
-    if(!response) {
+    if(!mpdresponse) {
         res->error = -1;
         return res;
     }
-    if(response->err) {
-        res->error = response->err;
+    if(mpdresponse->err) {
+        res->error = mpdresponse->err;
         return res;
     }
-    if(response->artist && response->title && strlen(response->artist) && strlen(response->title))
-        snprintf(res->string, sizeof(res->string), "%s%s%s", response->artist, sep, response->title);
+    if(mpdresponse->artist && mpdresponse->title && strlen(mpdresponse->artist) && strlen(mpdresponse->title))
+        snprintf(res->string, sizeof(res->string), "%s%s%s", mpdresponse->artist, sep, mpdresponse->title);
     else
-        sprintf(res->string, "%s", response->uri);
+        sprintf(res->string, "%s", mpdresponse->uri);
     return res;
 }
 

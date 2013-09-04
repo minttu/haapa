@@ -9,7 +9,7 @@
 #include "config.h"
 #include "result.h"
 
-alsa_response *response;
+alsa_response *als_response;
 int mix_index = 0, i;
 char *card = "default";
 static int alsa_updated = 0;
@@ -25,10 +25,10 @@ int _alsa_update() {
     int i;
     const char *mix_name = alsa_channel;
 
-    if(!response) {
-        response = calloc(sizeof(response), 1);
+    if(!als_response) {
+        als_response = calloc(sizeof(alsa_response), 1);
         for(i = 0; i < 4; i++)
-            response->max_arr[i] = 1;
+            als_response->max_arr[i] = 1;
     }
 
   	snd_mixer_selem_id_alloca(&sid);
@@ -41,20 +41,20 @@ int _alsa_update() {
     snd_mixer_load(handle);
     elem = snd_mixer_find_selem(handle, sid);
 
-    snd_mixer_selem_get_playback_volume_range (elem, &(response->minvol), &(response->maxvol));
-    snd_mixer_selem_get_playback_volume(elem, 0, &(response->volume));
-    snd_mixer_selem_get_playback_switch(elem, 0, &(response->unmuted));
+    snd_mixer_selem_get_playback_volume_range (elem, &(als_response->minvol), &(als_response->maxvol));
+    snd_mixer_selem_get_playback_volume(elem, 0, &(als_response->volume));
+    snd_mixer_selem_get_playback_switch(elem, 0, &(als_response->unmuted));
 
     snd_mixer_close(handle);
     sid = 0;
 
-	response->volume -= response->minvol;
-	response->maxvol -= response->minvol;
-	response->minvol = 0;
+	als_response->volume -= als_response->minvol;
+	als_response->maxvol -= als_response->minvol;
+	als_response->minvol = 0;
 
-    response->max_arr[0] = response->maxvol;
-    response->max_arr[1] = response->maxvol;
-    response->max_arr[2] = response->maxvol;
+    als_response->max_arr[0] = als_response->maxvol;
+    als_response->max_arr[1] = als_response->maxvol;
+    als_response->max_arr[2] = als_response->maxvol;
     alsa_updated = 1;
 
     return 0;
@@ -63,8 +63,8 @@ int _alsa_update() {
 int alsa_muted(char *str) {
     if(!alsa_updated)
         _alsa_update();
-    if(response)
-        return !response->unmuted;
+    if(als_response)
+        return !als_response->unmuted;
     return 1;
 }
 
@@ -76,9 +76,9 @@ Result *_alsa_wrap(int i) {
     Result *res = init_res();
     if(!alsa_updated)
         _alsa_update();
-    res->value = response->int_arr[i];
-    res->max = response->max_arr[i];
-    sprintf(res->string, "%ld", response->int_arr[i]);
+    res->value = als_response->int_arr[i];
+    res->max = als_response->max_arr[i];
+    sprintf(res->string, "%ld", als_response->int_arr[i]);
     return res;
 }
 

@@ -6,7 +6,7 @@
 #include "output.h"
 
 static Format *(* const formatter)() = format_plain;
-static void (* const outputter)(char *str) = output_x;
+static void (* const outputter)(char *str) = output_plain;
 static const int interval = 1;							/* time in seconds between ticks */
 static const char *const batpath = "/sys/class/power_supply/";
 static const char *const segment_seperator = " ";

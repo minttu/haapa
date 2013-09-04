@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <iwlib.h>
 
-wireless_response *response = NULL;
+wireless_response *wir_response = NULL;
 static int wireless_updated = 0;
 
 void _wireless_reset() {
@@ -19,13 +19,14 @@ int _wireless_update(char *ifname) {
     int sock;
     struct wireless_info info = {};
     struct iwreq req;
-    if(!response) {
-        response = calloc(sizeof(wireless_response), 1);
-        response->essid = malloc(IW_ESSID_MAX_SIZE + 1);
-        response->int_max[0] = 1;
-        response->int_max[1] = 1;
-        response->int_max[2] = 1;
-        response->int_max[3] = 100;
+    wir_response = NULL;
+    if(!wir_response) {
+        wir_response = malloc(sizeof(wireless_response));
+        wir_response->essid = malloc(IW_ESSID_MAX_SIZE + 1);
+        wir_response->int_max[0] = 1;
+        wir_response->int_max[1] = 1;
+        wir_response->int_max[2] = 1;
+        wir_response->int_max[3] = 100;
     }
     if((sock = iw_sockets_open()) < 0)
         return -1;
@@ -48,20 +49,21 @@ int _wireless_update(char *ifname) {
 
     if(info.b.has_freq) {
         if(info.has_range && info.b.freq < 1000) {
-            response->channel = iw_channel_to_freq(
-                            (int)info.b.freq, &response->freq, &info.range);
-            if(response->channel<0)
-                response->channel = 0;
-                response->freq = 0;
+            wir_response->channel = iw_channel_to_freq(
+                            (int)info.b.freq, &wir_response->freq, &info.range);
+            if(wir_response->channel<0)
+                wir_response->channel = 0;
+                wir_response->freq = 0;
         }
         else {
-            response->channel = -1;
-            response->freq = info.b.freq;
+            wir_response->channel = -1;
+            wir_response->freq = info.b.freq;
         }
     }
-    strncpy(response->essid, info.b.essid, IW_ESSID_MAX_SIZE - 1);
+    wir_response->essid[0] = 0;
+    strncat(wir_response->essid, info.b.essid, IW_ESSID_MAX_SIZE - 1);
     if(info.has_stats)
-        response->quality = info.stats.qual.qual;
+        wir_response->quality = info.stats.qual.qual;
     wireless_updated = 0;
     return 0;
 }
@@ -72,7 +74,7 @@ Result *wireless_essid(char *ifname) {
     if(!wireless_updated)
         _wireless_update(ifname);
     res = init_res();
-    strncat(res->string, response->essid, sizeof(res->string) - 1);
+    strncat(res->string, wir_response->essid, sizeof(res->string) - 1);
     return res;
 }
 
@@ -81,8 +83,8 @@ Result *wireless_signal(char *ifname) {
     if(!wireless_updated)
         _wireless_update(ifname);
     res = init_res();
-    res->max = response->q_max;
-    res->value = response->quality;
+    res->max = wir_response->q_max;
+    res->value = wir_response->quality;
     return res;
 }
 #endif
