@@ -5,8 +5,8 @@
 #include "format.h"
 #include "output.h"
 
-static Format *(* const formatter)() = format_x256;
-static void (* const outputter)(char *str) = output_x;
+static Format *(* const formatter)() = format_plain;
+static void (* const outputter)(char *str) = output_plain;
 static const int interval = 1;							/* time in seconds between ticks */
 static const char *const batpath = "/sys/class/power_supply/";
 static const char *const segment_seperator = " ";
@@ -38,7 +38,7 @@ static const Segment segments[] = {
 #ifdef INCLUDE_IWLIB
     {string,    text,               "\u21CB",   "#5F9F74", always,      ""},
     {string,    wireless_essid,     "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
-    {string,   wireless_quality,   "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
+    {percent,   wireless_quality,   "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
     {string,    network_ip,         "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
     {string,    text,               "down",     "#FF0000", net_ifdown,  "wlan0"},
 #endif

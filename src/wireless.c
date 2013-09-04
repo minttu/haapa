@@ -66,6 +66,7 @@ int _wireless_update(char *ifname) {
         wir_response->quality = info.stats.qual.qual;
         wir_response->q_max = info.range.max_qual.qual;
     }
+    iw_sockets_close(sock);
     wireless_updated = 0;
     return 0;
 }
