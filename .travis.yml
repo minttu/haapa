@@ -5,3 +5,12 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq bash libevent-dev
 script: ./build.sh
+branches:
+  only:
+    - master
+notifications:
+  email:
+    recipients:
+      - lordaku@gmail.com
+    on_success: always
+    on_failure: always
