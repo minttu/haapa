@@ -19,7 +19,6 @@ int _wireless_update(char *ifname) {
     int sock;
     struct wireless_info info = {};
     struct iwreq req;
-    wir_response = NULL;
     if(!wir_response) {
         wir_response = malloc(sizeof(wireless_response));
         wir_response->essid = malloc(IW_ESSID_MAX_SIZE + 1);
