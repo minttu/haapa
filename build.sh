@@ -117,6 +117,10 @@ if [ $status -eq 0 ]; then
 	compile
 	if [ $? -eq 0 ]; then
 		test_run
+	else
+		exit 1
 	fi
+else
+	exit 1
 fi
 
