@@ -1,28 +1,36 @@
 #include <stdlib.h>
-#include <sys/statvfs.h>
+#include <sys/vfs.h>
 #include <stdio.h>
 #include "fs.h"
 
-struct statvfs *fs_data = NULL;
+struct statfs *fs_data = NULL;
 fs_response *fsresponse = NULL;
 static char *fs_cache;
 static int fs_updated = 0;
 void _fs_reset() {
-    fs_updated = 0;
+    if(fs_updated)
+        fs_updated--;
 }
 int _fs_update(char *path) {
     if(!fs_data)
-        fs_data = malloc(sizeof(statvfs));
+        fs_data = malloc(sizeof(statfs));
     if(!fsresponse)
         fsresponse = malloc(sizeof(fs_response));
+/*
     if(statvfs(path, fs_data)) {
         return -1;
     }
     fsresponse->total_space = fs_data->f_bsize * fs_data->f_blocks;
     fsresponse->free_space = fs_data->f_bsize * fs_data->f_bfree;
     fsresponse->used_space = fsresponse->total_space - fsresponse->free_space;
+*/
+    if(statfs(path, fs_data))
+        return -1;
+    fsresponse->total_space = fs_data->f_blocks * fs_data->f_bsize;
+    fsresponse->free_space = fs_data->f_bavail * fs_data->f_bsize;
+    fsresponse->used_space = fsresponse->total_space - fsresponse->free_space;
 
-    fs_updated = 1;
+    fs_updated = 15;
     return 0;
 }
 
