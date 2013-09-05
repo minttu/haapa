@@ -15,11 +15,11 @@ optional:
 * iwlib
 * Xlib
 
-usage
------
+installation
+------------
 
-	./build.sh
-	./haapa
+	make
+	sudo make install
 
 configuration
 -------------
