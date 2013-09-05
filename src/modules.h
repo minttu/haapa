@@ -6,6 +6,7 @@
 #include "battery.h"
 #include "network.h"
 #include "exec.h"
+#include "fs.h"
 #ifdef INCLUDE_MPD
 #include "mpd.h"
 #endif

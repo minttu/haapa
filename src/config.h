@@ -42,6 +42,9 @@ static const Segment segments[] = {
     {string,    network_ip,         "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
     {string,    text,               "down",     "#FF0000", net_ifdown,  "wlan0"},
 #endif
+    {string,       fs_free,            "/dev/sda2","#00FF00", always,      ""},
+    {string,       fs_used,            "/dev/sda1","#00FF00", always,      ""},
+#ifdef ASDF
     {string,    text,               "\u2764",   "#B94557", always,      ""},
     {bar,       proc_cpu,           "",         "#B94557", always,      ""},
     {string,    text,               "\u2263",   "#B28D4C", always,      ""},
@@ -51,6 +54,7 @@ static const Segment segments[] = {
     {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
     {string,    text,               "|",        "#FFFFFF", always,      ""},
     {string,    time_date,          "%T",       "#FFFFFF", always,      ""},
+#endif
 };
 
 #endif
