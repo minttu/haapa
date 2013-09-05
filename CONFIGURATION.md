@@ -24,6 +24,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | cpu_temp          |           | Returns the temperature of the first cpu                  |          | Yes     |
 | network_ip        | interface | Returns the IP for the interface                          |          | Yes     |
 | exec              | command   | Executes the command and returns the output               |          | Yes     |
+| get_uname         | a,s,n,r,v | Returns information, like the uname program does          |          | Yes     |
 | wireless_essid    | interface | Returns the network's ESSID for the interface             | iwlib    | Yes     |
 | wireless_ap_addr  | interface | Returns the access point's hardware address               | iwlib    | No      |
 | wireless_freq     | interface | Returns the network's frequency for the interface         | iwlib    | Partial |
