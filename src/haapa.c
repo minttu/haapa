@@ -139,6 +139,75 @@ void timeconv(Result *(*function)(char *str), char *str) {
     free(res);
 }
 
+/* chunk down bytes to precision of 2 decimals and KB, MB etc */
+void sizeconv(Result *(*function)(char *str), char *str) {
+    Result *res = function(str);
+    char buf[128];
+    buf[0] = 0;
+    unsigned long g, m, k, b;
+    if(res->error) {
+        free(res);
+        strcat(buffer, "error");
+        return;
+    }
+    b = ((unsigned long)res->value)%1000;
+    k = ((unsigned long)res->value/(1000))%1000;
+    m = ((unsigned long)res->value/(1000*1000))%1000;
+    g = ((unsigned long)res->value/(1000*1000*1000))%1000;
+    int c = 2;
+    if(g && c-- > 0) {
+        snprintf(buf, sizeof(buf), "%lu GB ", g);
+        strcat(buffer, buf);
+    }
+    if(m && c-- > 0) {
+        snprintf(buf, sizeof(buf), "%lu MB ", m);
+        strcat(buffer, buf);
+    }
+    if(k && c-- > 0) {
+        snprintf(buf, sizeof(buf), "%lu kB ", k);
+        strcat(buffer, buf);
+    }
+    if(c-- > 0) {
+        snprintf(buf, sizeof(buf), "%lu B ", b);
+        strcat(buffer, buf);
+    }
+    free(res);
+}
+/* same but GiB etc */
+void sizeconvi(Result *(*function)(char *str), char *str) {
+    Result *res = function(str);
+    char buf[128];
+    buf[0] = 0;
+    unsigned long g, m, k, b;
+    if(res->error) {
+        free(res);
+        strcat(buffer, "error");
+        return;
+    }
+    b = ((unsigned long)res->value)&1023;
+    k = ((unsigned long)res->value)>>10&1023;
+    m = ((unsigned long)res->value)>>20&1023;
+    g = ((unsigned long)res->value)>>30&1023;
+    int c = 2;
+    if(g && c-- > 0) {
+        snprintf(buf, sizeof(buf), "%lu GiB ", g);
+        strcat(buffer, buf);
+    }
+    if(m && c-- > 0) {
+        snprintf(buf, sizeof(buf), "%lu MiB ", m);
+        strcat(buffer, buf);
+    }
+    if(k && c-- > 0) {
+        snprintf(buf, sizeof(buf), "%lu kiB ", k);
+        strcat(buffer, buf);
+    }
+    if(c-- > 0) {
+        snprintf(buf, sizeof(buf), "%lu B ", b);
+        strcat(buffer, buf);
+    }
+    free(res);
+}
+
 int always(char *str) {
 	return 1;
 }
@@ -160,6 +229,7 @@ void tick(int fd, short event, void *arg) {
 #ifdef INCLUDE_IWLIB
     _wireless_reset();
 #endif
+    _fs_reset();
 	output[0] = 0;
 
 	if(f->start != NULL)

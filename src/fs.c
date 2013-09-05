@@ -21,17 +21,18 @@ int _fs_update(char *path) {
     fsresponse->total_space = fs_data->f_bsize * fs_data->f_blocks;
     fsresponse->free_space = fs_data->f_bsize * fs_data->f_bfree;
     fsresponse->used_space = fsresponse->total_space - fsresponse->free_space;
-    printf("%lu %lu %lu\n", fs_data->f_bsize, fs_data->f_blocks, fs_data->f_bfree);
 
     fs_updated = 1;
     return 0;
 }
 
+#define M() Result *res; \
+    if(!fs_updated || path != fs_cache) \
+        _fs_update(path);\
+    res = init_res()
+
 Result *fs_free(char *path) {
-    Result *res;
-    if(!fs_updated || path != fs_cache)
-        _fs_update(path);
-    res = init_res();
+    M();
     snprintf(res->string, sizeof(res->string-1), "%lu", fsresponse->free_space);
     res->value = fsresponse->free_space;
     res->max = fsresponse->total_space;
@@ -39,10 +40,7 @@ Result *fs_free(char *path) {
 }
 
 Result *fs_used(char *path) {
-    Result *res;
-    if(!fs_updated || path != fs_cache)
-        _fs_update(path);
-    res = init_res();
+    M();
     snprintf(res->string, sizeof(res->string-1), "%lu", fsresponse->used_space);
     res->value = fsresponse->used_space;
     res->max = fsresponse->total_space;
@@ -50,10 +48,7 @@ Result *fs_used(char *path) {
 }
 
 Result *fs_total(char *path) {
-    Result *res;
-    if(!fs_updated || path != fs_cache)
-        _fs_update(path);
-    res = init_res();
+    M();
     snprintf(res->string, sizeof(res->string-1), "%lu", fsresponse->total_space);
     res->value = fsresponse->total_space;
     res->max = fsresponse->total_space;
