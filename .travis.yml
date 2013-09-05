@@ -3,8 +3,10 @@ compiler:
   - gcc
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq bash libevent-dev
-script: ./build.sh
+  - sudo apt-get install -qq libevent-dev
+script:
+  - make
+  - make test
 branches:
   only:
     - master
