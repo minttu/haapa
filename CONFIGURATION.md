@@ -21,6 +21,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | time_date         | strftime  | Returns date time formatted with                          |          | Yes     |
 | battery_status    | battery   | Returns the status for the battery                        |          | Yes     |
 | battery_capacity  | battery   | Returns the current capacity for the battery              |          | Yes     |
+| cpu_temp          |           | Returns the temperature of the first cpu                  |          | Yes     |
 | network_ip        | interface | Returns the IP for the interface                          |          | Yes     |
 | exec              | command   | Executes the command and returns the output               |          | Yes     |
 | wireless_essid    | interface | Returns the network's ESSID for the interface             | iwlib    | Yes     |
@@ -59,6 +60,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | net_ifup          | interface | Returns 1 if interface is up                              |          | Yes     |
 | net_ifdown        | interface | Returns 1 if interface is down                            |          | Yes     |
 | bat_exists        | battery   | Returns 1 if battery exists                               |          | Yes     |
+| if_cpu_temp       |           | Returns 1 if haapa can get the cpu temperature            |          | Yes     |
 | alsa_muted        | channel   | Returns 1 if channel is muted                             | alsa     | Yes     |
 | mpd_playing       |           | Returns 1 if mpd is playing                               | mpd      | Yes     |
 

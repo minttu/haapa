@@ -3,7 +3,7 @@
 #include "time.h"
 #include "haapa.h"
 #include "proc.h"
-#include "battery.h"
+#include "acpi.h"
 #include "network.h"
 #include "exec.h"
 #ifdef INCLUDE_MPD
