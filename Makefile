@@ -41,12 +41,6 @@ opts:
 
 deps:
 
-ifeq ($(wildcard haapa),)
-else
-	@echo "Haapa already compiled! (run make clean first)"
-	@exit 1
-endif
-
 ifeq ($(wildcard $(LIB_PATH)event.h),)
 	@echo "REQUIRED libevent     not found!"
 	@exit 1
