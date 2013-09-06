@@ -23,9 +23,9 @@ install:
 ifeq ($(wildcard haapa),)
 	@echo "Compile haapa first! (Just run make)"
 else
-	@echo Installing to $(PREFIX)
-	@cp -f haapa $(PREFIX)
-	@chmod 775 $(PREFIX)/haapa
+	@echo Installing to $(DESTDIR)$(PREFIX)
+	@cp -f haapa $(DESTDIR)$(PREFIX)
+	@chmod 775 $(DESTDIR)$(PREFIX)/haapa
 endif
 
 uninstall:
