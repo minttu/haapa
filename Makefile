@@ -19,7 +19,7 @@ clean:
 	-rm -f src/*.o
 	-rm -f haapa
 
-install: all
+install:
 	@echo Installing to $(DESTDIR)$(PREFIX)/bin
 	@install -D -m755 haapa $(DESTDIR)$(PREFIX)/bin/haapa
 
