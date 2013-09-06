@@ -44,6 +44,8 @@ void string(Result *(*function)(char *str), char *str) {
 		strcat(buffer, "error");
 		return;
 	}
+	if(res->string[0] == 0)
+	    snprintf(res->string, sizeof(res->string), "%f", res->value);
 	strcat(buffer, res->string);
 	free(res);
 }
