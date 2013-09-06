@@ -50,6 +50,7 @@ static const Segment segments[] = {
     {sizeconvi, fs_used,            "/","#00FF00", always,      ""},
 #ifndef ASDF
     {string,    text,               "\u2764",   "#B94557", always,      ""},
+    {string,    cpu_temp,           "",         "#B94557", if_cpu_temp, ""},
     {bar,       proc_cpu,           "",         "#B94557", always,      ""},
     {string,    text,               "\u2263",   "#B28D4C", always,      ""},
     {bar,       proc_memory,        "",         "#B28D4C", always,      ""},

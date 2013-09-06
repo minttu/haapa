@@ -164,6 +164,7 @@ Result *proc_cpu_mhz() {
 	char* match;
 	char buffer[1024];
 	float mhz;
+	int val;
 	res = init_res();
 
 	f = fopen("/proc/cpuinfo", "r");
@@ -173,9 +174,14 @@ Result *proc_cpu_mhz() {
 		return res;
 	}
 
-	fread(buffer, 1, sizeof (buffer), f);
+	val = fread(buffer, 1, sizeof (buffer), f);
 
 	fclose(f);
+
+	if(val == EOF) {
+		res->error=1;
+		return res;
+	}
 
 	match = strstr(buffer, "cpu MHz");
 

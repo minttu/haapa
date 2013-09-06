@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "battery.h"
+#include "acpi.h"
 #include "config.h"
 #include "result.h"
 
@@ -87,5 +87,39 @@ int bat_exists(char *str) {
 
 	stat(file_location, &s);
 
+	return S_ISDIR(s.st_mode);
+}
+
+Result *cpu_temp(char *str) {
+	Result *res;
+	res = init_res();
+	FILE *f;
+	int temp = 0;
+	int val;
+
+	f = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+
+	if(f == NULL) {
+		res->error=1;
+		return res;
+	}
+
+	val = fscanf(f, "%i", &temp);
+	fclose(f);
+
+	if(val == EOF) {
+		res->error=1;
+		return res;
+	}
+
+	res->value=(int)temp/1000;
+	sprintf(res->string, "%i°C", temp/1000);
+
+	return res;
+}
+
+int if_cpu_temp(char *str) {
+	struct stat s;
+	stat("/sys/class/thermal/thermal_zone0/", &s);
 	return S_ISDIR(s.st_mode);
 }

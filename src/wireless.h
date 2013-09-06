@@ -30,7 +30,4 @@ Result *wireless_chan(char *ifname);
 Result *wireless_bitrate(char *ifname);
 Result *wireless_quality(char *ifname);
 
-
-#define wireless_github_stop_detecting_cpp_please
-
 #endif

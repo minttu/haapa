@@ -9,8 +9,4 @@ int net_ifup(char *str);
 
 int net_ifdown(char *str);
 
-#define network_github_stop_detecting_cpp_please
-#define network_github_stop_detecting_cpp_please2
-#define network_github_stop_detecting_cpp_please3
-
 #endif
