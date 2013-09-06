@@ -21,8 +21,7 @@ clean:
 
 install: all
 	@echo Installing to $(DESTDIR)$(PREFIX)/bin
-	@cp -f haapa $(DESTDIR)$(PREFIX)/bin
-	@chmod 775 $(DESTDIR)$(PREFIX)/bin/haapa
+	@install -D -m755 haapa $(DESTDIR)$(PREFIX)/bin/haapa
 
 uninstall:
 	@echo Uninstalling from $(DESTDIR)$(PREFIX)/bin
