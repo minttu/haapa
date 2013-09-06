@@ -154,20 +154,19 @@ void sizeconv(Result *(*function)(char *str), char *str) {
     k = ((unsigned long)res->value/(1000))%1000;
     m = ((unsigned long)res->value/(1000*1000))%1000;
     g = ((unsigned long)res->value/(1000*1000*1000))%1000;
-    int c = 2;
-    if(g && c-- > 0) {
-        snprintf(buf, sizeof(buf), "%lu GB ", g);
+    if(g) {
+        snprintf(buf, sizeof(buf), "%lu.%lu GB ", g, m/100);
         strcat(buffer, buf);
     }
-    if(m && c-- > 0) {
-        snprintf(buf, sizeof(buf), "%lu MB ", m);
+    else if(m) {
+        snprintf(buf, sizeof(buf), "%lu.%lu MB ", m, k/100);
         strcat(buffer, buf);
     }
-    if(k && c-- > 0) {
-        snprintf(buf, sizeof(buf), "%lu kB ", k);
+    else if(k) {
+        snprintf(buf, sizeof(buf), "%lu.%lu kB ", k, b/100);
         strcat(buffer, buf);
     }
-    if(c-- > 0) {
+    else {
         snprintf(buf, sizeof(buf), "%lu B ", b);
         strcat(buffer, buf);
     }
@@ -184,24 +183,23 @@ void sizeconvi(Result *(*function)(char *str), char *str) {
         strcat(buffer, "error");
         return;
     }
-    b = ((unsigned long)res->value)&1023;
-    k = ((unsigned long)res->value)>>10&1023;
-    m = ((unsigned long)res->value)>>20&1023;
-    g = ((unsigned long)res->value)>>30&1023;
-    int c = 2;
-    if(g && c-- > 0) {
-        snprintf(buf, sizeof(buf), "%lu GiB ", g);
+    b = ((unsigned long)res->value)%1024;
+    k = ((unsigned long)res->value)/1024%1024;
+    m = ((unsigned long)res->value)/1024/1024%1024;
+    g = ((unsigned long)res->value)/1024/1024/1024%1024;
+    if(g) {
+        snprintf(buf, sizeof(buf), "%lu.%lu GiB ", g, m/100);
         strcat(buffer, buf);
     }
-    if(m && c-- > 0) {
-        snprintf(buf, sizeof(buf), "%lu MiB ", m);
+    else if(m) {
+        snprintf(buf, sizeof(buf), "%lu.%lu MiB ", m, k/100);
         strcat(buffer, buf);
     }
-    if(k && c-- > 0) {
-        snprintf(buf, sizeof(buf), "%lu kiB ", k);
+    else if(k) {
+        snprintf(buf, sizeof(buf), "%lu.%lu kiB ", k, b/100);
         strcat(buffer, buf);
     }
-    if(c-- > 0) {
+    else {
         snprintf(buf, sizeof(buf), "%lu B ", b);
         strcat(buffer, buf);
     }

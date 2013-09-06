@@ -42,10 +42,12 @@ static const Segment segments[] = {
     {string,    network_ip,         "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
     {string,    text,               "down",     "#FF0000", net_ifdown,  "wlan0"},
 #endif
-    {sizeconv,       fs_free,            "/","#00FF00", always,      ""},
-    {sizeconv,       fs_used,            "/","#00FF00", always,      ""},
-    {sizeconvi,       fs_free,            "/","#00FF00", always,      ""},
-    {sizeconvi,       fs_used,            "/","#00FF00", always,      ""},
+    {sizeconv,  fs_total,            "/","#00FF00", always,      ""},
+    {sizeconv,  fs_free,            "/","#00FF00", always,      ""},
+    {sizeconv,  fs_used,            "/","#00FF00", always,      ""},
+    {sizeconvi,  fs_total,            "/","#00FF00", always,      ""},
+    {sizeconvi, fs_free,            "/","#00FF00", always,      ""},
+    {sizeconvi, fs_used,            "/","#00FF00", always,      ""},
 #ifndef ASDF
     {string,    text,               "\u2764",   "#B94557", always,      ""},
     {bar,       proc_cpu,           "",         "#B94557", always,      ""},

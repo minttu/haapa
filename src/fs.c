@@ -13,22 +13,15 @@ void _fs_reset() {
 }
 int _fs_update(char *path) {
     if(!fs_data)
-        fs_data = malloc(sizeof(statfs));
+        fs_data = malloc(sizeof(struct statfs));
     if(!fsresponse)
         fsresponse = malloc(sizeof(fs_response));
-/*
-    if(statvfs(path, fs_data)) {
-        return -1;
-    }
-    fsresponse->total_space = fs_data->f_bsize * fs_data->f_blocks;
-    fsresponse->free_space = fs_data->f_bsize * fs_data->f_bfree;
-    fsresponse->used_space = fsresponse->total_space - fsresponse->free_space;
-*/
+
     if(statfs(path, fs_data))
         return -1;
     fsresponse->total_space = fs_data->f_blocks * fs_data->f_bsize;
     fsresponse->free_space = fs_data->f_bavail * fs_data->f_bsize;
-    fsresponse->used_space = fsresponse->total_space - fsresponse->free_space;
+    fsresponse->used_space = fsresponse->total_space - fs_data->f_bsize * fs_data->f_bfree;
 
     fs_updated = 15;
     return 0;
