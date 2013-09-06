@@ -2,7 +2,7 @@ include config.mk
 
 .PHONY: default all clean install uninstall deps opts
 
-default: deps opts haapa
+default: haapa
 all: default
 
 src/config.h:
@@ -12,25 +12,21 @@ ifeq ($(wildcard src/config.h),)
 else
 endif
 
-haapa: src/config.h
+haapa: src/config.h deps
 	$(CC) -o haapa $(FILES) $(CFLAGS) $(LIBS)
 
 clean:
 	-rm -f src/*.o
 	-rm -f haapa
 
-install:
-ifeq ($(wildcard haapa),)
-	@echo "Compile haapa first! (Just run make)"
-else
-	@echo Installing to $(DESTDIR)$(PREFIX)
-	@cp -f haapa $(DESTDIR)$(PREFIX)
-	@chmod 775 $(DESTDIR)$(PREFIX)/haapa
-endif
+install: all
+	@echo Installing to $(DESTDIR)$(PREFIX)/bin
+	@cp -f haapa $(DESTDIR)$(PREFIX)/bin
+	@chmod 775 $(DESTDIR)$(PREFIX)/bin/haapa
 
 uninstall:
-	@echo Uninstalling from $(PREFIX)
-	@rm -f $(PREFIX)/haapa
+	@echo Uninstalling from $(DESTDIR)$(PREFIX)/bin
+	@rm -f $(DESTDIR)$(PREFIX)/bin/haapa
 
 opts:
 	@echo ""
