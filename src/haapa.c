@@ -230,6 +230,7 @@ void tick(int fd, short event, void *arg) {
     _wireless_reset();
 #endif
     _fs_reset();
+    _proc_speed_reset();
 	output[0] = 0;
 
 	if(f->start != NULL)

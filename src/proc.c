@@ -233,8 +233,8 @@ int _proc_speed_update(char *str) {
                 strtok(NULL, " ");
             up = atoi(strtok(NULL, " "));
             while(strtok(NULL, " ") != NULL);
-            proc_downspeed = (double)(proc_prevdown - down)/(double)interval;
-            proc_upspeed = (double)(proc_prevup - up)/(double)interval;
+            proc_downspeed = (double)(down - proc_prevdown)/(double)interval;
+            proc_upspeed = (double)(up - proc_prevup)/(double)interval;
             proc_prevdown = down;
             proc_prevup = up;
             goto end;
