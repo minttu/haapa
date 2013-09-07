@@ -1,12 +1,19 @@
 Configuring
 ===========
 
-Each segment is made up of 6 parts. **Output handler**, **output generator**, **generator arguments**, **color**, **conditions**, **condition arguments**. Having a color such as "#FF0000,#FFFFFF" will flash between the two.
+Each segment is made up of 6 parts. **Output handler**, **output generator**, **generator arguments**, **color**, **conditions**, **condition arguments**.
 
 **Output handlers**
 -------------------
 
-These handle how the generated content is displayed. Valid ones are: string, bar, percent and timeconv. Pretty self-explanatory.
+| Name      | Effect                                                        |
+| --------- | ------------------------------------------------------------- |
+| string    | Displays what the function outputs, or otherwise the value    |
+| percent   | Displays value/max with a %-sign                              |
+| bar       | same as percent, but rendered with a nice bar                 |
+| timeconv  | Convert value to time                                         |
+| sizeconv  | Convert value to bytes. Precision of 2 decimals and KB, MB... |
+| sizeconvi | Same as sizeconv but with KiB, MiB... instead                 |
 
 **Output generators**
 ---------------------
@@ -71,6 +78,11 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | alsa_muted        | channel   | Returns 1 if channel is muted                             | alsa     | Yes     |
 | mpd_playing       |           | Returns 1 if mpd is playing                               | mpd      | Yes     |
 
+**Color**
+---------
+
+Color is given in a hex form, for example "#F0A090" would be a valid color. You can specify two colors to be flashed each other update like this: "#FFFFFF,#FF0000". This would be white for the first tick, then red, then white again, and so on.
+
 **Global options**
 ------------------
 
@@ -84,3 +96,8 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | bar_format_unicode | integer   | How is the bar drawn. 0: no unicode, 1: vert 2: hori      |          | Yes     |
 | bar_format         | string    | Whats aside the bar                                       |          | Yes     |
 | bar_format_length  | integer   | How long are bars                                         |          | Yes     |
+
+**Notes**
+---------
+
+*   When using **format_i3_manual**, you control how segments (full_text) are created. You can start a new one using the macro "i3_manual_start()" and end your segments using "i3_manual_end(color)".
