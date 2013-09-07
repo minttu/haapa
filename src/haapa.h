@@ -8,6 +8,8 @@ void string(Result *(*function)(char *str), char *str);
 void bar(Result *(*function)(char *str), char *str);
 void percent(Result *(*function)(char *str), char *str);
 void timeconv(Result *(*function)(char *str), char *str);
+void sizeconv(Result *(*function)(char *str), char *str);
+void sizeconvi(Result *(*function)(char *str), char *str);
 Result *text(char *str);
 int always(char *str);
 int never(char *str);

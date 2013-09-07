@@ -198,3 +198,74 @@ Result *proc_cpu_mhz() {
 
 	return res;
 }
+
+static long proc_prevdown = 0, proc_prevup = 0;
+static double proc_downspeed = 0, proc_upspeed = 0;
+static int proc_speed_updated = 0;
+static char *proc_speed_path = NULL;
+
+void _proc_speed_reset() {
+    proc_speed_updated = 0;
+}
+
+int _proc_speed_update(char *str) {
+    FILE *fd;
+    long down, up;
+    char buf[256];
+    char ifname[32];
+    int i;
+
+    ifname[0] = 0;
+
+    fd = fopen("/proc/net/dev", "r");
+
+    /* skip two first lines */
+    fgets(buf, sizeof(buf), fd);
+    fgets(buf, sizeof(buf), fd);
+
+    while(fgets(buf, sizeof(buf), fd) != NULL) {
+        sscanf(buf, "%s: %*s", ifname);
+        ifname[strlen(ifname) - 1 ] = 0;
+        if(!strcmp(ifname, str)) {
+            strtok(buf, " ");
+            down = atoi(strtok(NULL, " "));
+            for(i = 0; i < 7; i++)
+                strtok(NULL, " ");
+            up = atoi(strtok(NULL, " "));
+            while(strtok(NULL, " ") != NULL);
+            if(proc_prevdown == 0) proc_prevdown = down;
+            if(proc_prevup == 0) proc_prevup = up;
+            proc_downspeed = (double)(down - proc_prevdown)/(double)interval;
+            proc_upspeed = (double)(up - proc_prevup)/(double)interval;
+            proc_prevdown = down;
+            proc_prevup = up;
+            goto end;
+        }
+    }
+    fclose(fd);
+    return -1;
+    end:
+    proc_speed_updated = 1;
+    proc_speed_path = str;
+    fclose(fd);
+    return 0;
+}
+Result *downspeed(char *str) {
+    Result *res;
+    res = init_res();
+    if(proc_speed_updated == 0 || proc_speed_path != str)
+        _proc_speed_update(str);
+    res->value = proc_downspeed;
+    snprintf(res->string, sizeof(res->string), "%lu", (unsigned long)proc_downspeed);
+    return res;
+}
+Result *upspeed(char *str) {
+    Result *res;
+    res = init_res();
+    if(proc_speed_updated == 0 || proc_speed_path != str)
+        _proc_speed_update(str);
+    res->value = proc_upspeed;
+    snprintf(res->string, sizeof(res->string), "%lu", (unsigned long)proc_upspeed);
+    return res;
+}
+
