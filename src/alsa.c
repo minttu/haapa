@@ -41,6 +41,11 @@ int _alsa_update() {
     snd_mixer_load(handle);
     elem = snd_mixer_find_selem(handle, sid);
 
+    if(!elem) {
+        snd_mixer_close(handle);
+        return -1;
+    }
+
     snd_mixer_selem_get_playback_volume_range (elem, &(als_response->minvol), &(als_response->maxvol));
     snd_mixer_selem_get_playback_volume(elem, 0, &(als_response->volume));
     snd_mixer_selem_get_playback_switch(elem, 0, &(als_response->unmuted));
