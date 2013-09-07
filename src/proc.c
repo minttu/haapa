@@ -233,6 +233,8 @@ int _proc_speed_update(char *str) {
                 strtok(NULL, " ");
             up = atoi(strtok(NULL, " "));
             while(strtok(NULL, " ") != NULL);
+            if(proc_prevdown == 0) proc_prevdown = down;
+            if(proc_prevup == 0) proc_prevup = up;
             proc_downspeed = (double)(down - proc_prevdown)/(double)interval;
             proc_upspeed = (double)(up - proc_prevup)/(double)interval;
             proc_prevdown = down;
@@ -254,7 +256,7 @@ Result *downspeed(char *str) {
     if(proc_speed_updated == 0 || proc_speed_path != str)
         _proc_speed_update(str);
     res->value = proc_downspeed;
-    snprintf(res->string, sizeof(res->string), "%lu", proc_downspeed);
+    snprintf(res->string, sizeof(res->string), "%lu", (unsigned long)proc_downspeed);
     return res;
 }
 Result *upspeed(char *str) {
@@ -263,7 +265,7 @@ Result *upspeed(char *str) {
     if(proc_speed_updated == 0 || proc_speed_path != str)
         _proc_speed_update(str);
     res->value = proc_upspeed;
-    snprintf(res->string, sizeof(res->string), "%lu", proc_upspeed);
+    snprintf(res->string, sizeof(res->string), "%lu", (unsigned long)proc_upspeed);
     return res;
 }
 
