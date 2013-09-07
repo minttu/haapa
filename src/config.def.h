@@ -5,7 +5,7 @@
 #include "format.h"
 #include "output.h"
 
-static Format *(* const formatter)() = format_plain;
+static Format *(* const formatter)() = format_i3;
 static void (* const outputter)(char *str) = output_plain;
 static const int interval = 1;							/* time in seconds between ticks */
 static const char *const batpath = "/sys/class/power_supply/";
@@ -24,35 +24,35 @@ static const char *const alsa_channel = "Master";
 
 static const Segment segments[] = {
 #ifdef INCLUDE_MPD
-    {string,    text,               "\u266B",   "#BBDD64", mpd_exists, ""},
-    {string,    mpd_smart,          " - ",      "#BBDD64", mpd_exists, ""},
-    {timeconv,  mpd_sels,           "",         "#BBDD64", mpd_exists, ""},
-    {string,    text,               "/",        "#BBDD64", mpd_exists, ""},
-    {timeconv,  mpd_slen,           "",         "#BBDD64", mpd_exists, ""},
+    {string,    text,               "\u266B",   "#859900", mpd_exists, ""},
+    {string,    mpd_smart,          " - ",      "#859900", mpd_exists, ""},
+    {timeconv,  mpd_sels,           "",         "#859900", mpd_exists, ""},
+    {string,    text,               "/",        "#859900", mpd_exists, ""},
+    {timeconv,  mpd_slen,           "",         "#859900", mpd_exists, ""},
 #endif
 #ifdef INCLUDE_ALSA
-    {string,    text,               "\u266B",   "#BBDD64", always,      ""},
-    {bar,       alsa_volume,        "",         "#BBDD64", alsa_nmuted, ""},
-    {string,    text,               "muted",    "#BBDD64", alsa_muted,  ""},
+    {string,    text,               "\u266B",   "#859900", always,      ""},
+    {bar,       alsa_volume,        "",         "#859900", alsa_nmuted, ""},
+    {string,    text,               "muted",    "#859900", alsa_muted,  ""},
 #endif
 #ifdef INCLUDE_IWLIB
-    {string,    text,               "\u21CB",   "#5F9F74", always,      ""},
-    {string,    wireless_essid,     "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
-    {percent,   wireless_quality,   "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
-    {string,    network_ip,         "wlan0",    "#5F9F74", net_ifup,    "wlan0"},
-    {string,    text,               "down",     "#FF0000", net_ifdown,  "wlan0"},
+    {string,    text,               "\u21CB",   "#DC322F", always,      ""},
+    {string,    wireless_essid,     "wlan0",    "#DC322F", net_ifup,    "wlan0"},
+    {percent,   wireless_quality,   "wlan0",    "#DC322F", net_ifup,    "wlan0"},
+    {string,    network_ip,         "wlan0",    "#DC322F", net_ifup,    "wlan0"},
+    {string,    text,               "down",     "#DC322F", net_ifdown,  "wlan0"},
 #endif
-    {string,    text,               "\u2764",   "#B94557", always,      ""},
-    {string,    cpu_temp,           "",         "#B94557", if_cpu_temp, ""},
-    {bar,       proc_cpu,           "",         "#B94557", always,      ""},
-    {string,    text,               "\u2263",   "#B28D4C", always,      ""},
-    {bar,       proc_memory,        "",         "#B28D4C", always,      ""},
-    {string,    text,               "\u2607",   "#9933CC", bat_exists,  "BAT0"},
-    {string,    battery_status,     "BAT0",     "#9933CC", bat_exists,  "BAT0"},
-    {bar,       battery_capacity,   "BAT0",     "#9933CC", bat_exists,  "BAT0"},
-    {string,    text,               "BAT0 Low", "#FF0000,#FFFFFF", bat_islow, "BAT0"},
-    {string,    text,               "|",        "#FFFFFF", always,      ""},
-    {string,    time_date,          "%T",       "#FFFFFF", always,      ""},
+    {string,    text,               "\u2764",   "#CB4B16", always,      ""},
+    {string,    cpu_temp,           "",         "#CB4B16", if_cpu_temp, ""},
+    {bar,       proc_cpu,           "",         "#CB4B16", always,      ""},
+    {string,    text,               "\u2263",   "#CB4B16", always,      ""},
+    {bar,       proc_memory,        "",         "#CB4B16", always,      ""},
+    {string,    text,               "\u2607",   "#2AA198", bat_exists,  "BAT0"},
+    {string,    battery_status,     "BAT0",     "#2AA198", bat_exists,  "BAT0"},
+    {bar,       battery_capacity,   "BAT0",     "#2AA198", bat_exists,  "BAT0"},
+    {string,    text,               "BAT0 Low", "#DC322F,#FFFFFF", bat_islow, "BAT0"},
+    {string,    text,               "|",        "#B58900", always,      ""},
+    {string,    time_date,          "%T",       "#B58900", always,      ""},
 };
 
 #endif
