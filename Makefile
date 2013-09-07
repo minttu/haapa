@@ -7,7 +7,7 @@ all: default
 
 src/config.h:
 ifeq ($(wildcard src/config.h),)
-	@echo "Creating $@ from src/config.def.h\n"
+	@echo "Creating $@ from src/config.def.h"
 	@cp src/config.def.h $@
 else
 endif
