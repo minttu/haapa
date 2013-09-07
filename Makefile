@@ -2,7 +2,7 @@ include config.mk
 
 .PHONY: default all clean install uninstall deps opts
 
-default: deps opts haapa
+default: haapa
 all: default
 
 src/config.h:
@@ -12,7 +12,7 @@ ifeq ($(wildcard src/config.h),)
 else
 endif
 
-haapa: src/config.h
+haapa: src/config.h deps
 	$(CC) -o haapa $(FILES) $(CFLAGS) $(LIBS)
 
 clean:
@@ -20,17 +20,12 @@ clean:
 	-rm -f haapa
 
 install:
-ifeq ($(wildcard haapa),)
-	@echo "Compile haapa first! (Just run make)"
-else
-	@echo Installing to $(PREFIX)
-	@cp -f haapa $(PREFIX)
-	@chmod 775 $(PREFIX)/haapa
-endif
+	@echo Installing to $(DESTDIR)$(PREFIX)/bin
+	@install -D -m755 haapa $(DESTDIR)$(PREFIX)/bin/haapa
 
 uninstall:
-	@echo Uninstalling from $(PREFIX)
-	@rm -f $(PREFIX)/haapa
+	@echo Uninstalling from $(DESTDIR)$(PREFIX)/bin
+	@rm -f $(DESTDIR)$(PREFIX)/bin/haapa
 
 opts:
 	@echo ""
@@ -40,12 +35,6 @@ opts:
 	@echo ""
 
 deps:
-
-ifeq ($(wildcard haapa),)
-else
-	@echo "Haapa already compiled! (run make clean first)"
-	@exit 1
-endif
 
 ifeq ($(wildcard $(LIB_PATH)event.h),)
 	@echo "REQUIRED libevent     not found!"

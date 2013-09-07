@@ -21,6 +21,7 @@ static const char *bar_unicode[2][8] ={{"\u2581", "\u2582", "\u2583", "\u2584",
 
 char buffer[1024];
 char *output;
+int ticktock;
 
 Format *f;
 
@@ -238,7 +239,20 @@ void tick(int fd, short event, void *arg) {
 		if(segments[i].condition_function(segments[i].condition_argument) == 1) {
 			buffer[0] = 0;
 			segments[i].output_function(segments[i].function, segments[i].function_argument);
-			f->segment(output, buffer, segments[i].color);
+			if(strlen(segments[i].color)>7) {
+				char *colbuf = NULL;
+				char ogbuf[16];
+				strcpy(ogbuf, segments[i].color);
+				colbuf = strtok(ogbuf, ",");
+				if(!ticktock) {
+					f->segment(output, buffer, colbuf);
+				} else {
+					colbuf = strtok(NULL, ",");
+					f->segment(output, buffer, colbuf);
+				}
+			} else {
+				f->segment(output, buffer, segments[i].color);
+			}
 		}
 	}
 
@@ -250,6 +264,8 @@ void tick(int fd, short event, void *arg) {
 	if(arguments.once) {
 		exit(0);
 	}
+
+	ticktock=!ticktock;
 }
 
 void display_usage() {

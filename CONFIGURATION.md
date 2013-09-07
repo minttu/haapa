@@ -1,7 +1,7 @@
 Configuring
 ===========
 
-Each segment is made up of 6 parts. **Output handler**, **output generator**, **generator arguments**, **color**, **conditions**, **condition arguments**.
+Each segment is made up of 6 parts. **Output handler**, **output generator**, **generator arguments**, **color**, **conditions**, **condition arguments**. Having a color such as "#FF0000,#FFFFFF" will flash between the two.
 
 **Output handlers**
 -------------------
@@ -64,6 +64,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | net_ifup          | interface | Returns 1 if interface is up                              |          | Yes     |
 | net_ifdown        | interface | Returns 1 if interface is down                            |          | Yes     |
 | bat_exists        | battery   | Returns 1 if battery exists                               |          | Yes     |
+| bat_islow         | battery   | Returns 1 if battery capacity is under 20%                |          | Yes     |
 | if_cpu_temp       |           | Returns 1 if haapa can get the cpu temperature            |          | Yes     |
 | alsa_muted        | channel   | Returns 1 if channel is muted                             | alsa     | Yes     |
 | mpd_playing       |           | Returns 1 if mpd is playing                               | mpd      | Yes     |

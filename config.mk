@@ -1,6 +1,6 @@
 VERSION = 1.0
 LIB_PATH = /usr/include/
-PREFIX = /bin
+PREFIX = /usr/local
 CC = gcc
 CFLAGS = --std=gnu99 -Wall -O2
 LIBS = -levent -lm

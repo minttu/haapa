@@ -77,6 +77,33 @@ Result *battery_capacity(char *str) {
 	return res;
 }
 
+int bat_islow(char *str) {
+	FILE *f;
+	int capacity = 0;
+	char file_location[128];
+	int val;
+	file_location[0] = 0;
+	strcat(file_location, batpath);
+	strcat(file_location, str);
+	strcat(file_location, "/");
+	strcat(file_location, "capacity");
+
+	f = fopen(file_location, "r");
+
+	if(f == NULL)
+		return 0;
+
+	val = fscanf(f, "%i", &capacity);
+	fclose(f);
+
+	if(val == EOF)
+		return 0;
+
+	if(capacity < 20)
+		return 1;
+	return 0;
+}
+
 int bat_exists(char *str) {
 	char file_location[128];
 	struct stat s;
