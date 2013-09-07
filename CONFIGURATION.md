@@ -26,7 +26,7 @@ These handle how the generated content is displayed. Valid ones are: string, bar
 | exec              | command   | Executes the command and returns the output               |          | Yes     |
 | get_uname         | a,s,n,r,v | Returns information, like the uname program does          |          | Yes     |
 | fs_total          | path      | Returns total available space in (mounted) path           |          | Yes     |
-| fs_free           | path      | Returns total free space in (mounted) pat     h           |          | Yes     |
+| fs_free           | path      | Returns total free space in (mounted) path                |          | Yes     |
 | fs_used           | path      | Returns total used space in (mounted) path                |          | Yes     |
 | downspeed         | interface | Returns current download speed for the interface          |          | Yes     |
 | upspeed           | interface | Returns current upload speed for the interface            |          | Yes     |
