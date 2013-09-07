@@ -6,6 +6,7 @@
 #include "acpi.h"
 #include "network.h"
 #include "exec.h"
+#include "fs.h"
 #include "uname.h"
 #ifdef INCLUDE_MPD
 #include "mpd.h"
