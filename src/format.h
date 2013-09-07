@@ -12,8 +12,14 @@ Format *format_init();
 
 Format *format_plain();
 Format *format_i3();
+Format *format_i3_manual();
 Format *format_dzen();
 Format *format_xmobar();
 Format *format_x256();
+
+#define i3_manual_s "!i3_manual_start"
+#define i3_manual_e "!i3_manual_end"
+
+int is_format(char *str);
 
 #endif

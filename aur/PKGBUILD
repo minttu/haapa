@@ -1,7 +1,7 @@
 _pkgname=haapa
 pkgname=haapa-git
 pkgver=0.1
-pkgrel=2
+pkgrel=3
 pkgdesc='A simple status program in C'
 url='http://github.com/JuhaniImberg/haapa'
 license=('MIT')
@@ -22,7 +22,7 @@ install=haapa.install
 
 pkgver() {
 	cd $_pkgname
-	git describe --always | sed -e 's|-|.|g'
+	echo "0.$(git rev-list --count HEAD).$(git describe --always)"
 }
 
 build() {
