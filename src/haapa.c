@@ -109,7 +109,7 @@ void percent(Result *(*function)(char *str), char *str) {
 		strcat(buffer, "error");
 		return;
 	}
-	sprintf(per, "%i%%", (int)round((res->value/res->max)*100));
+	sprintf(per, "%3i%%", (int)round((res->value/res->max)*100));
 	strcat(buffer, per);
 	free(res);
 }

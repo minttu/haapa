@@ -1,3 +1,4 @@
 *.o
 haapa
 src/config.h
+test/*
