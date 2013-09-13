@@ -1,11 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/socket.h>
-#include <sys/ioctl.h>
-#include <netinet/in.h>
-#include <net/if.h>
 #include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <ifaddrs.h>
 #include <unistd.h>
 
 #include "config.h"
@@ -16,41 +15,59 @@ Result *network_ip(char *str) {
 	Result *res;
 	res = init_res();
 
-	int fd;
-	struct ifreq ifr;
+	struct ifaddrs *ifaddr, *ifa;
+	int family;
+	char host[NI_MAXHOST];
 
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
+	getifaddrs(&ifaddr);
 
-	ifr.ifr_addr.sa_family = AF_INET;
+	for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+		if (ifa->ifa_addr == NULL)
+			continue;
 
-	strncpy(ifr.ifr_name, str, IFNAMSIZ-1);
+		family = ifa->ifa_addr->sa_family;
 
-	ioctl(fd, SIOCGIFADDR, &ifr);
+		if(strcmp(ifa->ifa_name, str)!=0)
+			continue;
 
-	close(fd);
-	sprintf(res->string,
-		"%s", inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
+		if (family == AF_INET) {
+			getnameinfo(ifa->ifa_addr,
+					(family == AF_INET) ? sizeof(struct sockaddr_in) :
+										 sizeof(struct sockaddr_in6),
+					host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+			strcpy(res->string, host);
+		}
+	}
+
+	freeifaddrs(ifaddr);
 
 	return res;
 }
 
 int net_ifup(char *str) {
-	int fd;
-	struct ifreq ifr;
+	struct ifaddrs *ifaddr, *ifa;
+	int family;
 
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
+	getifaddrs(&ifaddr);
 
-	ifr.ifr_addr.sa_family = AF_INET;
+	for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+		if (ifa->ifa_addr == NULL)
+			continue;
 
-	memset(&ifr, 0, sizeof(ifr));
+		family = ifa->ifa_addr->sa_family;
 
-	strncpy(ifr.ifr_name, str, IFNAMSIZ-1);
+		if(strcmp(ifa->ifa_name, str)!=0)
+			continue;
 
-	ioctl(fd, SIOCGIFFLAGS, &ifr);
+		if (family == AF_INET) {
+			freeifaddrs(ifaddr);
+			return true;
+		}
+	}
 
-	close(fd);
+	freeifaddrs(ifaddr);
 
-	return !!(ifr.ifr_flags & IFF_UP);
+	return false;
 }
 
 int net_ifdown(char *str) { return !(net_ifup(str)); }

@@ -7,7 +7,7 @@
 
 static Format *(* const formatter)() = format_plain;
 static void (* const outputter)(char *str) = output_plain;
-static const int interval = 1;							/* time in seconds between ticks */
+static const int interval = 1;                          /* time in seconds between ticks */
 static const char *const batpath = "/sys/class/power_supply/";
 static const char *const segment_seperator = " ";
 
@@ -35,13 +35,13 @@ static const Segment segments[] = {
     {bar,       alsa_volume,        "",         "#859900", alsa_nmuted, ""},
     {string,    text,               "muted",    "#859900", alsa_muted,  ""},
 #endif
+     {string,    text,               "\u21CB",   "#DC322F", always,      ""},
 #ifdef INCLUDE_IWLIB
-    {string,    text,               "\u21CB",   "#DC322F", always,      ""},
     {string,    wireless_essid,     "wlan0",    "#DC322F", net_ifup,    "wlan0"},
     {percent,   wireless_quality,   "wlan0",    "#DC322F", net_ifup,    "wlan0"},
     {string,    network_ip,         "wlan0",    "#DC322F", net_ifup,    "wlan0"},
-    {string,    text,               "down",     "#DC322F", net_ifdown,  "wlan0"},
 #endif
+    {string,    network_ip,         "eth0",     "#DC322F", net_ifup,    "eth0"},
     {string,    text,               "\u2764",   "#CB4B16", always,      ""},
     {string,    cpu_temp,           "",         "#CB4B16", if_cpu_temp, ""},
     {bar,       proc_cpu,           "",         "#CB4B16", always,      ""},
