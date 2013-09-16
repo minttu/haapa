@@ -34,7 +34,7 @@ int _fs_update(char *path) {
 
 Result *fs_free(char *path) {
     M();
-    snprintf(res->string, sizeof(res->string-1), "%lu", fsresponse->free_space);
+    sprintf(res->string, "%lu", fsresponse->free_space);
     res->value = fsresponse->free_space;
     res->max = fsresponse->total_space;
     return res;
@@ -42,7 +42,7 @@ Result *fs_free(char *path) {
 
 Result *fs_used(char *path) {
     M();
-    snprintf(res->string, sizeof(res->string-1), "%lu", fsresponse->used_space);
+    sprintf(res->string, "%lu", fsresponse->used_space);
     res->value = fsresponse->used_space;
     res->max = fsresponse->total_space;
     return res;
@@ -50,7 +50,7 @@ Result *fs_used(char *path) {
 
 Result *fs_total(char *path) {
     M();
-    snprintf(res->string, sizeof(res->string-1), "%lu", fsresponse->total_space);
+    sprintf(res->string, "%lu", fsresponse->total_space);
     res->value = fsresponse->total_space;
     res->max = fsresponse->total_space;
     return res;
