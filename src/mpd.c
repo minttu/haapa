@@ -181,6 +181,8 @@ Result *mpd_smart(char *sep) {
     }
     if(mpdresponse->artist && mpdresponse->title && strlen(mpdresponse->artist) && strlen(mpdresponse->title))
         snprintf(res->string, sizeof(res->string), "%s%s%s", mpdresponse->artist, sep, mpdresponse->title);
+    else if(mpdresponse->title && strlen(mpdresponse->title))
+        snprintf(res->string, sizeof(res->string), "%s", mpdresponse->title);
     else
         sprintf(res->string, "%s", mpdresponse->uri);
     return res;
