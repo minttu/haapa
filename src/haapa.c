@@ -11,8 +11,8 @@
 #include <stdbool.h>
 
 #include "modules.h"
-
 #include "output.h"
+#include "util.h"
 
 static const char *bar_unicode[2][8] ={{"\u2581", "\u2582", "\u2583", "\u2584",
 										"\u2585", "\u2586", "\u2587", "\u2588"},
@@ -45,9 +45,20 @@ void string(Result *(*function)(char *str), char *str) {
 		strcat(buffer, "error");
 		return;
 	}
-	if(res->string[0] == 0)
+	if(res->string[0] == 0) {
 	    snprintf(res->string, sizeof(res->string), "%f", res->value);
-	strcat(buffer, res->string);
+	    strcat(buffer, res->string);
+        }
+        else {
+            if(formatter == format_i3) {
+                char *tmp = jsonescape(res->string);
+                strcat(buffer, tmp);
+                free(tmp);
+            }
+            else {
+                strcat(buffer, res->string);
+            }
+        }
 	free(res);
 }
 
