@@ -37,8 +37,11 @@ int _mpd_update() {
         return -1;
     }
     /* TODO: reconnect to MPD if no connection */
-    if(!conn || mpdresponse->err)
+    if(!conn || mpdresponse->err) {
+        if(conn)
+            mpd_connection_free(conn);
         conn = mpd_connection_new(mpd_hostname, mpd_port, mpd_timeout);
+    }
     if(mpd_pass) {
         mpd_send_password(conn, mpd_pass);
     }
