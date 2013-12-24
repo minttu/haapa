@@ -19,7 +19,7 @@ char *jsonnescape(const char *str, int n) {
             h++;
         i++;
     }
-    ret = malloc(i + h);
+    ret = malloc(i + h + 1);
     for(h = 0, j = 0; j < i; j++) {
         if(formatter == format_i3 && (str[j] == '"' || str[j] == '\\'))
             ret[j + h++] = '\\';

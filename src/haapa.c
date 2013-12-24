@@ -53,7 +53,8 @@ void string(Result *(*function)(char *str), char *str) {
             if(formatter == format_i3) {
                 char *tmp = jsonescape(res->string);
                 strcat(buffer, tmp);
-                free(tmp);
+                if(tmp)
+                    free(tmp);
             }
             else {
                 strcat(buffer, res->string);
