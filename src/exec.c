@@ -17,13 +17,14 @@ int _exec(char *cmd, Result *res) {
         dup2(pipefd[1], 1);
         dup2(pipefd[1], 2);
         close(pipefd[1]);
-        execl("/bin/sh", "sh", "-c", cmd, NULL);
+        execl("/bin/sh", "/bin/sh/", "-c", cmd, NULL);
         /* exec failed */
         exit(127);
     }
     else {
         close(pipefd[1]);
         res->string[read(pipefd[0],res->string, sizeof(res->string))] = 0;
+        close(pipefd[0]);
         return 0;
     }
     /* never reached */
