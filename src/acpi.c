@@ -82,6 +82,8 @@ int bat_islow(char *str) {
 	int capacity = 0;
 	char file_location[128];
 	int val;
+        Result *res;
+
 	file_location[0] = 0;
 	strcat(file_location, batpath);
 	strcat(file_location, str);
