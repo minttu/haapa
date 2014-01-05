@@ -31,13 +31,13 @@ int _alsa_update() {
             als_response->max_arr[i] = 1;
     }
 
-  	snd_mixer_selem_id_alloca(&sid);
-   	snd_mixer_selem_id_set_index(sid, mix_index);
+      snd_mixer_selem_id_alloca(&sid);
+       snd_mixer_selem_id_set_index(sid, mix_index);
     snd_mixer_selem_id_set_name(sid, mix_name);
 
     snd_mixer_open(&handle, 0);
-   	snd_mixer_attach(handle, card);
-   	snd_mixer_selem_register(handle, NULL, NULL);
+       snd_mixer_attach(handle, card);
+       snd_mixer_selem_register(handle, NULL, NULL);
     snd_mixer_load(handle);
     elem = snd_mixer_find_selem(handle, sid);
 
@@ -53,9 +53,9 @@ int _alsa_update() {
     snd_mixer_close(handle);
     sid = 0;
 
-	als_response->volume -= als_response->minvol;
-	als_response->maxvol -= als_response->minvol;
-	als_response->minvol = 0;
+    als_response->volume -= als_response->minvol;
+    als_response->maxvol -= als_response->minvol;
+    als_response->minvol = 0;
 
     als_response->max_arr[0] = als_response->maxvol;
     als_response->max_arr[1] = als_response->maxvol;
@@ -74,7 +74,7 @@ int alsa_muted(char *str) {
 }
 
 int alsa_nmuted(char *str) {
-	return !alsa_muted(str);
+    return !alsa_muted(str);
 }
 
 Result *_alsa_wrap(int i) {

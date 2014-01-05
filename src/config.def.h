@@ -35,7 +35,7 @@ static const Segment segments[] = {
     {bar,       alsa_volume,        "",         "#859900", alsa_nmuted, ""},
     {string,    text,               "muted",    "#859900", alsa_muted,  ""},
 #endif
-     {string,    text,               "\u21CB",   "#DC322F", always,      ""},
+    {string,    text,               "\u21CB",   "#DC322F", always,      ""},
 #ifdef INCLUDE_IWLIB
     {string,    wireless_essid,     "wlan0",    "#DC322F", net_ifup,    "wlan0"},
     {percent,   wireless_quality,   "wlan0",    "#DC322F", net_ifup,    "wlan0"},

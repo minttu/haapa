@@ -2,10 +2,10 @@
 #define FORMAT_H
 
 typedef struct {
-	char *init;
-	char *start;
-	char *end;
-	void (*segment)(char *buffer, char *str, char *color);
+    char *init;
+    char *start;
+    char *end;
+    void (*segment)(char *buffer, char *str, char *color);
 } Format;
 
 Format *format_init();

@@ -7,15 +7,15 @@
 #include "result.h"
 
 Result *time_date(char *str) {
-	Result *res;
-	res = init_res();
-	time_t timer;
-	struct tm *tm_info;
+    Result *res;
+    res = init_res();
+    time_t timer;
+    struct tm *tm_info;
 
-	time(&timer);
-	tm_info = localtime(&timer);
+    time(&timer);
+    tm_info = localtime(&timer);
 
-	strftime(res->string, 64, str, tm_info);
+    strftime(res->string, 64, str, tm_info);
 
-	return res;
+    return res;
 }

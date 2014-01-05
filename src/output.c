@@ -4,11 +4,11 @@
 #include "output.h"
 
 void output_plain(char *str) {
-	printf("%s\n", str);
-	fflush( stdout );
+    printf("%s\n", str);
+    fflush( stdout );
 }
 
 void output_ontop(char *str) {
-	printf("\r%s", str);
-	fflush( stdout );
+    printf("\r%s", str);
+    fflush( stdout );
 }

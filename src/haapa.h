@@ -17,17 +17,17 @@ int never(char *str);
 void tick(int fd, short event, void *arg);
 
 typedef enum {
-	FORMAT_PLAIN,
-	FORMAT_I3
+    FORMAT_PLAIN,
+    FORMAT_I3
 } format_type;
 
 typedef struct {
-	void (*output_function)();
-	Result *(*function)(char *str);
-	char *function_argument;
-	char *color;
-	int (*condition_function)(char *str);
-	char *condition_argument;
+    void (*output_function)();
+    Result *(*function)(char *str);
+    char *function_argument;
+    char *color;
+    int (*condition_function)(char *str);
+    char *condition_argument;
 } Segment;
 
 #endif

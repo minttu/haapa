@@ -12,62 +12,62 @@
 #include "network.h"
 
 Result *network_ip(char *str) {
-	Result *res;
-	res = init_res();
+    Result *res;
+    res = init_res();
 
-	struct ifaddrs *ifaddr, *ifa;
-	int family;
-	char host[NI_MAXHOST];
+    struct ifaddrs *ifaddr, *ifa;
+    int family;
+    char host[NI_MAXHOST];
 
-	getifaddrs(&ifaddr);
+    getifaddrs(&ifaddr);
 
-	for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
-		if (ifa->ifa_addr == NULL)
-			continue;
+    for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+        if (ifa->ifa_addr == NULL)
+            continue;
 
-		family = ifa->ifa_addr->sa_family;
+        family = ifa->ifa_addr->sa_family;
 
-		if(strcmp(ifa->ifa_name, str)!=0)
-			continue;
+        if(strcmp(ifa->ifa_name, str)!=0)
+            continue;
 
-		if (family == AF_INET) {
-			getnameinfo(ifa->ifa_addr,
-					(family == AF_INET) ? sizeof(struct sockaddr_in) :
-										 sizeof(struct sockaddr_in6),
-					host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
-			strcpy(res->string, host);
-		}
-	}
+        if (family == AF_INET) {
+            getnameinfo(ifa->ifa_addr,
+                    (family == AF_INET) ? sizeof(struct sockaddr_in) :
+                                         sizeof(struct sockaddr_in6),
+                    host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+            strcpy(res->string, host);
+        }
+    }
 
-	freeifaddrs(ifaddr);
+    freeifaddrs(ifaddr);
 
-	return res;
+    return res;
 }
 
 int net_ifup(char *str) {
-	struct ifaddrs *ifaddr, *ifa;
-	int family;
+    struct ifaddrs *ifaddr, *ifa;
+    int family;
 
-	getifaddrs(&ifaddr);
+    getifaddrs(&ifaddr);
 
-	for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
-		if (ifa->ifa_addr == NULL)
-			continue;
+    for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+        if (ifa->ifa_addr == NULL)
+            continue;
 
-		family = ifa->ifa_addr->sa_family;
+        family = ifa->ifa_addr->sa_family;
 
-		if(strcmp(ifa->ifa_name, str)!=0)
-			continue;
+        if(strcmp(ifa->ifa_name, str)!=0)
+            continue;
 
-		if (family == AF_INET) {
-			freeifaddrs(ifaddr);
-			return true;
-		}
-	}
+        if (family == AF_INET) {
+            freeifaddrs(ifaddr);
+            return true;
+        }
+    }
 
-	freeifaddrs(ifaddr);
+    freeifaddrs(ifaddr);
 
-	return false;
+    return false;
 }
 
 int net_ifdown(char *str) { return !(net_ifup(str)); }
