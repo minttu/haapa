@@ -17,6 +17,8 @@ Format *format_dzen();
 Format *format_xmobar();
 Format *format_x256();
 
+Format *format_html();
+
 #define i3_manual_s "!i3_manual_start"
 #define i3_manual_e "!i3_manual_end"
 

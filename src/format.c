@@ -53,6 +53,7 @@ Format *format_i3() {
     return f;
 }
 
+
 void format_i3_manual_segment(char *buffer, char *str, char *color) {
     if(strcmp(i3_manual_s, str) == 0) {
         strcat(buffer, ",{\"full_text\":\"");
@@ -130,6 +131,22 @@ Format *format_x256() {
     f->start = "";
     f->end = "";
     f->segment = format_x256_segment;
+    return f;
+}
+
+void format_html_segment(char *buffer, char *str, char *color) {
+    char tmpbff[256];
+    sprintf(tmpbff, "<span style=\"color: %s;\">%s</span>%s", color, str, segment_seperator);
+    strcat(buffer, tmpbff);
+}
+
+Format *format_html() {
+    Format *f;
+    f = format_init("html");
+    f->init = "";
+    f->start = "<!DOCTYPE HTML><html><head><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"1\"></head><body><pre>";
+    f->end = "</pre></body></html>";
+    f->segment = format_html_segment;
     return f;
 }
 
