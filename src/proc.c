@@ -220,8 +220,8 @@ int _proc_speed_update(char *str) {
     fd = fopen("/proc/net/dev", "r");
 
     /* skip two first lines */
-    fgets(buf, sizeof(buf), fd);
-    fgets(buf, sizeof(buf), fd);
+    (void)fgets(buf, sizeof(buf), fd);
+    (void)fgets(buf, sizeof(buf), fd);
 
     while(fgets(buf, sizeof(buf), fd) != NULL) {
         sscanf(buf, "%s: %*s", ifname);
