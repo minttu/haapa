@@ -5,6 +5,7 @@
 void start_segment();
 void end_segment(char *color);
 void string(Result *(*function)(char *str), char *str);
+void alert(Result *(*function)(char *str), char *str);
 void bar(Result *(*function)(char *str), char *str);
 void percent(Result *(*function)(char *str), char *str);
 void timeconv(Result *(*function)(char *str), char *str);
