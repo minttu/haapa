@@ -63,6 +63,11 @@ void string(Result *(*function)(char *str), char *str) {
 	free(res);
 }
 
+void alert(Result *(*function)(char *str), char *str) {
+    strcat(buffer, "\a");
+    string(function, str);
+}
+
 Result *text(char *str) {
 	Result *res = init_res();
 	strcpy(res->string, str);

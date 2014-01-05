@@ -50,7 +50,7 @@ static const Segment segments[] = {
     {string,    text,               "\u2607",   "#2AA198", bat_exists,  "BAT0"},
     {string,    battery_status,     "BAT0",     "#2AA198", bat_exists,  "BAT0"},
     {bar,       battery_capacity,   "BAT0",     "#2AA198", bat_exists,  "BAT0"},
-    {string,    text,               "BAT0 Low", "#DC322F,#FFFFFF", bat_islow, "BAT0"},
+    {alert,    text,               "BAT0 Low", "#DC322F,#FFFFFF", bat_islow, "BAT0"},
     {string,    text,               "|",        "#B58900", always,      ""},
     {string,    time_date,          "%T",       "#B58900", always,      ""},
 };
