@@ -88,7 +88,7 @@ Color is given in a hex form, for example "#F0A090" would be a valid color. You 
 
 | Name               | Arguments | Effect                                                    | Requires | Working |
 | ------------------ | --------- | --------------------------------------------------------- | -------- | ------- |
-| formatter          | format_*  | Possible values: plain, i3, i3_manual, dzen, xmobar, x256 |          | Yes     |
+| formatter          | format_*  | See [this table](#formats)                                |          | Yes     |
 | outputter          | output_*  | Possible values: plain, ontop, x                          | x: Xlib  | Yes     |
 | interval           | integer   | How often should haapa update, in seconds                 |          | Yes     |
 | batpath            | path      | Path to where the systems batteries reside                |          | Yes     |
@@ -97,7 +97,21 @@ Color is given in a hex form, for example "#F0A090" would be a valid color. You 
 | bar_format         | string    | Whats aside the bar                                       |          | Yes     |
 | bar_format_length  | integer   | How long are bars                                         |          | Yes     |
 
+**Formats**
+-----------
+
+| Name             | Description                                                                 |
+| ---------------- | --------------------------------------------------------------------------- |
+| format_plain     | Very plain formatting. No colors are included. Suistable for terminals.     |
+| format_i3        | Format made for use with i3bar.                                             |
+| format_i3_manual | Format made for use with i3bar. Segments are defined manually in this one.  |
+| format_dzen      | Format made for use with dzen.                                              |
+| format_xmobar    | Format made for use with xmobar.                                            |
+| format_x256      | Colored format for 256 color terminals. Useful for use with DWM.            |
+| format_html      | HTML format with colors. Useful for generating HTML status pages.           |
+
 **Notes**
 ---------
 
 *   When using **format_i3_manual**, you control how segments (full_text) are created. You can start a new one using the macro "i3_manual_start()" and end your segments using "i3_manual_end(color)".
+
