@@ -312,6 +312,7 @@ int main(int argc, char *const argv[]) {
         switch( opt ) {
             case 'o':
                 arguments.once++;
+                tv.tv_sec = 0;
                 break;
 
             case 'v':
