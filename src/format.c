@@ -80,7 +80,7 @@ Format *format_i3_manual() {
 
 void format_dzen_segment(char *buffer, char *str, char *color) {
     char colorbuffer[64];
-    sprintf(colorbuffer, "^fg(\\%s)", color);
+    sprintf(colorbuffer, "^fg(%s)", color);
     strcat(buffer, colorbuffer);
     strcat(buffer, str);
     strcat(buffer, segment_seperator);
