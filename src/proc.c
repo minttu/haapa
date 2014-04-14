@@ -40,7 +40,6 @@ Result *proc_memory() {
     FILE *f;
     Result *res;
     res = init_res();
-    char u[9][16];
     int mem_total, mem_free, mem_buffers, mem_cached, mem_used, val;
 
     f = fopen("/proc/meminfo", "r");
@@ -49,14 +48,14 @@ Result *proc_memory() {
         res->error=1;
         return res;
     }
-
-    val = fscanf(f, "%s %i %s %s %i %s %s %i %s %s %i %s", 
-        u[0], &mem_total, u[1],
-        u[2], &mem_free, u[3],
-        u[4], &mem_buffers, u[5],
-        u[6], &mem_cached, u[7]);
+#ifdef HAAPA_NEWMEM
+    val = fscanf(f, "%*s %i %*s %*s %i %*s %*s %*i %*s %*s %i %*s %*s %i %*s",
+                 &mem_total, &mem_free, &mem_buffers, &mem_cached);
+#else
+    val = fscanf(f, "%*s %i %*s %*s %i %*s %*s %i %*s %*s %i %*s",
+                 &mem_total, &mem_free, &mem_buffers, &mem_cached);
+#endif
     fclose(f);
-
     if(val == EOF) {
         res->error=1;
         return res;
