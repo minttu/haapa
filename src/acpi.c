@@ -63,7 +63,6 @@ Result *battery_capacity(char *str) {
     val = fscanf(f, "%i", &capacity);
     fclose(f);
 
-
     if(val == EOF) {
         res->error=1;
         return res;
@@ -73,6 +72,72 @@ Result *battery_capacity(char *str) {
     res->value=(int)capacity;
 
     sprintf(res->string, "%i%%", capacity);
+
+    return res;
+}
+
+Result *battery_time(char *str) {
+    Result *res;
+    res = init_res();
+
+    FILE *f;
+    int voltage = 0;
+    int power = 0;
+    int energy = 0;
+    int capacity = 0;
+    int rate = 0;
+    char file_location[128];
+    int val;
+
+    sprintf(file_location, "%s%s/voltage_now", batpath, str);
+    f = fopen(file_location, "r");
+
+    if(f == NULL) {
+        res->error=1;
+        return res;
+    }
+    val = fscanf(f, "%i", &voltage);
+    fclose(f);
+    if(val == EOF) {
+        res->error=1;
+        return res;
+    }
+
+    sprintf(file_location, "%s%s/power_now", batpath, str);
+    f = fopen(file_location, "r");
+
+    if(f == NULL) {
+        res->error=1;
+        return res;
+    }
+    val = fscanf(f, "%i", &power);
+    fclose(f);
+    if(val == EOF) {
+        res->error=1;
+        return res;
+    }
+
+    sprintf(file_location, "%s%s/energy_now", batpath, str);
+    f = fopen(file_location, "r");
+
+    if(f == NULL) {
+        res->error=1;
+        return res;
+    }
+    val = fscanf(f, "%i", &energy);
+    fclose(f);
+    if(val == EOF) {
+        res->error=1;
+        return res;
+    }
+
+    voltage /= 1000;
+    power /= 1000;
+    energy /= 1000;
+
+    capacity = energy * 1000 / voltage;
+    rate = power * 1000 / voltage;
+    res->value = 3600 * capacity / rate;
 
     return res;
 }
