@@ -9,7 +9,7 @@
 #include "result.h"
 #include "config.h"
 
-struct mpd_connection *conn;
+struct mpd_connection *conn = NULL;
 struct mpd_status *status = NULL;
 struct mpd_audio_format *format;
 struct mpd_song *song = NULL;
@@ -47,6 +47,7 @@ int _mpd_update() {
     }
     if(mpd_connection_get_error(conn) != MPD_ERROR_SUCCESS) {
         mpd_connection_free(conn);
+        conn = NULL;
         mpdresponse->err = -1;
         return -1;
     }
