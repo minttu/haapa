@@ -130,22 +130,16 @@ void timeconv(Result *(*function)(char *str), char *str) {
     Result *res = function(str);
     char buf[128];
     buf[0] = 0;
-    int w, d, h, m, s;
+    int h, m, s;
     if(res->error) {
         free(res);
         strcat(buffer, "error");
         return;
     }
-    w = ((int)res->value/(60*60*24*7));
-    d = ((int)res->value/(60*60*24))%24;
     h = ((int)res->value/(60*60))%60;
     m = ((int)res->value/60)%60;
     s = ((int)res->value)%60;
-    if(w)
-        snprintf(buf, sizeof(buf), "%d weeks %d days %02dh %02dm %02ds", w, d, h, m, s);
-    else if(d)
-        snprintf(buf, sizeof(buf), "%d days %02dh %02dm %02ds", d, h, m, s);
-    else if(h)
+    if(h)
         snprintf(buf, sizeof(buf), "%02d:%02d:%02d", h, m, s);
     else
         snprintf(buf, sizeof(buf), "%02d:%02d", m, s);
