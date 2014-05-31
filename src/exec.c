@@ -9,10 +9,14 @@
 
 int _exec(char *cmd, Result *res) {
     int pipefd[2];
-    if(pipe(pipefd)<0)
+
+    if (pipe(pipefd) < 0) {
         return -1;
+    }
+
     pid_t pid = fork();
-    if(pid == 0) {
+
+    if (pid == 0) {
         close(pipefd[0]);
         dup2(pipefd[1], 1);
         dup2(pipefd[1], 2);
@@ -20,13 +24,13 @@ int _exec(char *cmd, Result *res) {
         execl("/bin/sh", "/bin/sh/", "-c", cmd, NULL);
         /* exec failed */
         exit(127);
-    }
-    else {
+    } else {
         close(pipefd[1]);
-        res->string[read(pipefd[0],res->string, sizeof(res->string))] = 0;
+        res->string[read(pipefd[0], res->string, sizeof(res->string))] = 0;
         close(pipefd[0]);
         return 0;
     }
+
     /* never reached */
     return 0;
 }

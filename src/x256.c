@@ -35,23 +35,27 @@ double _dist(Color a, Color b) {
 }
 
 char *_strip(char *str) {
-    if(str[0] == '#')
+    if (str[0] == '#') {
         str++;
+    }
+
     return str;
 }
 
 int get_cached(char *str) {
     int i;
-    for(i = 0; i < cache_size; i++) {
-        if(strcmp(str, cache[i].str)==0) {
+
+    for (i = 0; i < cache_size; i++) {
+        if (strcmp(str, cache[i].str) == 0) {
             return cache[i].index;
         }
     }
+
     return -1;
 }
 
 void add_cached(char *str, int index) {
-    if(get_cached(str)==-1) {
+    if (get_cached(str) == -1) {
         cache[cache_size].str = str;
         cache[cache_size].index = index;
         cache_size++;
@@ -68,19 +72,23 @@ int get_x256(char *str) {
     double best_val = 999999.0;
 
     i = get_cached(target);
-    if(i!=-1)
+
+    if (i != -1) {
         return i;
+    }
 
     target_color = _convert((int)strtol(target, NULL, 16));
 
-    for(i = 16; i < 256; i++) {
-        if(strcmp(colors[i],target)==0) {
+    for (i = 16; i < 256; i++) {
+        if (strcmp(colors[i], target) == 0) {
             best = i;
             break;
         }
+
         tmp_color = _convert((int)strtol(colors[i], NULL, 16));
         tmp_val = _dist(target_color, tmp_color);
-        if(tmp_val<best_val) {
+
+        if (tmp_val < best_val) {
             best_val = tmp_val;
             best = i;
         }

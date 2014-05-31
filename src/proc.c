@@ -16,22 +16,24 @@ Result *proc_load(char *str) {
 
     f = fopen("/proc/loadavg", "r");
 
-    if(f == NULL) {
-        res->error=1;
+    if (f == NULL) {
+        res->error = 1;
         return res;
     }
 
     val = fscanf(f, "%f %f %f", &loads[0], &loads[1], &loads[2]);
     fclose(f);
-    if(val == EOF) {
-        res->error=1;
+
+    if (val == EOF) {
+        res->error = 1;
         return res;
     }
 
-    if(loadtime != 3)
+    if (loadtime != 3) {
         sprintf(res->string, "%.2f", loads[loadtime]);
-    else
+    } else {
         sprintf(res->string, "%.2f %.2f %.2f", loads[0], loads[1], loads[2]);
+    }
 
     return res;
 }
@@ -44,10 +46,11 @@ Result *proc_memory() {
 
     f = fopen("/proc/meminfo", "r");
 
-    if(f == NULL) {
-        res->error=1;
+    if (f == NULL) {
+        res->error = 1;
         return res;
     }
+
 #ifdef HAAPA_NEWMEM
     val = fscanf(f, "%*s %i %*s %*s %i %*s %*s %*i %*s %*s %i %*s %*s %i %*s",
                  &mem_total, &mem_free, &mem_buffers, &mem_cached);
@@ -56,16 +59,17 @@ Result *proc_memory() {
                  &mem_total, &mem_free, &mem_buffers, &mem_cached);
 #endif
     fclose(f);
-    if(val == EOF) {
-        res->error=1;
+
+    if (val == EOF) {
+        res->error = 1;
         return res;
     }
 
     mem_used = mem_total - mem_free - mem_buffers - mem_cached;
 
-    sprintf(res->string, "%i/%i MB", mem_used/1024, mem_total/1024);
-    res->value=mem_used;
-    res->max=mem_total;
+    sprintf(res->string, "%i/%i MB", mem_used / 1024, mem_total / 1024);
+    res->value = mem_used;
+    res->max = mem_total;
     return res;
 }
 
@@ -91,37 +95,37 @@ Result *proc_cpu() {
 
     f = fopen("/proc/stat", "r");
 
-    if(f == NULL) {
-        res->error=1;
+    if (f == NULL) {
+        res->error = 1;
         return res;
     }
 
-    val = fscanf(f, "%s %i %i %i %i %i %i %i", 
-        ident, &a[0], &a[1], &a[2], &a[3], &a[4], &a[5], &a[6]);
+    val = fscanf(f, "%s %i %i %i %i %i %i %i",
+                 ident, &a[0], &a[1], &a[2], &a[3], &a[4], &a[5], &a[6]);
     fclose(f);
 
-    if(val == EOF) {
-        res->error=1;
+    if (val == EOF) {
+        res->error = 1;
         return res;
     }
 
     idle = a[3];
 
-    for(i = 0; i < 7; i++) {
+    for (i = 0; i < 7; i++) {
         total += a[i];
     }
 
-    if(cpu_prev_total > 0) {
+    if (cpu_prev_total > 0) {
         diff_idle = idle - cpu_prev_idle;
         diff_total = total - cpu_prev_total;
         usage = 100 * (diff_total - diff_idle) / diff_total;
         res->value = usage;
         res->max = 100;
         sprintf(res->string, "%.0f%%", usage);
-    }else{
+    } else {
         strcpy(res->string, "");
-        res->value=0;
-        res->max=100;
+        res->value = 0;
+        res->max = 100;
     }
 
     cpu_prev_total = total;
@@ -139,16 +143,16 @@ Result *proc_uptime() {
 
     f = fopen("/proc/uptime", "r");
 
-    if(f == NULL) {
-        res->error=1;
+    if (f == NULL) {
+        res->error = 1;
         return res;
     }
 
     val = fscanf(f, "%f", &uptime);
     fclose(f);
 
-    if(val == EOF) {
-        res->error=1;
+    if (val == EOF) {
+        res->error = 1;
         return res;
     }
 
@@ -160,7 +164,7 @@ Result *proc_uptime() {
 Result *proc_cpu_mhz() {
     FILE *f;
     Result *res;
-    char* match;
+    char *match;
     char buffer[1024];
     float mhz;
     int val;
@@ -168,8 +172,8 @@ Result *proc_cpu_mhz() {
 
     f = fopen("/proc/cpuinfo", "r");
 
-    if(f == NULL) {
-        res->error=1;
+    if (f == NULL) {
+        res->error = 1;
         return res;
     }
 
@@ -177,15 +181,15 @@ Result *proc_cpu_mhz() {
 
     fclose(f);
 
-    if(val == EOF) {
-        res->error=1;
+    if (val == EOF) {
+        res->error = 1;
         return res;
     }
 
     match = strstr(buffer, "cpu MHz");
 
-    if(match == NULL) {
-        res->error=1;
+    if (match == NULL) {
+        res->error = 1;
         return res;
     }
 
@@ -222,28 +226,41 @@ int _proc_speed_update(char *str) {
     (void)fgets(buf, sizeof(buf), fd);
     (void)fgets(buf, sizeof(buf), fd);
 
-    while(fgets(buf, sizeof(buf), fd) != NULL) {
+    while (fgets(buf, sizeof(buf), fd) != NULL) {
         sscanf(buf, "%s: %*s", ifname);
         ifname[strlen(ifname) - 1 ] = 0;
-        if(!strcmp(ifname, str)) {
+
+        if (!strcmp(ifname, str)) {
             strtok(buf, " ");
             down = atoi(strtok(NULL, " "));
-            for(i = 0; i < 7; i++)
+
+            for (i = 0; i < 7; i++) {
                 strtok(NULL, " ");
+            }
+
             up = atoi(strtok(NULL, " "));
-            while(strtok(NULL, " ") != NULL);
-            if(proc_prevdown == 0) proc_prevdown = down;
-            if(proc_prevup == 0) proc_prevup = up;
-            proc_downspeed = (double)(down - proc_prevdown)/(double)interval;
-            proc_upspeed = (double)(up - proc_prevup)/(double)interval;
+
+            while (strtok(NULL, " ") != NULL);
+
+            if (proc_prevdown == 0) {
+                proc_prevdown = down;
+            }
+
+            if (proc_prevup == 0) {
+                proc_prevup = up;
+            }
+
+            proc_downspeed = (double)(down - proc_prevdown) / (double)interval;
+            proc_upspeed = (double)(up - proc_prevup) / (double)interval;
             proc_prevdown = down;
             proc_prevup = up;
             goto end;
         }
     }
+
     fclose(fd);
     return -1;
-    end:
+end:
     proc_speed_updated = 1;
     proc_speed_path = str;
     fclose(fd);
@@ -252,17 +269,24 @@ int _proc_speed_update(char *str) {
 Result *downspeed(char *str) {
     Result *res;
     res = init_res();
-    if(proc_speed_updated == 0 || proc_speed_path != str)
+
+    if (proc_speed_updated == 0 || proc_speed_path != str) {
         _proc_speed_update(str);
+    }
+
     res->value = proc_downspeed;
-    snprintf(res->string, sizeof(res->string), "%lu", (unsigned long)proc_downspeed);
+    snprintf(res->string, sizeof(res->string), "%lu",
+             (unsigned long)proc_downspeed);
     return res;
 }
 Result *upspeed(char *str) {
     Result *res;
     res = init_res();
-    if(proc_speed_updated == 0 || proc_speed_path != str)
+
+    if (proc_speed_updated == 0 || proc_speed_path != str) {
         _proc_speed_update(str);
+    }
+
     res->value = proc_upspeed;
     snprintf(res->string, sizeof(res->string), "%lu", (unsigned long)proc_upspeed);
     return res;

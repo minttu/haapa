@@ -22,19 +22,21 @@ Result *network_ip(char *str) {
     getifaddrs(&ifaddr);
 
     for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
-        if (ifa->ifa_addr == NULL)
+        if (ifa->ifa_addr == NULL) {
             continue;
+        }
 
         family = ifa->ifa_addr->sa_family;
 
-        if(strcmp(ifa->ifa_name, str)!=0)
+        if (strcmp(ifa->ifa_name, str) != 0) {
             continue;
+        }
 
         if (family == AF_INET) {
             getnameinfo(ifa->ifa_addr,
-                    (family == AF_INET) ? sizeof(struct sockaddr_in) :
-                                         sizeof(struct sockaddr_in6),
-                    host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+                        (family == AF_INET) ? sizeof(struct sockaddr_in) :
+                        sizeof(struct sockaddr_in6),
+                        host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
             strcpy(res->string, host);
         }
     }
@@ -51,13 +53,15 @@ int net_ifup(char *str) {
     getifaddrs(&ifaddr);
 
     for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
-        if (ifa->ifa_addr == NULL)
+        if (ifa->ifa_addr == NULL) {
             continue;
+        }
 
         family = ifa->ifa_addr->sa_family;
 
-        if(strcmp(ifa->ifa_name, str)!=0)
+        if (strcmp(ifa->ifa_name, str) != 0) {
             continue;
+        }
 
         if (family == AF_INET) {
             freeifaddrs(ifaddr);
@@ -70,4 +74,6 @@ int net_ifup(char *str) {
     return false;
 }
 
-int net_ifdown(char *str) { return !(net_ifup(str)); }
+int net_ifdown(char *str) {
+    return !(net_ifup(str));
+}

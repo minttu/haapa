@@ -10,21 +10,33 @@ char *jsonescape(const char *str) {
 char *jsonnescape(const char *str, int n) {
     int i = 0, h = 0, j;
     char *ret;
-    if(!str)
+
+    if (!str) {
         return NULL;
-    while(str[i] != 0) {
-        if(n && i >= n)
+    }
+
+    while (str[i] != 0) {
+        if (n && i >= n) {
             break;
-        if(str[i] == '"' || str[i] == '\\')
+        }
+
+        if (str[i] == '"' || str[i] == '\\') {
             h++;
+        }
+
         i++;
     }
+
     ret = malloc(i + h + 1);
-    for(h = 0, j = 0; j < i; j++) {
-        if(formatter == format_i3 && (str[j] == '"' || str[j] == '\\'))
+
+    for (h = 0, j = 0; j < i; j++) {
+        if (formatter == format_i3 && (str[j] == '"' || str[j] == '\\')) {
             ret[j + h++] = '\\';
+        }
+
         ret[j + h] = str[j];
     }
+
     ret[j + h] = 0;
     return ret;
 }

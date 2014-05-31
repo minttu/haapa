@@ -3,7 +3,7 @@ include config.mk
 GT := $(shell uname -r | cut -d "." -f 2)
 GT_13 := $(shell [ $(GT) -gt 13 ] && echo true)
 
-.PHONY: default all clean install uninstall deps opts
+.PHONY: default all clean install uninstall deps opts format
 
 default: haapa
 all: default
@@ -88,3 +88,6 @@ endif
 
 test:
 	@./haapa -o
+
+format:
+	astyle -A2njSfpHcxC80k3 "src/*" 

@@ -7,11 +7,13 @@
 
 static Format *(* const formatter)() = format_plain;
 static void (* const outputter)(char *str) = output_plain;
-static const int interval = 1;                          /* time in seconds between ticks */
+static const int interval =
+    1;                          /* time in seconds between ticks */
 static const char *const batpath = "/sys/class/power_supply/";
 static const char *const segment_seperator = " ";
 
-static const int  bar_format_unicode = 2; /* 0: no unicode, 1: vertical, 2: horizontal */
+static const int  bar_format_unicode =
+    2; /* 0: no unicode, 1: vertical, 2: horizontal */
 static const char *const bar_format = "\u2502%s\u2502";
 static const int  bar_format_length = 10;
 

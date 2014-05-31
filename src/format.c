@@ -6,7 +6,7 @@
 
 #include "x256.h"
 
-char* format_name;
+char *format_name;
 
 Format *format_init(char *str) {
     format_name = str;
@@ -55,14 +55,14 @@ Format *format_i3() {
 
 
 void format_i3_manual_segment(char *buffer, char *str, char *color) {
-    if(strcmp(i3_manual_s, str) == 0) {
+    if (strcmp(i3_manual_s, str) == 0) {
         strcat(buffer, ",{\"full_text\":\"");
-    }else if(strcmp(i3_manual_e, str) == 0) {
+    } else if (strcmp(i3_manual_e, str) == 0) {
         char colorbuffer[64];
         colorbuffer[0] = 0;
         sprintf(colorbuffer, "\",\"color\":\"%s\"}\n", color);
         strcat(buffer, colorbuffer);
-    }else{
+    } else {
         strcat(buffer, str);
         strcat(buffer, segment_seperator);
     }
@@ -136,7 +136,8 @@ Format *format_x256() {
 
 void format_html_segment(char *buffer, char *str, char *color) {
     char tmpbff[256];
-    sprintf(tmpbff, "<span style=\"color: %s;\">%s</span>%s", color, str, segment_seperator);
+    sprintf(tmpbff, "<span style=\"color: %s;\">%s</span>%s", color, str,
+            segment_seperator);
     strcat(buffer, tmpbff);
 }
 
@@ -144,14 +145,17 @@ Format *format_html() {
     Format *f;
     f = format_init("html");
     f->init = "";
-    f->start = "<!DOCTYPE HTML><html><head><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"1\"></head><body><pre>";
+    f->start =
+        "<!DOCTYPE HTML><html><head><meta charset=\"UTF-8\"><meta http-equiv=\"refresh\" content=\"1\"></head><body><pre>";
     f->end = "</pre></body></html>";
     f->segment = format_html_segment;
     return f;
 }
 
 int is_format(char *str) {
-    if(strcmp(format_name, str)==0)
+    if (strcmp(format_name, str) == 0) {
         return 1;
+    }
+
     return 0;
 }

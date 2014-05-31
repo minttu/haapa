@@ -25,28 +25,31 @@ int _alsa_update() {
     int i;
     const char *mix_name = alsa_channel;
 
-    if(!als_response) {
+    if (!als_response) {
         als_response = calloc(sizeof(alsa_response), 1);
-        for(i = 0; i < 4; i++)
+
+        for (i = 0; i < 4; i++) {
             als_response->max_arr[i] = 1;
+        }
     }
 
-      snd_mixer_selem_id_alloca(&sid);
-       snd_mixer_selem_id_set_index(sid, mix_index);
+    snd_mixer_selem_id_alloca(&sid);
+    snd_mixer_selem_id_set_index(sid, mix_index);
     snd_mixer_selem_id_set_name(sid, mix_name);
 
     snd_mixer_open(&handle, 0);
-       snd_mixer_attach(handle, card);
-       snd_mixer_selem_register(handle, NULL, NULL);
+    snd_mixer_attach(handle, card);
+    snd_mixer_selem_register(handle, NULL, NULL);
     snd_mixer_load(handle);
     elem = snd_mixer_find_selem(handle, sid);
 
-    if(!elem) {
+    if (!elem) {
         snd_mixer_close(handle);
         return -1;
     }
 
-    snd_mixer_selem_get_playback_volume_range (elem, &(als_response->minvol), &(als_response->maxvol));
+    snd_mixer_selem_get_playback_volume_range (elem, &(als_response->minvol),
+            &(als_response->maxvol));
     snd_mixer_selem_get_playback_volume(elem, 0, &(als_response->volume));
     snd_mixer_selem_get_playback_switch(elem, 0, &(als_response->unmuted));
 
@@ -66,10 +69,14 @@ int _alsa_update() {
 }
 
 int alsa_muted(char *str) {
-    if(!alsa_updated)
+    if (!alsa_updated) {
         _alsa_update();
-    if(als_response)
+    }
+
+    if (als_response) {
         return !als_response->unmuted;
+    }
+
     return 1;
 }
 
@@ -79,8 +86,11 @@ int alsa_nmuted(char *str) {
 
 Result *_alsa_wrap(int i) {
     Result *res = init_res();
-    if(!alsa_updated)
+
+    if (!alsa_updated) {
         _alsa_update();
+    }
+
     res->value = als_response->int_arr[i];
     res->max = als_response->max_arr[i];
     sprintf(res->string, "%ld", als_response->int_arr[i]);
