@@ -70,7 +70,6 @@ int get_x256(char *str) {
     i = get_cached(target);
     if(i!=-1)
         return i;
-    i = 0;
 
     target_color = _convert((int)strtol(target, NULL, 16));
 

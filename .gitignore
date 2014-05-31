@@ -2,3 +2,5 @@
 haapa
 src/config.h
 test/*
+*.swp
+*.swo
