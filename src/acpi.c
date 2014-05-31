@@ -137,8 +137,11 @@ Result *battery_time(char *str) {
 
     capacity = energy * 1000 / voltage;
     rate = power * 1000 / voltage;
-    res->value = 3600 * capacity / rate;
-
+    if(rate <= 0.01) {
+        res->value = 0;
+    } else {
+        res->value = 3600 * capacity / rate;
+    }
     return res;
 }
 
