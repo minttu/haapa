@@ -1,0 +1,1051 @@
+<!DOCTYPE HTML>
+
+
+
+
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Haapa Documentation</title>
+    <link rel="stylesheet" typr="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="docs.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3">
+                <nav class="nav affix hidden-xs">
+                    <div class="list-group">
+                        <a class="list-group-item heading" href="#generators">Generators</a>
+                        
+                        <a class="list-group-item top" href="#generic">generic</a>
+                            
+                            <a class="list-group-item bottom" href="#time_date">time_date</a>
+                            
+                            <a class="list-group-item bottom" href="#get_uname">get_uname</a>
+                            
+                            <a class="list-group-item bottom" href="#exec">exec</a>
+                            
+                        
+                        <a class="list-group-item top" href="#proc">proc</a>
+                            
+                            <a class="list-group-item bottom" href="#proc_load">proc_load</a>
+                            
+                            <a class="list-group-item bottom" href="#proc_memory">proc_memory</a>
+                            
+                            <a class="list-group-item bottom" href="#proc_cpu">proc_cpu</a>
+                            
+                            <a class="list-group-item bottom" href="#proc_cpu_mhz">proc_cpu_mhz</a>
+                            
+                            <a class="list-group-item bottom" href="#cpu_temp">cpu_temp</a>
+                            
+                            <a class="list-group-item bottom" href="#proc_uptime">proc_uptime</a>
+                            
+                        
+                        <a class="list-group-item top" href="#battery">battery</a>
+                            
+                            <a class="list-group-item bottom" href="#battery_status">battery_status</a>
+                            
+                            <a class="list-group-item bottom" href="#battery_capacity">battery_capacity</a>
+                            
+                            <a class="list-group-item bottom" href="#battery_time">battery_time</a>
+                            
+                        
+                        <a class="list-group-item top" href="#fs">fs</a>
+                            
+                            <a class="list-group-item bottom" href="#fs_total">fs_total</a>
+                            
+                            <a class="list-group-item bottom" href="#fs_free">fs_free</a>
+                            
+                            <a class="list-group-item bottom" href="#fs_used">fs_used</a>
+                            
+                        
+                        <a class="list-group-item top" href="#network">network</a>
+                            
+                            <a class="list-group-item bottom" href="#downspeed">downspeed</a>
+                            
+                            <a class="list-group-item bottom" href="#upspeed">upspeed</a>
+                            
+                            <a class="list-group-item bottom" href="#network_ip">network_ip</a>
+                            
+                        
+                        <a class="list-group-item top" href="#wireless">wireless</a>
+                            
+                            <a class="list-group-item bottom" href="#wireless_essid">wireless_essid</a>
+                            
+                            <a class="list-group-item bottom" href="#wireless_quality">wireless_quality</a>
+                            
+                        
+                        <a class="list-group-item top" href="#alsa">alsa</a>
+                            
+                            <a class="list-group-item bottom" href="#alsa_volume">alsa_volume</a>
+                            
+                        
+                        <a class="list-group-item top" href="#mpd">mpd</a>
+                            
+                            <a class="list-group-item bottom" href="#mpd_vera">mpd_vera</a>
+                            
+                            <a class="list-group-item bottom" href="#mpd_verb">mpd_verb</a>
+                            
+                            <a class="list-group-item bottom" href="#mpd_verc">mpd_verc</a>
+                            
+                            <a class="list-group-item bottom" href="#mpd_qv">mpd_qv</a>
+                            
+                            <a class="list-group-item bottom" href="#mpd_ql">mpd_ql</a>
+                            
+                            <a class="list-group-item bottom" href="#mpd_spos">mpd_spos</a>
+                            
+                            <a class="list-group-item bottom" href="#mpd_sels">mpd_sels</a>
+                            
+                        
+                    </div>
+                    <div class="list-group">
+                        <a class="list-group-item heading" href="#conditions">Conditions</a>
+                        
+                        <a class="list-group-item" href="#net_ifup">net_ifup</a>
+                        
+                        <a class="list-group-item" href="#net_ifdown">net_ifdown</a>
+                        
+                        <a class="list-group-item" href="#bat_exists">bat_exists</a>
+                        
+                        <a class="list-group-item" href="#bat_islow">bat_islow</a>
+                        
+                        <a class="list-group-item" href="#if_cpu_temp">if_cpu_temp</a>
+                        
+                        <a class="list-group-item" href="#alsa_muted">alsa_muted</a>
+                        
+                        <a class="list-group-item" href="#mpd_playing">mpd_playing</a>
+                        
+                    </div>
+                    <div class="list-group">
+                        <a class="list-group-item heading" href="#formats">Formats</a>
+                        
+                        <a class="list-group-item" href="#format_plain">format_plain</a>
+                        
+                        <a class="list-group-item" href="#format_i3">format_i3</a>
+                        
+                        <a class="list-group-item" href="#format_i3_manual">format_i3_manual</a>
+                        
+                        <a class="list-group-item" href="#format_dzen">format_dzen</a>
+                        
+                        <a class="list-group-item" href="#format_xmobar">format_xmobar</a>
+                        
+                        <a class="list-group-item" href="#format_x256">format_x256</a>
+                        
+                        <a class="list-group-item" href="#format_html">format_html</a>
+                        
+                    </div>
+                    <div class="list-group">
+                        <a class="list-group-item heading" href="#outputs">Outputs</a>
+                        
+                        <a class="list-group-item" href="#string">string</a>
+                        
+                        <a class="list-group-item" href="#percent">percent</a>
+                        
+                        <a class="list-group-item" href="#bar">bar</a>
+                        
+                        <a class="list-group-item" href="#timeconv">timeconv</a>
+                        
+                        <a class="list-group-item" href="#sizeconv">sizeconv</a>
+                        
+                        <a class="list-group-item" href="#sizeconvi">sizeconvi</a>
+                        
+                    </div>
+                </nav>
+            </div>
+            <div class="col-xs-9">
+                <h1>Haapa Docs</h1>
+                <a href="https://github.com/JuhaniImberg/haapa">Homepage</a>
+                <section>
+                    <h2 id="generators">Generators</h2>
+                    
+                    <article>
+                        <h3 id="generic">generic</h3>
+                        
+                        
+                            <article>
+                                
+    <h4 class="name" id="time_date">time_date</h4>
+
+                                <p class="description"><p>Date time formatted with strftime</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>strftime format</p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="get_uname">get_uname</h4>
+
+                                <p class="description"><p>Returns information like <code>uname(1)</code></p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p><code>a: all</code></p></li>
+                                    
+                                        <li><p><code>s: kernel name</code></p></li>
+                                    
+                                        <li><p><code>n: hostname</code></p></li>
+                                    
+                                        <li><p><code>r: kernel release</code></p></li>
+                                    
+                                        <li><p><code>v: kernel version</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="exec">exec</h4>
+
+                                <p class="description"><p>Executes the command and returns the stdout</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>command</p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                    </article>
+                    
+                    <article>
+                        <h3 id="proc">proc</h3>
+                        
+                        
+                            <article>
+                                
+    <h4 class="name" id="proc_load">proc_load</h4>
+
+                                <p class="description"><p>Average CPU load</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p><code>0: 1 min load</code></p></li>
+                                    
+                                        <li><p><code>1: 5 min load</code></p></li>
+                                    
+                                        <li><p><code>2: 15 min load</code></p></li>
+                                    
+                                        <li><p><code>3: all loads</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="proc_memory">proc_memory</h4>
+
+                                <p class="description"><p>Memory usage</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#sizeconv">sizeconv</a></li>
+                                    
+                                        <li><a href="#sizeconvi">sizeconvi</a></li>
+                                    
+                                        <li><a href="#percent">percent</a></li>
+                                    
+                                        <li><a href="#bar">bar</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="proc_cpu">proc_cpu</h4>
+
+                                <p class="description"><p>CPU usage</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#percent">percent</a></li>
+                                    
+                                        <li><a href="#bar">bar</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="proc_cpu_mhz">proc_cpu_mhz</h4>
+
+                                <p class="description"><p>Current CPU MHz</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="cpu_temp">cpu_temp</h4>
+
+                                <p class="description"><p>Temperature of the first CPU checkpoint</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="proc_uptime">proc_uptime</h4>
+
+                                <p class="description"><p>Uptime</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#time">time</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                    </article>
+                    
+                    <article>
+                        <h3 id="battery">battery</h3>
+                        
+                        
+                            <article>
+                                
+    <h4 class="name" id="battery_status">battery_status</h4>
+
+                                <p class="description"><p>Status of the battery</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>The batterys name, e.g. <code>BAT0</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="battery_capacity">battery_capacity</h4>
+
+                                <p class="description"><p>What percent of the battery is charged</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>The batterys name, e.g. <code>BAT0</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#percent">percent</a></li>
+                                    
+                                        <li><a href="#bar">bar</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="battery_time">battery_time</h4>
+
+                                <p class="description"><p>How long until the battery is depleted or full</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>The batterys name, e.g. <code>BAT0</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#timeconv">timeconv</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                    </article>
+                    
+                    <article>
+                        <h3 id="fs">fs</h3>
+                        
+                        
+                            <article>
+                                
+    <h4 class="name" id="fs_total">fs_total</h4>
+
+                                <p class="description"><p>Total available space in (mounted) path</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>path</p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#sizeconv">sizeconv</a></li>
+                                    
+                                        <li><a href="#sizeconvi">sizeconvi</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="fs_free">fs_free</h4>
+
+                                <p class="description"><p>Total free space in (mounted) path</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>path</p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#sizeconv">sizeconv</a></li>
+                                    
+                                        <li><a href="#sizeconvi">sizeconvi</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="fs_used">fs_used</h4>
+
+                                <p class="description"><p>Total used space in (mounted) path</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>path</p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#sizeconv">sizeconv</a></li>
+                                    
+                                        <li><a href="#sizeconvi">sizeconvi</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                    </article>
+                    
+                    <article>
+                        <h3 id="network">network</h3>
+                        
+                        
+                            <article>
+                                
+    <h4 class="name" id="downspeed">downspeed</h4>
+
+                                <p class="description"><p>Current download speed for the interface</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>network interface e.g. <code>eth0</code> or <code>enp3s25</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#sizeconv">sizeconv</a></li>
+                                    
+                                        <li><a href="#sizeconvi">sizeconvi</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="upspeed">upspeed</h4>
+
+                                <p class="description"><p>Current upload speed for the interface</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>network interface e.g. <code>eth0</code> or <code>enp3s25</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#sizeconv">sizeconv</a></li>
+                                    
+                                        <li><a href="#sizeconvi">sizeconvi</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="network_ip">network_ip</h4>
+
+                                <p class="description"><p>Current IP of the interface</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>network interface e.g. <code>eth0</code> or <code>enp3s25</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                    </article>
+                    
+                    <article>
+                        <h3 id="wireless">wireless</h3>
+                        
+                            Requires:
+                            <ul class="flat">
+                                
+                                <li>
+                                    iwlib
+                                </li>
+                                
+                            </ul>
+                        
+                        
+                            <article>
+                                
+    <h4 class="name" id="wireless_essid">wireless_essid</h4>
+
+                                <p class="description"><p>Networks ESSID</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>wireless network interface e.g. <code>wlan0</code> or <code>wlp3s0</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="wireless_quality">wireless_quality</h4>
+
+                                <p class="description"><p>Networks signal strength</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>wireless network interface e.g. <code>wlan0</code> or <code>wlp3s0</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#percent">percent</a></li>
+                                    
+                                        <li><a href="#bar">bar</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                    </article>
+                    
+                    <article>
+                        <h3 id="alsa">alsa</h3>
+                        
+                            Requires:
+                            <ul class="flat">
+                                
+                                <li>
+                                    alsa
+                                </li>
+                                
+                            </ul>
+                        
+                        
+                            <article>
+                                
+    <h4 class="name" id="alsa_volume">alsa_volume</h4>
+
+                                <p class="description"><p>The channels volume</p></p>
+                                
+                                    Argument:
+                                    <ul class="flat">
+                                    
+                                        <li><p>Alsa channel e.g. <code>Master</code> or <code>PCM</code></p></li>
+                                    
+                                    </ul>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#percent">percent</a></li>
+                                    
+                                        <li><a href="#bar">bar</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                    </article>
+                    
+                    <article>
+                        <h3 id="mpd">mpd</h3>
+                        
+                            Requires:
+                            <ul class="flat">
+                                
+                                <li>
+                                    libmpdclient
+                                </li>
+                                
+                            </ul>
+                        
+                        
+                            <article>
+                                
+    <h4 class="name" id="mpd_vera">mpd_vera</h4>
+
+                                <p class="description"><p>MPD's major version number</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="mpd_verb">mpd_verb</h4>
+
+                                <p class="description"><p>MPD's middle version number</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="mpd_verc">mpd_verc</h4>
+
+                                <p class="description"><p>MPD's minor version number</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="mpd_qv">mpd_qv</h4>
+
+                                <p class="description"><p>MPD's queue version</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="mpd_ql">mpd_ql</h4>
+
+                                <p class="description"><p>MPD's queue (playlist) length</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="mpd_spos">mpd_spos</h4>
+
+                                <p class="description"><p>MPD's currently playing song's position in queue</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                            <article>
+                                
+    <h4 class="name" id="mpd_sels">mpd_sels</h4>
+
+                                <p class="description"><p>MPD's currently playing song's elapsed seconds</p></p>
+                                
+                                
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    
+                                        <li><a href="#string">string</a></li>
+                                    
+                                        <li><a href="#timeconv">timeconv</a></li>
+                                    
+                                    </ul>
+                                
+                            </article>
+                        
+                    </article>
+                    
+                </section>
+                <section>
+                    <h2>Conditions</h2>
+                    
+                    <article>
+                        
+    <h4 class="name" id="net_ifup">net_ifup</h4>
+
+                        
+                            Argument:
+                            <ul class="flat">
+                            
+                                <li><p>network interface e.g. <code>eth0</code> or <code>enp3s25</code></p></li>
+                            
+                            </ul>
+                        
+                        <p class="description"><p>True when the interface is up</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="net_ifdown">net_ifdown</h4>
+
+                        
+                            Argument:
+                            <ul class="flat">
+                            
+                                <li><p>network interface e.g. <code>eth0</code> or <code>enp3s25</code></p></li>
+                            
+                            </ul>
+                        
+                        <p class="description"><p>True when the interface is down</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="bat_exists">bat_exists</h4>
+
+                        
+                            Argument:
+                            <ul class="flat">
+                            
+                                <li><p>The batterys name, e.g. <code>BAT0</code></p></li>
+                            
+                            </ul>
+                        
+                        <p class="description"><p>True when there is a battery with that name</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="bat_islow">bat_islow</h4>
+
+                        
+                            Argument:
+                            <ul class="flat">
+                            
+                                <li><p>The batterys name, e.g. <code>BAT0</code></p></li>
+                            
+                            </ul>
+                        
+                        <p class="description"><p>True when the battery is low e.g. under 20%</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="if_cpu_temp">if_cpu_temp</h4>
+
+                        
+                        <p class="description"><p>True when the CPUs temperature can be read</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="alsa_muted">alsa_muted</h4>
+
+                        
+                            Argument:
+                            <ul class="flat">
+                            
+                                <li><p>Alsa channel e.g. <code>Master</code> or <code>PCM</code></p></li>
+                            
+                            </ul>
+                        
+                        <p class="description"><p>True when the channel is muted</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="mpd_playing">mpd_playing</h4>
+
+                        
+                        <p class="description"><p>True if MPD is playing music</p></p>
+                    </article>
+                    
+                </section>
+                <section>
+                    <h2>Formats</h2>
+                    
+                    <article>
+                        
+    <h4 class="name" id="format_plain">format_plain</h4>
+
+                        <p class="description"><p>Raw output without colors.</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="format_i3">format_i3</h4>
+
+                        <p class="description"><p>Formatted into a streaming JSON array. Suitable for i3bar.</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="format_i3_manual">format_i3_manual</h4>
+
+                        <p class="description"><p>Formatted into a streaming JSON array. Suitable for i3bar. Segments are managed manually. You create a new segment with the macro <code>i3_manual_start()</code> and end them with <code>i3_manual_end(color)</code>.</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="format_dzen">format_dzen</h4>
+
+                        <p class="description"><p>Format suitable for use with dzen2.</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="format_xmobar">format_xmobar</h4>
+
+                        <p class="description"><p>Format suitable for use with xmobar.</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="format_x256">format_x256</h4>
+
+                        <p class="description"><p>Same as format_plain but with xterm-256color color escape codes. Useful for use with DWM.</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="format_html">format_html</h4>
+
+                        <p class="description"><p>Formatted as HTML with colors. Useful for generating small HTML status strips.</p></p>
+                    </article>
+                    
+                </section>
+                <section>
+                    <h2>Outputs</h2>
+                    
+                    <article>
+                        
+    <h4 class="name" id="string">string</h4>
+
+                        <p class="description"><p>If the generator returns a string it prints that. If not, it will print the numeric value the generator returned.</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="percent">percent</h4>
+
+                        <p class="description"><p>Displays the percent of value filling max (value/max)*100 + "%"</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="bar">bar</h4>
+
+                        <p class="description"><p>Displays a either vertical or horizontal bar of the percent.</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="timeconv">timeconv</h4>
+
+                        <p class="description"><p>Converts value into time <code>hh:mm:ss</code> or <code>mm:ss</code></p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="sizeconv">sizeconv</h4>
+
+                        <p class="description"><p>Converts value into decimal bytes (KB, MB...) with the precision of 2 decimals.</p></p>
+                    </article>
+                    
+                    <article>
+                        
+    <h4 class="name" id="sizeconvi">sizeconvi</h4>
+
+                        <p class="description"><p>Converts value into binary bytes (KiB, MiB...) with the precision of 2 decimals.</p></p>
+                    </article>
+                    
+                </section>
+                <footer>Generated by a bunch of files. 2014-06-01 22:11:13.002763</footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
