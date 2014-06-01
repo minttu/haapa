@@ -98,7 +98,7 @@ Result *battery_time(char *str) {
     if (rate <= 0.01) {
         res->hidden = 1;
     } else {
-        if(!strcmp(status, "Discharging")) {
+        if (!strcmp(status, "Discharging")) {
             res->value = 3600 * capacity / rate;
         } else {
             res->value = 3600 * (capacity_full - capacity) / rate;

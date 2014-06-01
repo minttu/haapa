@@ -48,13 +48,12 @@ void string(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
 
     if (res->hidden) {
-        return;
+        goto done;
     }
 
     if (res->error) {
-        free(res);
         strcat(buffer, "error");
-        return;
+        goto done;
     }
 
     if (res->string[0] == 0) {
@@ -73,6 +72,7 @@ void string(Result * (*function)(char *str), char *str) {
         }
     }
 
+done:
     free(res);
 }
 
@@ -85,20 +85,19 @@ Result *text(char *str) {
 void bar(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
 
-    if (res->hidden) {
-        return;
-    }
-
     char bar[bar_format_length * 3 + 2];
     char buffbar[bar_format_length * 3 + 8];
     int i;
     float value;
     float tmp_val;
 
+    if (res->hidden) {
+        goto done;
+    }
+
     if (res->error) {
-        free(res);
         strcat(buffer, "error");
-        return;
+        goto done;
     }
 
     if (bar_format_unicode == 0) {
@@ -133,6 +132,8 @@ void bar(Result * (*function)(char *str), char *str) {
 
     sprintf(buffbar, bar_format, bar);
     strcat(buffer, buffbar);
+
+done:
     free(res);
 }
 
@@ -140,38 +141,38 @@ void percent(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
 
     if (res->hidden) {
-        return;
+        goto done;
     }
 
     char per[5];
     per[0] = 0;
 
     if (res->error) {
-        free(res);
         strcat(buffer, "error");
-        return;
+        goto done;
     }
 
     sprintf(per, "%3i%%", (int)round((res->value / res->max) * 100));
     strcat(buffer, per);
+
+done:
     free(res);
 }
 
 void timeconv(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
 
-    if (res->hidden) {
-        return;
-    }
-
     char buf[128];
     buf[0] = 0;
     int h, m, s;
 
+    if (res->hidden) {
+        goto done;
+    }
+
     if (res->error) {
-        free(res);
         strcat(buffer, "error");
-        return;
+        goto done;
     }
 
     h = ((int)res->value / (60 * 60)) % 60;
@@ -185,6 +186,8 @@ void timeconv(Result * (*function)(char *str), char *str) {
     }
 
     strcat(buffer, buf);
+
+done:
     free(res);
 }
 
@@ -192,18 +195,17 @@ void timeconv(Result * (*function)(char *str), char *str) {
 void sizeconv(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
 
-    if (res->hidden) {
-        return;
-    }
-
     char buf[128];
     buf[0] = 0;
     unsigned long g, m, k, b;
 
+    if (res->hidden) {
+        goto done;
+    }
+
     if (res->error) {
-        free(res);
         strcat(buffer, "error");
-        return;
+        goto done;
     }
 
     b = ((unsigned long)res->value) % 1000;
@@ -225,24 +227,25 @@ void sizeconv(Result * (*function)(char *str), char *str) {
         strcat(buffer, buf);
     }
 
+done:
     free(res);
 }
+
 /* same but GiB etc */
 void sizeconvi(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
-
-    if (res->hidden) {
-        return;
-    }
 
     char buf[128];
     buf[0] = 0;
     unsigned long g, m, k, b;
 
+    if (res->hidden) {
+        goto done;
+    }
+
     if (res->error) {
-        free(res);
         strcat(buffer, "error");
-        return;
+        goto done;
     }
 
     b = ((unsigned long)res->value) % 1024;
@@ -264,6 +267,7 @@ void sizeconvi(Result * (*function)(char *str), char *str) {
         strcat(buffer, buf);
     }
 
+done:
     free(res);
 }
 
@@ -298,11 +302,13 @@ void tick(int fd, short event, void *arg) {
 
     for (i = 0; i < sizeof(segments) / sizeof(segments[0]); i++) {
         Segment segment = segments[i];
+
         if (segment.condition_function(segment.condition_argument) == 1) {
             buffer[0] = 0;
             segment.output_function(segment.function,
                                     segment.function_argument);
-            if(buffer[0] == 0) {
+
+            if (buffer[0] == 0) {
                 continue;
             }
 
