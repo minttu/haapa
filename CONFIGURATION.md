@@ -28,7 +28,7 @@ Each segment is made up of 6 parts. **Output handler**, **output generator**, **
 | time_date         | strftime  | Returns date time formatted with                          |          | Yes     |
 | battery_status    | battery   | Returns the status for the battery                        |          | Yes     |
 | battery_capacity  | battery   | Returns the current capacity for the battery              |          | Yes     |
-| battery_time      | battery   | Returns the time left in the battery                      |          | Yes     |
+| battery_time      | battery   | Returns the time until discharged or charged              |          | Yes     |
 | cpu_temp          |           | Returns the temperature of the first cpu                  |          | Yes     |
 | network_ip        | interface | Returns the IP for the interface                          |          | Yes     |
 | exec              | command   | Executes the command and returns the output               |          | Yes     |

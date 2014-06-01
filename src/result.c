@@ -10,5 +10,6 @@ Result *init_res() {
     res->time_value = 0;
     res->status = -1;
     res->error = 0;
+    res->hidden = 0;
     return res;
 }

@@ -10,6 +10,7 @@ typedef struct {
     time_t time_value;
     int status;
     int error;
+    int hidden;
 } Result;
 
 Result *init_res();

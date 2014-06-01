@@ -14,7 +14,9 @@
 #include "output.h"
 #include "util.h"
 
-static const char *bar_unicode[2][8] = {{"\u2581", "\u2582", "\u2583", "\u2584",
+static const char *bar_unicode[2][8] = {
+    {
+        "\u2581", "\u2582", "\u2583", "\u2584",
         "\u2585", "\u2586", "\u2587", "\u2588"
     },
     {
@@ -44,6 +46,10 @@ static const struct option longOpts[] = {
 
 void string(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
+
+    if (res->hidden) {
+        return;
+    }
 
     if (res->error) {
         free(res);
@@ -78,6 +84,11 @@ Result *text(char *str) {
 
 void bar(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
+
+    if (res->hidden) {
+        return;
+    }
+
     char bar[bar_format_length * 3 + 2];
     char buffbar[bar_format_length * 3 + 8];
     int i;
@@ -127,6 +138,11 @@ void bar(Result * (*function)(char *str), char *str) {
 
 void percent(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
+
+    if (res->hidden) {
+        return;
+    }
+
     char per[5];
     per[0] = 0;
 
@@ -143,6 +159,11 @@ void percent(Result * (*function)(char *str), char *str) {
 
 void timeconv(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
+
+    if (res->hidden) {
+        return;
+    }
+
     char buf[128];
     buf[0] = 0;
     int h, m, s;
@@ -170,6 +191,11 @@ void timeconv(Result * (*function)(char *str), char *str) {
 /* chunk down bytes to precision of 2 decimals and KB, MB etc */
 void sizeconv(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
+
+    if (res->hidden) {
+        return;
+    }
+
     char buf[128];
     buf[0] = 0;
     unsigned long g, m, k, b;
@@ -204,6 +230,11 @@ void sizeconv(Result * (*function)(char *str), char *str) {
 /* same but GiB etc */
 void sizeconvi(Result * (*function)(char *str), char *str) {
     Result *res = function(str);
+
+    if (res->hidden) {
+        return;
+    }
+
     char buf[128];
     buf[0] = 0;
     unsigned long g, m, k, b;
@@ -266,15 +297,19 @@ void tick(int fd, short event, void *arg) {
     }
 
     for (i = 0; i < sizeof(segments) / sizeof(segments[0]); i++) {
-        if (segments[i].condition_function(segments[i].condition_argument) == 1) {
+        Segment segment = segments[i];
+        if (segment.condition_function(segment.condition_argument) == 1) {
             buffer[0] = 0;
-            segments[i].output_function(segments[i].function,
-                                        segments[i].function_argument);
+            segment.output_function(segment.function,
+                                    segment.function_argument);
+            if(buffer[0] == 0) {
+                continue;
+            }
 
-            if (strlen(segments[i].color) > 7) {
+            if (strlen(segment.color) > 7) {
                 char *colbuf = NULL;
                 char ogbuf[16];
-                strcpy(ogbuf, segments[i].color);
+                strcpy(ogbuf, segment.color);
                 colbuf = strtok(ogbuf, ",");
 
                 if (!ticktock) {
@@ -284,7 +319,7 @@ void tick(int fd, short event, void *arg) {
                     f->segment(output, buffer, colbuf);
                 }
             } else {
-                f->segment(output, buffer, segments[i].color);
+                f->segment(output, buffer, segment.color);
             }
         }
     }
