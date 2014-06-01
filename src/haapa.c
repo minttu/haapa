@@ -212,16 +212,16 @@ void sizeconv(Result * (*function)(char *str), char *str) {
     g = ((unsigned long)res->value / (1000 * 1000 * 1000)) % 1000;
 
     if (g) {
-        snprintf(buf, sizeof(buf), "%lu.%lu GB ", g, m / 100);
+        snprintf(buf, sizeof(buf), "%lu.%lu GB", g, m / 100);
         strcat(buffer, buf);
     } else if (m) {
-        snprintf(buf, sizeof(buf), "%lu.%lu MB ", m, k / 100);
+        snprintf(buf, sizeof(buf), "%lu.%lu MB", m, k / 100);
         strcat(buffer, buf);
     } else if (k) {
-        snprintf(buf, sizeof(buf), "%lu.%lu kB ", k, b / 100);
+        snprintf(buf, sizeof(buf), "%lu.%lu kB", k, b / 100);
         strcat(buffer, buf);
     } else {
-        snprintf(buf, sizeof(buf), "%lu B ", b);
+        snprintf(buf, sizeof(buf), "%lu B", b);
         strcat(buffer, buf);
     }
 
@@ -251,16 +251,16 @@ void sizeconvi(Result * (*function)(char *str), char *str) {
     g = ((unsigned long)res->value) / 1024 / 1024 / 1024 % 1024;
 
     if (g) {
-        snprintf(buf, sizeof(buf), "%lu.%lu GiB ", g, m / 100);
+        snprintf(buf, sizeof(buf), "%lu.%lu GiB", g, m / 100);
         strcat(buffer, buf);
     } else if (m) {
-        snprintf(buf, sizeof(buf), "%lu.%lu MiB ", m, k / 100);
+        snprintf(buf, sizeof(buf), "%lu.%lu MiB", m, k / 100);
         strcat(buffer, buf);
     } else if (k) {
-        snprintf(buf, sizeof(buf), "%lu.%lu kiB ", k, b / 100);
+        snprintf(buf, sizeof(buf), "%lu.%lu kiB", k, b / 100);
         strcat(buffer, buf);
     } else {
-        snprintf(buf, sizeof(buf), "%lu B ", b);
+        snprintf(buf, sizeof(buf), "%lu B", b);
         strcat(buffer, buf);
     }
 
