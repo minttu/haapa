@@ -4,3 +4,4 @@ src/config.h
 test/*
 *.swp
 *.swo
+docs/docs.html

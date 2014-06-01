@@ -1,0 +1,351 @@
+---
+generators:
+  - name: generic
+    contains:
+      - name: time_date
+        arguments:
+          - strftime format
+        outputs:
+          - string
+        description: >
+          Date time formatted with strftime
+
+      - name: get_uname
+        arguments:
+          - "```a: all```"
+          - "```s: kernel name```"
+          - "```n: hostname```"
+          - "```r: kernel release```"
+          - "```v: kernel version```"
+        description: >
+          Returns information like ```uname(1)```
+
+      - name: exec
+        arguments:
+          - command
+        outputs:
+          - string
+        description: >
+          Executes the command and returns the stdout
+
+  - name: proc
+    contains:
+      - name: proc_load
+        arguments:
+          - "```0: 1 min load```"
+          - "```1: 5 min load```"
+          - "```2: 15 min load```"
+          - "```3: all loads```"
+        outputs:
+          - string
+        description: >
+          Average CPU load
+
+      - name: proc_memory
+        outputs:
+          - string
+          - sizeconv
+          - sizeconvi
+          - percent
+          - bar
+        description: >
+          Memory usage
+
+      - name: proc_cpu
+        outputs:
+          - percent
+          - bar
+        description: >
+          CPU usage
+
+      - name: proc_cpu_mhz
+        outputs:
+          - string
+        description: >
+          Current CPU MHz
+
+      - name: cpu_temp
+        outputs:
+          - string
+        description: >
+          Temperature of the first CPU checkpoint
+
+      - name: proc_uptime
+        outputs:
+          - time
+        description: >
+          Uptime
+
+  - name: battery
+    contains:
+      - name: battery_status
+        arguments:
+          - The batterys name, e.g. ```BAT0```
+        outputs:
+          - string
+        description: >
+          Status of the battery
+
+      - name: battery_capacity
+        arguments:
+          - The batterys name, e.g. ```BAT0```
+        outputs:
+          - string
+          - percent
+          - bar
+        description: >
+          What percent of the battery is charged
+
+      - name: battery_time
+        arguments:
+          - The batterys name, e.g. ```BAT0```
+        outputs:
+          - string
+          - timeconv
+        description: >
+          How long until the battery is depleted or full
+
+  - name: fs
+    contains:
+      - name: fs_total
+        arguments:
+          - path
+        outputs:
+          - string
+          - sizeconv
+          - sizeconvi
+        description: >
+          Total available space in (mounted) path
+
+      - name: fs_free
+        arguments:
+          - path
+        outputs:
+          - string
+          - sizeconv
+          - sizeconvi
+        description: >
+          Total free space in (mounted) path
+
+      - name: fs_used
+        arguments:
+          - path
+        outputs:
+          - string
+          - sizeconv
+          - sizeconvi
+        description: >
+          Total used space in (mounted) path
+
+  - name: network
+    contains:
+      - name: downspeed
+        outputs:
+          - string
+          - sizeconv
+          - sizeconvi
+        arguments:
+          - "network interface e.g. ```eth0``` or ```enp3s25```"
+        description: >
+          Current download speed for the interface
+
+      - name: upspeed
+        outputs:
+          - string
+          - sizeconv
+          - sizeconvi
+        arguments:
+          - "network interface e.g. ```eth0``` or ```enp3s25```"
+        description: >
+          Current upload speed for the interface
+
+      - name: network_ip
+        outputs:
+          - string
+        arguments:
+          - "network interface e.g. ```eth0``` or ```enp3s25```"
+        description: >
+          Current IP of the interface
+
+  - name: wireless
+    requires:
+      - iwlib
+    contains:
+      - name: wireless_essid
+        outputs:
+          - string
+        arguments:
+          - "wireless network interface e.g. ```wlan0``` or ```wlp3s0```"
+        description: >
+          Networks ESSID
+
+      - name: wireless_quality
+        outputs:
+          - string
+          - percent
+          - bar
+        arguments:
+          - "wireless network interface e.g. ```wlan0``` or ```wlp3s0```"
+        description: >
+          Networks signal strength
+
+  - name: alsa
+    requires:
+      - alsa
+    contains:
+      - name: alsa_volume
+        outputs:
+          - string
+          - percent
+          - bar
+        arguments:
+          - "Alsa channel e.g. ```Master``` or ```PCM```"
+        description: >
+          The channels volume
+
+  - name: mpd
+    requires:
+      - libmpdclient
+    contains:
+      - name: mpd_vera
+        outputs:
+          - string
+        description: >
+          MPD's major version number
+
+      - name: mpd_verb
+        outputs:
+          - string
+        description: >
+          MPD's middle version number
+
+      - name: mpd_verc
+        outputs:
+          - string
+        description: >
+          MPD's minor version number
+
+      - name: mpd_qv
+        outputs:
+          - string
+        description: >
+          MPD's queue version
+
+      - name: mpd_ql
+        outputs:
+          - string
+        description: >
+          MPD's queue (playlist) length
+
+      - name: mpd_spos
+        outputs:
+          - string
+        description: >
+          MPD's currently playing song's position in queue
+
+      - name: mpd_sels
+        outputs:
+          - string
+          - timeconv
+        description: >
+          MPD's currently playing song's elapsed seconds
+
+conditions:
+  - name: net_ifup
+    arguments:
+      - "network interface e.g. ```eth0``` or ```enp3s25```"
+    description: >
+      True when the interface is up
+
+  - name: net_ifdown
+    arguments:
+      - "network interface e.g. ```eth0``` or ```enp3s25```"
+    description: >
+      True when the interface is down
+
+  - name: bat_exists
+    arguments:
+      - The batterys name, e.g. ```BAT0```
+    description: >
+      True when there is a battery with that name
+
+  - name: bat_islow
+    arguments:
+      - The batterys name, e.g. ```BAT0```
+    description: >
+      True when the battery is low e.g. under 20%
+
+  - name: if_cpu_temp
+    description: >
+      True when the CPUs temperature can be read
+
+  - name: alsa_muted
+    arguments:
+      - "Alsa channel e.g. ```Master``` or ```PCM```"
+    description: >
+      True when the channel is muted
+
+  - name: mpd_playing
+    description: >
+      True if MPD is playing music
+
+outputs:
+  - name: string
+    description: >
+      If the generator returns a string it prints that. If not, it will print
+      the numeric value the generator returned.
+
+  - name: percent
+    description: >
+      Displays the percent of value filling max (value/max)*100 + "%"
+
+  - name: bar
+    description: >
+      Displays a either vertical or horizontal bar of the percent.
+
+  - name: timeconv
+    description: >
+      Converts value into time ```hh:mm:ss``` or ```mm:ss```
+
+  - name: sizeconv
+    description: >
+      Converts value into decimal bytes (KB, MB...) with the precision of 2
+      decimals.
+
+  - name: sizeconvi
+    description: >
+      Converts value into binary bytes (KiB, MiB...) with the precision of 2
+      decimals.
+
+formats:
+  - name: format_plain
+    description: >
+      Raw output without colors.
+
+  - name: format_i3
+    description: >
+      Formatted into a streaming JSON array. Suitable for i3bar.
+
+  - name: format_i3_manual
+    description: >
+      Formatted into a streaming JSON array. Suitable for i3bar. Segments are
+      managed manually. You create a new segment with the macro
+      ```i3_manual_start()``` and end them with ```i3_manual_end(color)```.
+
+  - name: format_dzen
+    description: >
+      Format suitable for use with dzen2.
+
+  - name: format_xmobar
+    description: >
+      Format suitable for use with xmobar.
+
+  - name: format_x256
+    description: >
+      Same as format_plain but with xterm-256color color escape codes. Useful
+      for use with DWM.
+
+  - name: format_html
+    description: >
+      Formatted as HTML with colors. Useful for generating small HTML status
+      strips.

@@ -24,7 +24,7 @@ installation
 configuration
 -------------
 
-see CONFIGURATION.md
+see ```docs/CONFIGURATION.md``` and [this](https://JuhaniImberg.github.io/haapa/)
 
 example output
 --------------

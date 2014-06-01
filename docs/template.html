@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+
+{% macro name(name) %}
+    <h4 class="name" id="{{name}}">{{name}}</h4>
+{% endmacro %}
+
+{% macro name_link(name) %}
+    <a href="#{{name}}">{{name}}</a>
+{% endmacro %}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Haapa Documentation</title>
+    <link rel="stylesheet" typr="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="docs.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-3">
+                <nav class="nav affix hidden-xs">
+                    <div class="list-group">
+                        <a class="list-group-item heading" href="#generators">Generators</a>
+                        {% for generator_group in generators %}
+                        <a class="list-group-item top" href="#{{generator_group.name}}">{{generator_group.name}}</a>
+                            {% for generator in generator_group.contains %}
+                            <a class="list-group-item bottom" href="#{{generator.name}}">{{generator.name}}</a>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="list-group">
+                        <a class="list-group-item heading" href="#conditions">Conditions</a>
+                        {% for condition in conditions %}
+                        <a class="list-group-item" href="#{{condition.name}}">{{condition.name}}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="list-group">
+                        <a class="list-group-item heading" href="#formats">Formats</a>
+                        {% for format in formats %}
+                        <a class="list-group-item" href="#{{format.name}}">{{format.name}}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="list-group">
+                        <a class="list-group-item heading" href="#outputs">Outputs</a>
+                        {% for output in outputs %}
+                        <a class="list-group-item" href="#{{output.name}}">{{output.name}}</a>
+                        {% endfor %}
+                    </div>
+                </nav>
+            </div>
+            <div class="col-xs-9">
+                <h1>Haapa Docs</h1>
+                <a href="https://github.com/JuhaniImberg/haapa">Homepage</a>
+                <section>
+                    <h2 id="generators">Generators</h2>
+                    {% for generator_group in generators %}
+                    <article>
+                        <h3 id="{{generator_group.name}}">{{generator_group.name}}</h3>
+                        {% if generator_group.requires %}
+                            Requires:
+                            <ul class="flat">
+                                {% for require in generator_group.requires %}
+                                <li>
+                                    {{require}}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% for generator in generator_group.contains %}
+                            <article>
+                                {{name(generator.name)}}
+                                <p class="description">{{generator.description|markdown}}</p>
+                                {% if generator.arguments %}
+                                    Argument:
+                                    <ul class="flat">
+                                    {% for argument in generator.arguments %}
+                                        <li>{{argument|markdown}}</li>
+                                    {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                {% if generator.outputs %}
+                                    Possible outputs:
+                                    <ul class="flat outputs">
+                                    {% for output in generator.outputs %}
+                                        <li><a href="#{{output}}">{{output}}</a></li>
+                                    {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </article>
+                        {% endfor %}
+                    </article>
+                    {% endfor %}
+                </section>
+                <section>
+                    <h2>Conditions</h2>
+                    {% for condition in conditions %}
+                    <article>
+                        {{name(condition.name)}}
+                        {% if condition.arguments %}
+                            Argument:
+                            <ul class="flat">
+                            {% for argument in condition.arguments %}
+                                <li>{{argument|markdown}}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                        <p class="description">{{condition.description|markdown}}</p>
+                    </article>
+                    {% endfor %}
+                </section>
+                <section>
+                    <h2>Formats</h2>
+                    {% for format in formats %}
+                    <article>
+                        {{name(format.name)}}
+                        <p class="description">{{format.description|markdown}}</p>
+                    </article>
+                    {% endfor %}
+                </section>
+                <section>
+                    <h2>Outputs</h2>
+                    {% for output in outputs %}
+                    <article>
+                        {{name(output.name)}}
+                        <p class="description">{{output.description|markdown}}</p>
+                    </article>
+                    {% endfor %}
+                </section>
+                <footer>Generated by a bunch of files. {{time.now()}}</footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
