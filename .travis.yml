@@ -9,9 +9,6 @@ script:
   - cd build
   - cmake ..
   - make
-branches:
-  only:
-    - master
 notifications:
   email:
     recipients:
