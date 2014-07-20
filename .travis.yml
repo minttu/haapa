@@ -4,10 +4,11 @@ compiler:
   - clang
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -qq libevent-dev
+  - sudo apt-get install -qq libevent-dev cmake
 script:
+  - cd build
+  - cmake ..
   - make
-  - make test
 branches:
   only:
     - master
