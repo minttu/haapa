@@ -15,6 +15,15 @@ if(KERNEL_2ND_VERSION GREATER 13)
     add_definitions(-DHAAPA_NEWMEM)
 endif(KERNEL_2ND_VERSION GREATER 13)
 
+if(EXISTS "${CMAKE_SOURCE_DIR}/src/config.h")
+    message("Existing config")
+else()
+    message("Copying default config")
+    configure_file("${CMAKE_SOURCE_DIR}/src/config.def.h" "${CMAKE_SOURCE_DIR}/src/config.h"
+        COPYONLY
+    )
+endif()
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 find_package(LibEvent REQUIRED)
