@@ -8,6 +8,7 @@ dependencies
 
 required:
 * libevent
+* cmake
 
 optional:
 * libmpdclient
@@ -15,11 +16,12 @@ optional:
 * iwlib
 * Xlib
 
-installation
-------------
+building
+--------
 
-	make
-	sudo make install
+	cd build
+    cmake ..
+    make
 
 configuration
 -------------

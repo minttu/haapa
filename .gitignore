@@ -5,3 +5,5 @@ test/*
 *.swp
 *.swo
 docs/docs.html
+build/*
+!build/.gitkeep

@@ -13,7 +13,7 @@ optdepends=(
   'alsa-lib: alsa support'
   'xorg-server: xsetrootwindowname support'
 )
-makedepends=('git')
+makedepends=('git' 'cmake')
 conflicts=('haapa')
 provides=('haapa')
 source=('git://github.com/JuhaniImberg/haapa')
@@ -26,12 +26,13 @@ pkgver() {
 }
 
 build() {
-	cd $_pkgname
+	cd $_pkgname/build
+    cmake ..
 	make
 }
 
 package() {
-	cd $_pkgname
-	make PREFIX=/usr DESTDIR="$pkgdir" install
+	cd $_pkgname/build
+	install -m755 -D haapa $pkgdir/usr/bin/haapa
 	install -m644 -D LICENSE $pkgdir/usr/share/licenses/$pkgname/LICENSE
 }
