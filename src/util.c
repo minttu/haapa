@@ -89,3 +89,40 @@ int read_string(char *file_location, char *value, Result *res) {
 
     return 1;
 }
+
+char *string_get(String *str) {
+    return str->data + str->pos;
+}
+
+void string_update_float(String *str, float value) {
+    char buf[STRING_MAX_SIZE];
+    snprintf(buf, sizeof(buf), "%f", value);
+    string_update(str, buf);
+}
+
+void string_update(String *str, char *new) {
+    if(str->len)
+        str->data[str->pos + str_max_length] = str->replaced;
+    if(!strcmp(str->data, new)) {
+        if(str_max_length && str->len > str_max_length) {
+            str->data[str->pos + str_max_length] = str->replaced;
+            str->pos += str->dir;
+            str->replaced = str->data[str->pos + str_max_length];
+            str->data[str->pos + str_max_length] = 0;
+            if(str->pos + str_max_length >= str->len)
+                str->dir = -1;
+            if(str->pos == 0)
+                str->dir = 1;
+        }
+        return;
+    }
+    memcpy(str->data, new, STRING_MAX_SIZE);
+    str->len = strlen(str->data);
+    if(str->len)
+        str->replaced = str->data[0];
+    str->pos = 0;
+    if(str_max_length && str->len > str_max_length) {
+        str->replaced = str->data[str_max_length];
+        str->data[str_max_length] = 0;
+    }
+}

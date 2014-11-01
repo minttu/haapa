@@ -29,6 +29,8 @@ char buffer[1024];
 char *output;
 int ticktock;
 
+static String *previous_strings[sizeof(segments)];
+
 Format *f;
 
 static const char *optString = "hov?";
@@ -304,9 +306,12 @@ void tick(int fd, short event, void *arg) {
         Segment segment = segments[i];
 
         if (segment.condition_function(segment.condition_argument) == 1) {
+            String *previous = previous_strings[i];
             buffer[0] = 0;
             segment.output_function(segment.function,
                                     segment.function_argument);
+
+            string_update(previous, buffer);
 
             if (buffer[0] == 0) {
                 continue;
@@ -319,13 +324,13 @@ void tick(int fd, short event, void *arg) {
                 colbuf = strtok(ogbuf, ",");
 
                 if (!ticktock) {
-                    f->segment(output, buffer, colbuf);
+                    f->segment(output, string_get(previous), colbuf);
                 } else {
                     colbuf = strtok(NULL, ",");
-                    f->segment(output, buffer, colbuf);
+                    f->segment(output, string_get(previous), colbuf);
                 }
             } else {
-                f->segment(output, buffer, segment.color);
+                f->segment(output, string_get(previous), segment.color);
             }
         }
     }
@@ -363,6 +368,7 @@ int main(int argc, char *const argv[]) {
     struct timeval tv;
     int opt;
     int longIndex = 0;
+    int i;
 
     arguments.once = 0;
 
@@ -393,6 +399,9 @@ int main(int argc, char *const argv[]) {
 
         opt = getopt_long( argc, argv, optString, longOpts, &longIndex );
     }
+
+    for (i = 0; i < sizeof(segments) / sizeof(segments[0]); i++)
+        previous_strings[i]= calloc(1, sizeof(String));
 
     f = formatter();
     output = malloc(sizeof(char) * 1024);
