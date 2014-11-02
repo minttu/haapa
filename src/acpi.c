@@ -10,6 +10,8 @@
 #include "result.h"
 #include "util.h"
 
+static char *previous_string = NULL;
+
 Result *battery_status(char *str) {
     Result *res;
     res = init_res();
@@ -17,7 +19,11 @@ Result *battery_status(char *str) {
 
     sprintf(file_location, "%s%s/status", batpath, str);
 
+    free(previous_string);
+    previous_string = malloc(STRING_MAX_SIZE);
     read_string(file_location, res->string, res);
+    strncpy(previous_string, res->string, STRING_MAX_SIZE-1);
+    previous_string[STRING_MAX_SIZE-1] = 0;
     return res;
 }
 
@@ -132,7 +138,7 @@ int bat_islow(char *str) {
         return 0;
     }
 
-    if (capacity < 20) {
+    if (capacity < 30 && !(previous_string && !strcmp(previous_string, "Charging"))) {
         return 1;
     }
 
