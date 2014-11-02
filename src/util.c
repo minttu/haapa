@@ -101,26 +101,36 @@ void string_update_float(String *str, float value) {
 }
 
 void string_update(String *str, char *new) {
+    int i;
     if(str->len)
         str->data[str->pos + str_max_length] = str->replaced;
     if(!strcmp(str->data, new)) {
         if(str_max_length && str->len > str_max_length) {
             str->data[str->pos + str_max_length] = str->replaced;
             str->pos += str->dir;
+            if(str->pos < 0) {
+                str->pos = 0;
+                str->dir = 1;
+            }
+            else if(str->pos > str->len - str_max_length) {
+                str->pos = str->len - str_max_length;
+                str->dir = -1;
+            }
             str->replaced = str->data[str->pos + str_max_length];
             str->data[str->pos + str_max_length] = 0;
-            if(str->pos + str_max_length >= str->len)
-                str->dir = -1;
-            if(str->pos == 0)
-                str->dir = 1;
         }
         return;
     }
-    memcpy(str->data, new, STRING_MAX_SIZE);
+    for(i = 0; i < STRING_MAX_SIZE-1; i++) {
+        str->data[i] = new[i];
+        if(!new[i])
+            break;
+    }
+    str->data[i] = 0;
     str->len = strlen(str->data);
+    str->pos = 0;
     if(str->len)
         str->replaced = str->data[0];
-    str->pos = 0;
     if(str_max_length && str->len > str_max_length) {
         str->replaced = str->data[str_max_length];
         str->data[str_max_length] = 0;

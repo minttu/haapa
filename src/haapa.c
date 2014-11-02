@@ -400,8 +400,10 @@ int main(int argc, char *const argv[]) {
         opt = getopt_long( argc, argv, optString, longOpts, &longIndex );
     }
 
-    for (i = 0; i < sizeof(segments) / sizeof(segments[0]); i++)
+    for (i = 0; i < sizeof(segments) / sizeof(segments[0]); i++) {
         previous_strings[i]= calloc(1, sizeof(String));
+        previous_strings[i]->dir = 1;
+    }
 
     f = formatter();
     output = malloc(sizeof(char) * 1024);
