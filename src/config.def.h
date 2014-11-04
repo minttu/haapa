@@ -17,6 +17,8 @@ static const int  bar_format_unicode =
 static const char *const bar_format = "\u2502%s\u2502";
 static const int  bar_format_length = 10;
 
+static const int  str_max_length = 0; /* 0: no max */
+
 static const char *const mpd_hostname = NULL;
 static const char *const mpd_pass = NULL;
 static const int  mpd_port = 0;

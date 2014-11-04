@@ -21,7 +21,7 @@ int _wireless_update(char *ifname) {
     struct iwreq req;
 
     if (!wir_response) {
-        wir_response = malloc(sizeof(wireless_response));
+        wir_response = calloc(1, sizeof(wireless_response));
         wir_response->essid = malloc(IW_ESSID_MAX_SIZE + 1);
         wir_response->int_max[0] = 1;
         wir_response->int_max[1] = 1;
