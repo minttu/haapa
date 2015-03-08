@@ -62,16 +62,7 @@ void string(Result * (*function)(char *str), char *str) {
         snprintf(res->string, sizeof(res->string), "%f", res->value);
         strcat(buffer, res->string);
     } else {
-        if (formatter == format_i3) {
-            char *tmp = jsonescape(res->string);
-            strcat(buffer, tmp);
-
-            if (tmp) {
-                free(tmp);
-            }
-        } else {
-            strcat(buffer, res->string);
-        }
+        strcat(buffer, res->string);
     }
 
 done:
@@ -317,6 +308,20 @@ void tick(int fd, short event, void *arg) {
                 continue;
             }
 
+            char *cur = string_get(previous);
+            buffer[0] = 0;
+            strcat(buffer, cur);
+
+            if (formatter == format_i3) {
+                char *tmp = jsonescape(buffer);
+                buffer[0] = 0;
+                strcat(buffer, tmp);
+
+                if (tmp) {
+                    free(tmp);
+                }
+            }
+
             if (strlen(segment.color) > 7) {
                 char *colbuf = NULL;
                 char ogbuf[16];
@@ -324,13 +329,13 @@ void tick(int fd, short event, void *arg) {
                 colbuf = strtok(ogbuf, ",");
 
                 if (!ticktock) {
-                    f->segment(output, string_get(previous), colbuf);
+                    f->segment(output, buffer, colbuf);
                 } else {
                     colbuf = strtok(NULL, ",");
-                    f->segment(output, string_get(previous), colbuf);
+                    f->segment(output, buffer, colbuf);
                 }
             } else {
-                f->segment(output, string_get(previous), segment.color);
+                f->segment(output, buffer, segment.color);
             }
         }
     }
@@ -401,7 +406,7 @@ int main(int argc, char *const argv[]) {
     }
 
     for (i = 0; i < sizeof(segments) / sizeof(segments[0]); i++) {
-        previous_strings[i]= calloc(1, sizeof(String));
+        previous_strings[i] = calloc(1, sizeof(String));
         previous_strings[i]->dir = 1;
     }
 
