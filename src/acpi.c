@@ -22,8 +22,8 @@ Result *battery_status(char *str) {
     free(previous_string);
     previous_string = malloc(STRING_MAX_SIZE);
     read_string(file_location, res->string, res);
-    strncpy(previous_string, res->string, STRING_MAX_SIZE-1);
-    previous_string[STRING_MAX_SIZE-1] = 0;
+    strncpy(previous_string, res->string, STRING_MAX_SIZE - 1);
+    previous_string[STRING_MAX_SIZE - 1] = 0;
     return res;
 }
 
@@ -138,7 +138,8 @@ int bat_islow(char *str) {
         return 0;
     }
 
-    if (capacity < 30 && !(previous_string && !strcmp(previous_string, "Charging"))) {
+    if (capacity < 30 && !(previous_string
+                           && !strcmp(previous_string, "Charging"))) {
         return 1;
     }
 
