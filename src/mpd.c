@@ -38,6 +38,7 @@ int _mpd_update() {
 
     if (signal(SIGPIPE, pipe_handle) == SIG_ERR) {
         mpdresponse->err = -1;
+        conn = NULL;
         return -1;
     }
 
@@ -71,12 +72,14 @@ int _mpd_update() {
 
     if (status == NULL) {
         mpd_connection_free(conn);
+        conn = NULL;
         mpdresponse->err = -1;
         return -1;
     }
 
     if (!mpdresponse) {
         mpd_connection_free(conn);
+        conn = NULL;
         mpdresponse->err = -1;
         return -1;
     }
