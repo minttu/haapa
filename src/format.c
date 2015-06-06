@@ -34,12 +34,12 @@ Format *format_plain() {
 }
 
 void format_i3_segment(char *buffer, char *str, char *color) {
-    char colorbuffer[64];
+    char colorbuffer[256];
 
     strcat(buffer, ",{\"full_text\":\"");
     strcat(buffer, str);
     colorbuffer[0] = 0;
-    sprintf(colorbuffer, "\",\"color\":\"%s\"}\n", color);
+    sprintf(colorbuffer, "\",\"separator\":false,\"separator_block_width\":4,\"color\":\"%s\"}\n", color);
     strcat(buffer, colorbuffer);
 }
 

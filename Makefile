@@ -1,8 +1,5 @@
 include config.mk
 
-GT := $(shell uname -r | cut -d "." -f 2)
-GT_13 := $(shell [ $(GT) -gt 13 ] && echo true)
-
 .PHONY: default all clean install uninstall deps opts format
 
 default: haapa
@@ -80,10 +77,6 @@ else
 	$(eval FILES += src/output_x.c)
 	$(eval LIBS += -lX11)
 	$(eval CFLAGS += -DINCLUDE_XLIB)
-endif
-
-ifeq ($(GT_13),true)
-	$(eval CFLAGS += -DHAAPA_NEWMEM)
 endif
 
 test:

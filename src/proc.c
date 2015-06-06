@@ -51,13 +51,8 @@ Result *proc_memory() {
         return res;
     }
 
-#ifdef HAAPA_NEWMEM
     val = fscanf(f, "%*s %i %*s %*s %i %*s %*s %*i %*s %*s %i %*s %*s %i %*s",
                  &mem_total, &mem_free, &mem_buffers, &mem_cached);
-#else
-    val = fscanf(f, "%*s %i %*s %*s %i %*s %*s %i %*s %*s %i %*s",
-                 &mem_total, &mem_free, &mem_buffers, &mem_cached);
-#endif
     fclose(f);
 
     if (val == EOF) {

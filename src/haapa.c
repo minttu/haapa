@@ -25,7 +25,7 @@ static const char *bar_unicode[2][8] = {
     }
 };
 
-char buffer[1024];
+char buffer[2048];
 char *output;
 int ticktock;
 
@@ -411,7 +411,7 @@ int main(int argc, char *const argv[]) {
     }
 
     f = formatter();
-    output = malloc(sizeof(char) * 1024);
+    output = malloc(sizeof(char) * 2048);
 
     if (f->init != NULL) {
         outputter(f->init);
