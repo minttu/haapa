@@ -38,11 +38,26 @@ Result *proc_load(char *str) {
     return res;
 }
 
+struct str_intp_pair {
+    char *str;
+    long *intp;
+};
+
 Result *proc_memory() {
     FILE *f;
     Result *res;
     res = init_res();
-    int mem_total, mem_free, mem_buffers, mem_cached, mem_used, val;
+    long mem_total, mem_free, mem_buffers, mem_cached, mem_used, i;
+    char buffer[64];
+
+    mem_total = mem_free = mem_buffers = mem_cached = -1;
+
+    struct str_intp_pair pairs[] = {
+        {"MemTotal:", &mem_total},
+        {"MemFree:", &mem_free},
+        {"Buffers:", &mem_buffers},
+        {"Cached:", &mem_cached},
+    };
 
     f = fopen("/proc/meminfo", "r");
 
@@ -51,18 +66,21 @@ Result *proc_memory() {
         return res;
     }
 
-    val = fscanf(f, "%*s %i %*s %*s %i %*s %*s %*i %*s %*s %i %*s %*s %i %*s",
-                 &mem_total, &mem_free, &mem_buffers, &mem_cached);
+    while(fgets(buffer, sizeof(buffer), f))
+        for(i = 0; i < 4; i++)
+            if(!strncmp(pairs[i].str, buffer, sizeof(pairs[i].str) - 1))
+                sscanf(buffer, "%*s %ld", pairs[i].intp);
+
     fclose(f);
 
-    if (val == EOF) {
+    if (mem_total < 0 || mem_free < 0 || mem_buffers < 0 || mem_cached < 0) {
         res->error = 1;
         return res;
     }
 
     mem_used = mem_total - mem_free - mem_buffers - mem_cached;
 
-    sprintf(res->string, "%i/%i MB", mem_used / 1024, mem_total / 1024);
+    sprintf(res->string, "%ld/%ld MB", mem_used / 1024, mem_total / 1024);
     res->value = mem_used;
     res->max = mem_total;
     return res;
