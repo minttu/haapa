@@ -1,9 +1,9 @@
 #ifndef HAAPA_RETURN_H
 #define HAAPA_RETURN_H
 
-#define STRING_MAX_SIZE 128
-
 #include <time.h>
+
+#define STRING_MAX_SIZE 512
 
 typedef struct result {
     char string[STRING_MAX_SIZE];
