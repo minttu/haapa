@@ -100,16 +100,36 @@ void string_update_float(String *str, float value) {
     string_update(str, buf);
 }
 
-void string_update(String *str, char *new) {
-    int i;
+static char string_set_value(char *target, char value, size_t length) {
+    int i, j;
+    for (i = 0, j = -1;; i++) {
+        if ((target[i] & 0xc0) != 0x80) j++;
 
+        if(j == length) {
+            char old = target[i];
+            target[i] = value;
+            return old;
+        }
+    }
+    return 0;
+}
+
+static size_t string_length(char *source) {
+    size_t j;
+    int i;
+    for (i = 0, j = 0; source[i]; i++) {
+        if ((source[i] & 0xc0) != 0x80) j++;
+    }
+    return j;
+}
+
+void string_update(String *str, char *new) {
     if (str->len) {
-        str->data[str->pos + str_max_length] = str->replaced;
+        str->replaced = string_set_value(str->data, str->replaced, str->pos + str_max_length);
     }
 
     if (!strcmp(str->data, new)) {
         if (str_max_length && str->len > str_max_length) {
-            str->data[str->pos + str_max_length] = str->replaced;
             str->pos += str->dir;
 
             if (str->pos < 0) {
@@ -120,31 +140,20 @@ void string_update(String *str, char *new) {
                 str->dir = -1;
             }
 
-            str->replaced = str->data[str->pos + str_max_length];
-            str->data[str->pos + str_max_length] = 0;
+            str->replaced = string_set_value(str->data, 0,
+                    str->pos + str_max_length);
         }
 
         return;
     }
 
-    for (i = 0; i < STRING_MAX_SIZE - 1; i++) {
-        str->data[i] = new[i];
+    strcpy(str->data, new);
 
-        if (!new[i]) {
-            break;
-        }
-    }
-
-    str->data[i] = 0;
-    str->len = strlen(str->data);
+    str->len = string_length(new);
     str->pos = 0;
-
-    if (str->len) {
-        str->replaced = str->data[0];
-    }
+    str->replaced = 0;
 
     if (str_max_length && str->len > str_max_length) {
-        str->replaced = str->data[str_max_length];
-        str->data[str_max_length] = 0;
+        str->replaced = string_set_value(str->data, 0, str_max_length);
     }
 }
